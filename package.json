@@ -1,6 +1,6 @@
 {
   "name": "vue-multiple-themes",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "Vue Multiple Themes",
   "author": "Pooya Golchian(pooya.golchian@gmail.com)",
   "main": "dist/vue-multiple-themes.ssr.js",
