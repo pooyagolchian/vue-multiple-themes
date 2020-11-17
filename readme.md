@@ -3,6 +3,8 @@
 1- Vue.js multipe theme and store in array and work with css variable
 2- Easy to use and add themes (Color Plallet)
 
+![vue-multiple-themes](./vue-multiple-themes.gif)
+
 ### Install package
 
 1. Install with npm `npm i vue-multiple-themes`
