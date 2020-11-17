@@ -1,11 +1,13 @@
 {
   "name": "vue-multiple-themes",
-  "version": "1.0.1",
-  "description": "",
+  "version": "1.0.2",
+  "description": "Vue Multiple Themes",
+  "author": "Pooya Golchian(pooya.golchian@gmail.com)",
   "main": "dist/vue-multiple-themes.ssr.js",
   "browser": "dist/vue-multiple-themes.esm.js",
   "module": "dist/vue-multiple-themes.esm.js",
   "unpkg": "dist/vue-multiple-themes.min.js",
+  "pub": "sh ./publish.sh",
   "files": [
     "dist/*",
     "src/**/*.vue"
@@ -40,5 +42,19 @@
   },
   "engines": {
     "node": ">=10"
-  }
+  },
+  "bugs": {
+    "url": "https://github.com/pooyagolchian/vue-multiple-themes/issues"
+  },
+  "homepage": "https://github.com/pooyagolchian/vue-multiple-themes#readme",
+  "keywords": [
+    "vuejs-multiple-themes",
+    "vue-dark-theme",
+    "vue-server-theme-change",
+    "vue-change-theme",
+    "vue-dark-light-theme",
+    "vue-multiple-color-pallet-themes"
+  ],
+  "license": "ISC",
+  "repository": "pooyagolchian/vue-multiple-themes"
 }
