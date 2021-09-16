@@ -253,7 +253,7 @@ var __vue_staticRenderFns__ = [];
 
 const __vue_inject_styles__ = function (inject) {
   if (!inject) return;
-  inject("data-v-942c8fea_0", {
+  inject("data-v-dad5d86e_0", {
     source: "@font-face{font-family:icomoon;src:url(fonts/icomoon.eot?5gakus);src:url(fonts/icomoon.eot?5gakus#iefix) format('embedded-opentype'),url(fonts/icomoon.ttf?5gakus) format('truetype'),url(fonts/icomoon.woff?5gakus) format('woff'),url(fonts/icomoon.svg?5gakus#icomoon) format('svg');font-weight:400;font-style:normal;font-display:block}[class*=\" icon-\"],[class^=icon-]{font-family:icomoon!important;speak:never;font-style:normal;font-weight:400;font-variant:normal;text-transform:none;line-height:1;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}.icon-coffee:before{content:\"\\e900\"}.icon-moon:before{content:\"\\e901\"}.icon-sun:before{content:\"\\e902\"}:root{--app-background-color:#ffffff;--app-title-color:#333333;--app-subtitle-color:#555555}[theme=dark]{--app-background-color:#333333;--app-title-color:#ffffff;--app-subtitle-color:#dddddd}[theme=sepia]{--app-background-color:#d0bc91;--app-title-color:#8a6c44;--app-subtitle-color:#5f4938}.app-background{background-color:var(--app-background-color)}.app-title{color:var(--app-title-color)}.app-subtitle{color:var(--app-subtitle-color);padding-top:10px}.change-theme-box{cursor:pointer;color:var(--app-subtitle-color);font-size:1em;font-weight:400}",
     map: undefined,
     media: undefined
