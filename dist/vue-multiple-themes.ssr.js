@@ -1,4 +1,14 @@
-'use strict';Object.defineProperty(exports,'__esModule',{value:true});var script = {
+'use strict';Object.defineProperty(exports,'__esModule',{value:true});//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+var script = {
   name: "VueMultipleThemes",
   props: {
     defaultTheme: {
@@ -6,8 +16,14 @@
       type: String
     },
     themeColorList: {
-      default: ["light", "dark", "sepia", "black", "coffee", "rose"],
+      default: function _default() {
+        return ["light", "dark", "sepia"];
+      },
       type: Array
+    },
+    extraClass: {
+      default: '',
+      type: String
     },
     changeThemeOff: {
       default: true,
@@ -57,6 +73,8 @@
 
     if (localStorage.getItem("theme") && this.showChangeTheme) {
       this.theme = JSON.parse(localStorage.getItem("theme"));
+      var htmlElement = document.documentElement;
+      htmlElement.setAttribute("theme", this.theme);
       this.themeName = this.theme;
       this.themeColor(this.theme);
     } else {
@@ -138,46 +156,6 @@
         }
     }
     return script;
-}function createInjectorSSR(context) {
-    if (!context && typeof __VUE_SSR_CONTEXT__ !== 'undefined') {
-        context = __VUE_SSR_CONTEXT__;
-    }
-    if (!context)
-        return () => { };
-    if (!('styles' in context)) {
-        context._styles = context._styles || {};
-        Object.defineProperty(context, 'styles', {
-            enumerable: true,
-            get: () => context._renderStyles(context._styles)
-        });
-        context._renderStyles = context._renderStyles || renderStyles;
-    }
-    return (id, style) => addStyle(id, style, context);
-}
-function addStyle(id, css, context) {
-    const group =  css.media || 'default' ;
-    const style = context._styles[group] || (context._styles[group] = { ids: [], css: '' });
-    if (!style.ids.includes(id)) {
-        style.media = css.media;
-        style.ids.push(id);
-        let code = css.source;
-        style.css += code + '\n';
-    }
-}
-function renderStyles(styles) {
-    let css = '';
-    for (const key in styles) {
-        const style = styles[key];
-        css +=
-            '<style data-vue-ssr-id="' +
-                Array.from(style.ids).join(' ') +
-                '"' +
-                (style.media ? ' media="' + style.media + '"' : '') +
-                '>' +
-                style.css +
-                '</style>';
-    }
-    return css;
 }/* script */
 var __vue_script__ = script;
 /* template */
@@ -190,37 +168,34 @@ var __vue_render__ = function __vue_render__() {
   var _c = _vm._self._c || _h;
 
   return _c('div', {
-    staticClass: "vue-multiple-themes"
-  }, [_vm._ssrNode(_vm.changeThemeOff ? "<span class=\"change-theme-box\" data-v-8e56537c>" + _vm._ssrEscape("\n    " + _vm._s(_vm.themeName) + "\n  ") + "</span>" : "<!---->")]);
+    staticClass: "vue-multiple-themes",
+    class: _vm.extraClass
+  }, [_vm._ssrNode(_vm.changeThemeOff ? "<span class=\"change-theme-box\">" + (_vm.themeName === 'dark' ? "<span class=\"icon-moon\"></span>" : "<!---->") + " " + (_vm.themeName === 'light' ? "<span class=\"icon-sun\"></span>" : "<!---->") + " " + (_vm.themeName === 'sepia' ? "<span class=\"icon-coffee\"></span>" : "<!---->") + "</span>" : "<!---->")]);
 };
 
 var __vue_staticRenderFns__ = [];
 /* style */
 
-var __vue_inject_styles__ = function __vue_inject_styles__(inject) {
-  if (!inject) return;
-  inject("data-v-8e56537c_0", {
-    source: "[data-v-8e56537c]:root{--app-background-color:#ffffff;--app-title-color:#333333;--app-subtitle-color:#555555}[theme=dark][data-v-8e56537c]{--app-background-color:#333333;--app-title-color:#ffffff;--app-subtitle-color:#dddddd}[theme=sepia][data-v-8e56537c]{--app-background-color:#d0bc91;--app-title-color:#8a6c44;--app-subtitle-color:#5f4938}[theme=black][data-v-8e56537c]{--app-background-color:#000000;--app-title-color:#ffffff;--app-subtitle-color:#dddddd}[theme=coffee][data-v-8e56537c]{--app-background-color:#394545;--app-title-color:#aab1b3;--app-subtitle-color:#e9e5e3}[theme=rose][data-v-8e56537c]{--app-background-color:#2e1a1e;--app-title-color:#bcb8ce;--app-subtitle-color:#d5ddef}.app-background[data-v-8e56537c]{background-color:var(--app-background-color)}.app-title[data-v-8e56537c]{color:var(--app-title-color)}.app-subtitle[data-v-8e56537c]{color:var(--app-subtitle-color);padding-top:10px}.change-theme-box[data-v-8e56537c]{cursor:pointer;color:var(--app-subtitle-color);font-size:20px;font-weight:700}",
-    map: undefined,
-    media: undefined
-  });
-};
+var __vue_inject_styles__ = undefined;
 /* scoped */
 
-
-var __vue_scope_id__ = "data-v-8e56537c";
+var __vue_scope_id__ = undefined;
 /* module identifier */
 
-var __vue_module_identifier__ = "data-v-8e56537c";
+var __vue_module_identifier__ = "data-v-161b1a00";
 /* functional template */
 
 var __vue_is_functional_template__ = false;
+/* style inject */
+
+/* style inject SSR */
+
 /* style inject shadow dom */
 
 var __vue_component__ = /*#__PURE__*/normalizeComponent({
   render: __vue_render__,
   staticRenderFns: __vue_staticRenderFns__
-}, __vue_inject_styles__, __vue_script__, __vue_scope_id__, __vue_is_functional_template__, __vue_module_identifier__, false, undefined, createInjectorSSR, undefined);// Import vue component
+}, __vue_inject_styles__, __vue_script__, __vue_scope_id__, __vue_is_functional_template__, __vue_module_identifier__, false, undefined, undefined, undefined);// Import vue component
 
 var install = function installVueMultipleThemes(Vue) {
   if (install.installed) return;

@@ -1,3 +1,13 @@
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 var script = {
   name: "VueMultipleThemes",
   props: {
@@ -6,8 +16,12 @@ var script = {
       type: String
     },
     themeColorList: {
-      default: ["light", "dark", "sepia", "black", "coffee", "rose"],
+      default: () => ["light", "dark", "sepia"],
       type: Array
+    },
+    extraClass: {
+      default: '',
+      type: String
     },
     changeThemeOff: {
       default: true,
@@ -63,6 +77,8 @@ var script = {
 
     if (localStorage.getItem("theme") && this.showChangeTheme) {
       this.theme = JSON.parse(localStorage.getItem("theme"));
+      const htmlElement = document.documentElement;
+      htmlElement.setAttribute("theme", this.theme);
       this.themeName = this.theme;
       this.themeColor(this.theme);
     } else {
@@ -149,59 +165,6 @@ function normalizeComponent(template, style, script, scopeId, isFunctionalTempla
     return script;
 }
 
-const isOldIE = typeof navigator !== 'undefined' &&
-    /msie [6-9]\\b/.test(navigator.userAgent.toLowerCase());
-function createInjector(context) {
-    return (id, style) => addStyle(id, style);
-}
-let HEAD;
-const styles = {};
-function addStyle(id, css) {
-    const group = isOldIE ? css.media || 'default' : id;
-    const style = styles[group] || (styles[group] = { ids: new Set(), styles: [] });
-    if (!style.ids.has(id)) {
-        style.ids.add(id);
-        let code = css.source;
-        if (css.map) {
-            // https://developer.chrome.com/devtools/docs/javascript-debugging
-            // this makes source maps inside style tags work properly in Chrome
-            code += '\n/*# sourceURL=' + css.map.sources[0] + ' */';
-            // http://stackoverflow.com/a/26603875
-            code +=
-                '\n/*# sourceMappingURL=data:application/json;base64,' +
-                    btoa(unescape(encodeURIComponent(JSON.stringify(css.map)))) +
-                    ' */';
-        }
-        if (!style.element) {
-            style.element = document.createElement('style');
-            style.element.type = 'text/css';
-            if (css.media)
-                style.element.setAttribute('media', css.media);
-            if (HEAD === undefined) {
-                HEAD = document.head || document.getElementsByTagName('head')[0];
-            }
-            HEAD.appendChild(style.element);
-        }
-        if ('styleSheet' in style.element) {
-            style.styles.push(code);
-            style.element.styleSheet.cssText = style.styles
-                .filter(Boolean)
-                .join('\n');
-        }
-        else {
-            const index = style.ids.size - 1;
-            const textNode = document.createTextNode(code);
-            const nodes = style.element.childNodes;
-            if (nodes[index])
-                style.element.removeChild(nodes[index]);
-            if (nodes.length)
-                style.element.insertBefore(textNode, nodes[index]);
-            else
-                style.element.appendChild(textNode);
-        }
-    }
-}
-
 /* script */
 const __vue_script__ = script;
 /* template */
@@ -214,7 +177,8 @@ var __vue_render__ = function () {
   var _c = _vm._self._c || _h;
 
   return _c('div', {
-    staticClass: "vue-multiple-themes"
+    staticClass: "vue-multiple-themes",
+    class: _vm.extraClass
   }, [_vm.changeThemeOff ? _c('span', {
     staticClass: "change-theme-box",
     on: {
@@ -222,30 +186,30 @@ var __vue_render__ = function () {
         return _vm.changeTheme();
       }
     }
-  }, [_vm._v("\n    " + _vm._s(_vm.themeName) + "\n  ")]) : _vm._e()]);
+  }, [_vm.themeName === 'dark' ? _c('span', {
+    staticClass: "icon-moon"
+  }) : _vm._e(), _vm._v(" "), _vm.themeName === 'light' ? _c('span', {
+    staticClass: "icon-sun"
+  }) : _vm._e(), _vm._v(" "), _vm.themeName === 'sepia' ? _c('span', {
+    staticClass: "icon-coffee"
+  }) : _vm._e()]) : _vm._e()]);
 };
 
 var __vue_staticRenderFns__ = [];
 /* style */
 
-const __vue_inject_styles__ = function (inject) {
-  if (!inject) return;
-  inject("data-v-8e56537c_0", {
-    source: "[data-v-8e56537c]:root{--app-background-color:#ffffff;--app-title-color:#333333;--app-subtitle-color:#555555}[theme=dark][data-v-8e56537c]{--app-background-color:#333333;--app-title-color:#ffffff;--app-subtitle-color:#dddddd}[theme=sepia][data-v-8e56537c]{--app-background-color:#d0bc91;--app-title-color:#8a6c44;--app-subtitle-color:#5f4938}[theme=black][data-v-8e56537c]{--app-background-color:#000000;--app-title-color:#ffffff;--app-subtitle-color:#dddddd}[theme=coffee][data-v-8e56537c]{--app-background-color:#394545;--app-title-color:#aab1b3;--app-subtitle-color:#e9e5e3}[theme=rose][data-v-8e56537c]{--app-background-color:#2e1a1e;--app-title-color:#bcb8ce;--app-subtitle-color:#d5ddef}.app-background[data-v-8e56537c]{background-color:var(--app-background-color)}.app-title[data-v-8e56537c]{color:var(--app-title-color)}.app-subtitle[data-v-8e56537c]{color:var(--app-subtitle-color);padding-top:10px}.change-theme-box[data-v-8e56537c]{cursor:pointer;color:var(--app-subtitle-color);font-size:20px;font-weight:700}",
-    map: undefined,
-    media: undefined
-  });
-};
+const __vue_inject_styles__ = undefined;
 /* scoped */
 
-
-const __vue_scope_id__ = "data-v-8e56537c";
+const __vue_scope_id__ = undefined;
 /* module identifier */
 
 const __vue_module_identifier__ = undefined;
 /* functional template */
 
 const __vue_is_functional_template__ = false;
+/* style inject */
+
 /* style inject SSR */
 
 /* style inject shadow dom */
@@ -253,7 +217,7 @@ const __vue_is_functional_template__ = false;
 const __vue_component__ = /*#__PURE__*/normalizeComponent({
   render: __vue_render__,
   staticRenderFns: __vue_staticRenderFns__
-}, __vue_inject_styles__, __vue_script__, __vue_scope_id__, __vue_is_functional_template__, __vue_module_identifier__, false, createInjector, undefined, undefined);
+}, __vue_inject_styles__, __vue_script__, __vue_scope_id__, __vue_is_functional_template__, __vue_module_identifier__, false, undefined, undefined, undefined);
 
 // Import vue component
 
