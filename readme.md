@@ -4,6 +4,11 @@
 
 2- Easy to use and add themes (Color Plallet)
 
+---
+
+## Demo
+- [Demo of Vue Multiple Theme package](https://vuemultipletheme.netlify.app/)
+
 ![vue-multiple-themes](vue-multiple-themes.gif)
 
 ### Install package
