@@ -84,6 +84,11 @@ After import and register component in your Vue.js application:
 }
 ```
 
+
+---
+### Icon font issue
+**You need add fonts to your public project folder**
+
 ## Documents
 
 | Attribute      |                 Description                 |    Type | Default                                               |
