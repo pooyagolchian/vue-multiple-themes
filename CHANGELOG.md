@@ -1,3 +1,10 @@
+1.5.1
+
+- fix icon path
+- add GitHub action
+- fix style
+
+
 1.0.1
 
 - Add Documents

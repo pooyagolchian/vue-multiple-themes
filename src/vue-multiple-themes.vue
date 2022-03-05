@@ -86,8 +86,8 @@ export default {
 <style lang="css">
 @font-face {
   font-family: 'icomoon';
-  src:  url('./fonts/icomoon.eot?5gakus');
-  src:  url('./fonts/icomoon.eot?5gakus#iefix') format('embedded-opentype'),
+  src: url('./fonts/icomoon.eot?5gakus');
+  src: url('./fonts/icomoon.eot?5gakus#iefix') format('embedded-opentype'),
   url('./fonts/icomoon.ttf?5gakus') format('truetype'),
   url('./fonts/icomoon.woff?5gakus') format('woff'),
   url('./fonts/icomoon.svg?5gakus#icomoon') format('svg');
@@ -97,7 +97,6 @@ export default {
 }
 
 [class^="icon-"], [class*=" icon-"] {
-  /* use !important to prevent issues with browser extensions that change fonts */
   font-family: 'icomoon' !important;
   speak: never;
   font-style: normal;
@@ -105,8 +104,6 @@ export default {
   font-variant: normal;
   text-transform: none;
   line-height: 1;
-
-  /* Better Font Rendering =========== */
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -114,9 +111,11 @@ export default {
 .icon-coffee:before {
   content: "\e900";
 }
+
 .icon-moon:before {
   content: "\e901";
 }
+
 .icon-sun:before {
   content: "\e902";
 }
