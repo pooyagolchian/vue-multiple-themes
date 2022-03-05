@@ -86,11 +86,11 @@ export default {
 <style lang="css">
 @font-face {
   font-family: 'icomoon';
-  src:  url('fonts/icomoon.eot?5gakus');
-  src:  url('fonts/icomoon.eot?5gakus#iefix') format('embedded-opentype'),
-  url('fonts/icomoon.ttf?5gakus') format('truetype'),
-  url('fonts/icomoon.woff?5gakus') format('woff'),
-  url('fonts/icomoon.svg?5gakus#icomoon') format('svg');
+  src:  url('./fonts/icomoon.eot?5gakus');
+  src:  url('./fonts/icomoon.eot?5gakus#iefix') format('embedded-opentype'),
+  url('./fonts/icomoon.ttf?5gakus') format('truetype'),
+  url('./fonts/icomoon.woff?5gakus') format('woff'),
+  url('./fonts/icomoon.svg?5gakus#icomoon') format('svg');
   font-weight: normal;
   font-style: normal;
   font-display: block;
