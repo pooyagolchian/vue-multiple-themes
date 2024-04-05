@@ -47,7 +47,6 @@ export default {
     methods: {
         themeColor(themeColor) {
             this.theme = `${themeColor}`;
-            document.title = "Multiple Themes in Vue.js";
             const bodyElement = document.body;
             bodyElement.classList.add("app-background");
             const htmlElement = document.documentElement;
