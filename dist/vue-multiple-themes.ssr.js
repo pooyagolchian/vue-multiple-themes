@@ -8,6 +8,12 @@
 //
 //
 //
+//
+//
+//
+//
+//
+//
 var script = {
   name: "VueMultipleThemes",
   props: {
@@ -38,49 +44,31 @@ var script = {
       showChangeTheme: this.changeThemeOff
     };
   },
-  computed: {
-    showChangeThemeHandler: function showChangeThemeHandler() {
-      if (!this.showChangeTheme) {
-        this.theme = this.defaultTheme;
-        this.themeName = this.theme;
-        this.themeColor(this.theme);
-      }
-    }
-  },
   methods: {
     themeColor: function themeColor(_themeColor) {
-      this.theme = "".concat(_themeColor);
+      this.theme = _themeColor;
       document.title = "Multiple Themes in Vue.js";
       var bodyElement = document.body;
       bodyElement.classList.add("app-background");
       var htmlElement = document.documentElement;
-      htmlElement.setAttribute("theme", "".concat(_themeColor));
-      localStorage.setItem("theme", JSON.stringify("".concat(_themeColor)));
+      htmlElement.setAttribute("theme", _themeColor);
+      localStorage.setItem("theme", _themeColor);
     },
     changeTheme: function changeTheme() {
-      this.counter = this.counter + 1;
-
-      if (this.counter === this.themeColorList.length) {
-        this.counter = 0;
-      }
-
+      this.counter = (this.counter + 1) % this.themeColorList.length;
       this.themeName = this.themeColorList[this.counter];
       this.themeColor(this.themeName);
     }
   },
   mounted: function mounted() {
-    if (!this.showChangeTheme) this.showChangeThemeHandler();
+    if (!this.showChangeTheme) this.themeColor(this.defaultTheme);
 
     if (localStorage.getItem("theme") && this.showChangeTheme) {
-      this.theme = JSON.parse(localStorage.getItem("theme"));
-      var htmlElement = document.documentElement;
-      htmlElement.setAttribute("theme", this.theme);
+      this.theme = localStorage.getItem("theme");
       this.themeName = this.theme;
       this.themeColor(this.theme);
     } else {
-      this.theme = this.defaultTheme;
-      this.themeName = this.theme;
-      this.themeColor(this.theme);
+      this.themeColor(this.defaultTheme);
     }
   }
 };function normalizeComponent(template, style, script, scopeId, isFunctionalTemplate, moduleIdentifier /* server only */, shadowMode, createInjector, createInjectorSSR, createInjectorShadow) {
@@ -173,7 +161,7 @@ var script = {
     return (id, style) => addStyle(id, style, context);
 }
 function addStyle(id, css, context) {
-    const group =  css.media || 'default' ;
+    const group = css.media || 'default' ;
     const style = context._styles[group] || (context._styles[group] = { ids: [], css: '' });
     if (!style.ids.includes(id)) {
         style.media = css.media;
@@ -210,7 +198,7 @@ var __vue_render__ = function __vue_render__() {
   return _c('div', {
     staticClass: "vue-multiple-themes",
     class: _vm.extraClass
-  }, [_vm._ssrNode(_vm.changeThemeOff ? "<span class=\"change-theme-box\">" + (_vm.themeName === 'dark' ? "<span class=\"icon-moon\"></span>" : "<!---->") + " " + (_vm.themeName === 'light' ? "<span class=\"icon-sun\"></span>" : "<!---->") + " " + (_vm.themeName === 'sepia' ? "<span class=\"icon-coffee\"></span>" : "<!---->") + "</span>" : "<!---->")]);
+  }, [_vm._ssrNode(_vm.changeThemeOff ? "<div class=\"change-theme-box\" data-v-68e59412>" + (_vm.themeName === 'dark' ? "<svg width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" class=\"icon-moon\" data-v-68e59412><path d=\"M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z\" data-v-68e59412></path></svg>" : "<!---->") + " " + (_vm.themeName === 'light' ? "<svg width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" class=\"icon-sun\" data-v-68e59412><path d=\"M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zM12 4c-3.31 0-6 2.69-6 6s2.69 6 6 6 6-2.69 6-6-2.69-6-6-6zm0 10c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4zm0-8c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z\" data-v-68e59412></path></svg>" : "<!---->") + " " + (_vm.themeName === 'sepia' ? "<svg width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" class=\"icon-coffee\" data-v-68e59412><path d=\"M9 5h2V4H9c-1.1 0-2 .9-2 2v1c0 .55.45 1 1 1zm9-4h-2v2c0 1.1-.9 2-2 2h-2c-1.1 0-2-.9-2-2V1H6v2c0 1.1-.9 2-2 2H2c-.55 0-1 .45-1 1v15c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V6c0-.55-.45-1-1-1zM8 22H4V9h4v13zm12 0h-4V9h4v13z\" data-v-68e59412></path></svg>" : "<!---->") + "</div>" : "<!---->")]);
 };
 
 var __vue_staticRenderFns__ = [];
@@ -218,8 +206,8 @@ var __vue_staticRenderFns__ = [];
 
 var __vue_inject_styles__ = function __vue_inject_styles__(inject) {
   if (!inject) return;
-  inject("data-v-51a98550_0", {
-    source: "@font-face{font-family:icomoon;src:url(fonts/icomoon.eot?5gakus);src:url(fonts/icomoon.eot?5gakus#iefix) format('embedded-opentype'),url(fonts/icomoon.ttf?5gakus) format('truetype'),url(fonts/icomoon.woff?5gakus) format('woff'),url(fonts/icomoon.svg?5gakus#icomoon) format('svg');font-weight:400;font-style:normal;font-display:block}[class*=\" icon-\"],[class^=icon-]{font-family:icomoon!important;speak:never;font-style:normal;font-weight:400;font-variant:normal;text-transform:none;line-height:1;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}.icon-coffee:before{content:\"\\e900\"}.icon-moon:before{content:\"\\e901\"}.icon-sun:before{content:\"\\e902\"}:root{--app-background-color:#ffffff;--app-title-color:#333333;--app-subtitle-color:#555555}[theme=dark]{--app-background-color:#333333;--app-title-color:#ffffff;--app-subtitle-color:#dddddd}[theme=sepia]{--app-background-color:#d0bc91;--app-title-color:#8a6c44;--app-subtitle-color:#5f4938}.app-background{background-color:var(--app-background-color)}.app-title{color:var(--app-title-color)}.app-subtitle{color:var(--app-subtitle-color);padding-top:10px}.change-theme-box{cursor:pointer;color:var(--app-subtitle-color);font-size:1em;font-weight:400}",
+  inject("data-v-68e59412_0", {
+    source: "[data-v-68e59412]:root{--app-background-color:#ffffff;--app-title-color:#333333;--app-subtitle-color:#555555}[theme=dark][data-v-68e59412]{--app-background-color:#333333;--app-title-color:#ffffff;--app-subtitle-color:#dddddd}[theme=sepia][data-v-68e59412]{--app-background-color:#d0bc91;--app-title-color:#8a6c44;--app-subtitle-color:#5f4938}.app-background[data-v-68e59412]{background-color:var(--app-background-color)}.app-title[data-v-68e59412]{color:var(--app-title-color)}.app-subtitle[data-v-68e59412]{color:var(--app-subtitle-color);padding-top:10px}.change-theme-box[data-v-68e59412]{cursor:pointer;color:var(--app-subtitle-color);font-size:1em;font-weight:400}",
     map: undefined,
     media: undefined
   });
@@ -227,10 +215,10 @@ var __vue_inject_styles__ = function __vue_inject_styles__(inject) {
 /* scoped */
 
 
-var __vue_scope_id__ = undefined;
+var __vue_scope_id__ = "data-v-68e59412";
 /* module identifier */
 
-var __vue_module_identifier__ = "data-v-51a98550";
+var __vue_module_identifier__ = "data-v-68e59412";
 /* functional template */
 
 var __vue_is_functional_template__ = false;
@@ -274,4 +262,4 @@ var plugin = {
 __vue_component__.install = install; // Export component by default
 // also be used as directives, etc. - eg. import { RollupDemoDirective } from 'rollup-demo';
 // export const RollupDemoDirective = component;
-exports.default=__vue_component__;
+exports['default']=__vue_component__;

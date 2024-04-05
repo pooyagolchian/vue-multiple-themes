@@ -1,51 +1,49 @@
 ### Vue.js Multiple Themes
 
-1- Vue.js multipe theme and store in array and work with css variable
-
-2- Easy to use and add themes (Color Plallet)
+The Vue.js Multiple Themes package allows you to implement multiple themes in your Vue.js application. It provides easy integration and customization options through CSS variables. This version exclusively uses SVG icons, eliminating the need for icon fonts.
 
 ---
 
-## Demo
-- [Demo of Vue Multiple Theme package](https://vuemultipletheme.netlify.app/)
-
 ![vue-multiple-themes](vue-multiple-themes.gif)
 
-### Install package
+### Installation
 
-1. Install with npm `npm i vue-multiple-themes`
-2. Install with yarn `yarn add vue-multiple-themes`
+You can install the package via npm or yarn:
 
-### Code sample
+1. **npm**
+   ```bash
+   npm install vue-multiple-themes
+   ```
 
-After import and register component in your Vue.js application:
+2. **Yarn**
+   ```bash
+   yarn add vue-multiple-themes
+   ```
 
-```javascript
+### Usage
+
+After importing and registering the component in your Vue.js application, you can use it in your template:
+
+```vue
 <template>
     <div>
         <vue-multiple-themes
-        :defaultTheme="'light'"
-        :themeColorList="[
-        'light',
-        'dark',
-        'sepia'
-        ]"
-        :changeThemeOff="true"
-        >
-    </vue-multiple-themes>
-</div>
+            :defaultTheme="'light'"
+            :themeColorList="['light', 'dark', 'sepia']"
+            :changeThemeOff="true"
+        ></vue-multiple-themes>
+    </div>
 </template>
 
 <script>
     import VueMultipleThemes from "vue-multiple-themes";
     export default {
-    components: {VueMultipleThemes}
-};
+        components: { VueMultipleThemes }
+    };
 </script>
-
 ```
 
-- You can override and change style and color pallet to array!
+You can also customize the styles and color palette by overriding the CSS variables:
 
 ```scss
 @import "fonts.scss";
@@ -89,16 +87,11 @@ After import and register component in your Vue.js application:
 }
 ```
 
+### Attributes
 
----
-### Icon font issue
-**You need add fonts to your public project folder**
-
-## Documents
-
-| Attribute      |                 Description                 |    Type | Default                                               |
-| :---: | :--- | :---: | :----: |
-| defaultTheme   |                 Color name                  |  String | 'light'                                               |
-| themeColorList |               Array of themes               |   Array | ["light", "dark", "sepia"] |
-| changeThemeOff | Show or hide change click for change themes | Boolean | true |
-| extraClass | Add custom class for icon wrapper | String | null |
+| Attribute      | Description                                    | Type    | Default      |
+| -------------- | ---------------------------------------------- | ------- | ------------ |
+| defaultTheme   | Default theme color                            | String  | 'light'      |
+| themeColorList | List of available theme colors                 | Array   | ['light', 'dark', 'sepia'] |
+| changeThemeOff | Show or hide the theme change button           | Boolean | true         |
+| extraClass     | Additional custom class for the icon wrapper   | String  | null         |

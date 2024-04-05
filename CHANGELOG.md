@@ -1,3 +1,9 @@
+2.0.0
+- Update the code
+- Fix errors
+- Remove fonts icon and improve code quality
+
+
 1.5.1
 
 - fix icon path
