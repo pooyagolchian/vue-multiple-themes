@@ -52,7 +52,21 @@
     "vue-server-theme-change",
     "vue-change-theme",
     "vue-dark-light-theme",
-    "vue-multiple-color-pallet-themes"
+    "vue-multiple-color-pallet-themes",
+    "vue",
+    "vuejs",
+    "vuecomponents",
+    "themes",
+    "multitheme",
+    "uicomponents",
+    "frontend",
+    "cssvariables",
+    "npmpackage",
+    "svgicons",
+    "customization",
+    "theming", "webdevelopment",
+    "javascript",
+    "frontendframework"
   ],
   "license": "ISC",
   "repository": "pooyagolchian/vue-multiple-themes"
