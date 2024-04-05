@@ -1,6 +1,6 @@
-### Vue.js Multiple Themes
+### Vue.js 2 Multiple Themes
 
-The Vue.js Multiple Themes package allows you to implement multiple themes in your Vue.js application. It provides easy integration and customization options through CSS variables. This version exclusively uses SVG icons, eliminating the need for icon fonts.
+The Vue.js 2 Multiple Themes package allows you to implement multiple themes in your Vue.js application. It provides easy integration and customization options through CSS variables. This version exclusively uses SVG icons, eliminating the need for icon fonts.
 
 ---
 
