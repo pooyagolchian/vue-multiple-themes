@@ -46,8 +46,6 @@ After importing and registering the component in your Vue.js application, you ca
 You can also customize the styles and color palette by overriding the CSS variables:
 
 ```scss
-@import "fonts.scss";
-
 :root {
   --app-background-color: #ffffff;
   --app-title-color: #333333;
