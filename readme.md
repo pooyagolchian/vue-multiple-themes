@@ -36,20 +36,19 @@ Register VueMultipleThemes as a component in the parent component or in your Vue
 Locally in a Component
 
 
-```vue
+```javascript
 import VueMultipleThemes from './VueMultipleThemes.vue'; // Adjust the path as necessary
-
-export default {
-name: 'App',
-components: {
-VueMultipleThemes
-}
+    export default {
+    name: 'App',
+    components: {
+    VueMultipleThemes
+    }
 };
 
 ```
 Globally in Your Vue Application
 
-```vue
+```javascript
 import Vue from 'vue';
 import VueMultipleThemes from './VueMultipleThemes.vue'; // Adjust the path as necessary
 
