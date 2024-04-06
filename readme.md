@@ -24,7 +24,43 @@ You can install the package via npm or yarn:
 
 ### Usage
 
-After importing and registering the component in your Vue.js application, you can use it in your template:
+
+To use the VueMultipleThemes component effectively in a Vue.js application, you would follow these steps to incorporate it into your application, allowing dynamic theme changes based on user interaction. Here’s a simple guide on how to do so:
+
+Step 1: Import the Component
+First, ensure that the VueMultipleThemes component is properly exported and then import it into the parent component or your main application file where you intend to use it.
+
+Step 2: Register the Component
+Register VueMultipleThemes as a component in the parent component or in your Vue application globally.
+
+Locally in a Component
+
+
+```vue
+import VueMultipleThemes from './VueMultipleThemes.vue'; // Adjust the path as necessary
+
+export default {
+name: 'App',
+components: {
+VueMultipleThemes
+}
+};
+
+```
+Globally in Your Vue Application
+
+```vue
+import Vue from 'vue';
+import VueMultipleThemes from './VueMultipleThemes.vue'; // Adjust the path as necessary
+
+Vue.component('vue-multiple-themes', VueMultipleThemes);
+
+```
+
+
+Step 3: Use the Component in Your Template
+Insert the vue-multiple-themes component into your template. You can pass in the props as needed.
+
 
 ```vue
 
@@ -88,8 +124,31 @@ You can also customize the styles and color palette by overriding the CSS variab
   font-weight: normal;
 }
 ```
+Step 4: Define Theme Icons (Optional)
+If you have specific SVG icons for each theme, you can pass them through the themeIcons prop. Ensure each icon object has a name, width, height, viewBox, path, stroke, and strokeWidth defined as shown in your component's default prop value.
 
-### Attributes
+Step 5: Styling (Optional)
+Ensure that the styles for changing the themes are correctly applied in your application. You might need to adjust the CSS based on your application's structure or styling requirements.
+
+Step 6: Theme Persistence (Optional)
+Since the component already handles theme persistence using localStorage, no additional steps are required to maintain the user's theme choice across sessions. However, you might want to add or modify functionality based on specific requirements.
+
+
+---
+
+### Props
+
+
+| Prop Name        | Type    | Default Value                                                            | Description                                                                |
+|------------------|---------|--------------------------------------------------------------------------|----------------------------------------------------------------------------|
+| `defaultTheme`   | String  | `"light"`                                                                | The initial theme to be applied when the component mounts.                 |
+| `themeColorList` | Array   | `() => ["light", "dark", "sepia"]`                                       | An array of strings representing the available themes.                     |
+| `extraClass`     | String  | `''`                                                                     | An additional CSS class that can be added to the component's root element. |
+| `changeThemeOff` | Boolean | `true`                                                                   | Determines whether the theme change functionality is enabled or not.       |
+| `themeIcons`     | Array   | `() => [{name, width, height, viewBox, path, stroke, strokeWidth}, ...]` | An array of objects where each object represents an SVG icon for a theme.  |
+
+
+### Props Sample
 
 | Attribute      | Description                                  | Type    | Default                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
 |----------------|----------------------------------------------|---------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
