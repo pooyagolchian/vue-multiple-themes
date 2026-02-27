@@ -32,8 +32,13 @@ export function applyThemeToDom(
   }
 
   if (strategy === 'class' || strategy === 'both') {
-    if (previousName) {
-      el.classList.remove(`${classPrefix}${previousName}`)
+    // Remove ALL theme classes (not just previousName) to handle stale classes
+    // that may linger after a page refresh when previousName is null
+    const toRemove = Array.from(el.classList).filter(
+      (cls) => cls.startsWith(classPrefix) && cls !== `${classPrefix}${name}`,
+    )
+    for (const cls of toRemove) {
+      el.classList.remove(cls)
     }
     el.classList.add(`${classPrefix}${name}`)
   }

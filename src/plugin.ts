@@ -33,7 +33,7 @@ import type { App } from 'vue-demi'
 import VueMultipleThemes from './components/VueMultipleThemes.vue'
 import type { ThemeOptions } from './types'
 import { buildCssVars, injectStyles } from './utils/css-injector'
-import { applyThemeToDom, getSystemPreference, readStorage } from './utils/dom'
+import { applyThemeToDom, getSystemPreference, readStorage, writeStorage } from './utils/dom'
 
 export const VueMultipleThemesPlugin = {
   install(app: App, options: ThemeOptions = { themes: [] }) {
@@ -58,32 +58,38 @@ export const VueMultipleThemesPlugin = {
 
     // ── Resolve & apply initial theme immediately (before mount) ─────────
     let initialTheme = themes[0]?.name ?? 'light'
+    let fromStorage = false
 
+    // 1. Check storage first (highest priority — user's previous choice)
     if (storage !== 'none') {
       const stored = readStorage(storageKey, storage as 'localStorage' | 'sessionStorage')
       if (stored && themes.some((t) => t.name === stored)) {
         initialTheme = stored
+        fromStorage = true
       }
     }
 
-    if (respectSystemPreference && initialTheme === themes[0]?.name) {
+    // 2. OS preference (only when nothing was stored)
+    if (!fromStorage && respectSystemPreference) {
       const pref = getSystemPreference()
       const match = themes.find((t) => t.name === pref)
       if (match) initialTheme = match.name
     }
 
-    if (defaultTheme && themes.some((t) => t.name === defaultTheme)) {
-      // Only override if nothing from storage
-      const stored = storage !== 'none'
-        ? readStorage(storageKey, storage as 'localStorage' | 'sessionStorage')
-        : null
-      if (!stored) initialTheme = defaultTheme
+    // 3. Explicit default (only when neither storage nor OS preference matched)
+    if (!fromStorage && initialTheme === (themes[0]?.name ?? 'light') && defaultTheme && themes.some((t) => t.name === defaultTheme)) {
+      initialTheme = defaultTheme
     }
 
     // Inject CSS vars into <head> immediately
     if (injectCssVars) {
       const css = buildCssVars(themes, { strategy, attribute, classPrefix, cssVarPrefix, target })
       injectStyles(css)
+    }
+
+    // Persist the resolved theme so the composable picks up the same value
+    if (storage !== 'none') {
+      writeStorage(storageKey, initialTheme, storage as 'localStorage' | 'sessionStorage')
     }
 
     // Apply theme to DOM

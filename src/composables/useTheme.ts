@@ -147,9 +147,14 @@ export function useTheme(options: ThemeOptions): UseThemeReturn {
 
   function toggleTheme() {
     if (themes.length < 2) return
-    const current = currentName.value
-    const next = themes.find((t) => t.name !== current) ?? themes[1]
-    currentName.value = next.name
+    if (themes.length === 2) {
+      // Classic two-theme toggle
+      const other = themes.find((t) => t.name !== currentName.value) ?? themes[1]
+      currentName.value = other.name
+    } else {
+      // 3+ themes: cycle to next
+      nextTheme()
+    }
   }
 
   // ─── Lifecycle ──────────────────────────────────────────────────────────

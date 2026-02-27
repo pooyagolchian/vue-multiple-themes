@@ -61,6 +61,14 @@ describe('applyThemeToDom', () => {
     expect(el.classList.contains('theme-dark')).toBe(true)
   })
 
+  it('removes stale theme classes even without previousName (page refresh scenario)', () => {
+    // Simulate a stale class left over from a previous page load
+    el.classList.add('theme-ocean')
+    applyThemeToDom('dark', null, { strategy: 'class', attribute: 'data-theme', classPrefix: 'theme-', target: 'html' })
+    expect(el.classList.contains('theme-ocean')).toBe(false)
+    expect(el.classList.contains('theme-dark')).toBe(true)
+  })
+
   it('uses custom attribute name', () => {
     applyThemeToDom('dark', null, { strategy: 'attribute', attribute: 'theme', classPrefix: 'theme-', target: 'html' })
     expect(el.getAttribute('theme')).toBe('dark')

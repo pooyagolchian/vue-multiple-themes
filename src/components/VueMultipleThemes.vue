@@ -279,10 +279,16 @@ export default defineComponent({
 
 		function toggleTheme() {
 			if (props.themes.length < 2) return;
-			const next = props.themes.find(
-				(t: ThemeDefinition) => t.name !== currentName.value,
-			);
-			if (next) currentName.value = next.name;
+			if (props.themes.length === 2) {
+				// Classic two-theme toggle
+				const other = props.themes.find(
+					(t: ThemeDefinition) => t.name !== currentName.value,
+				);
+				if (other) currentName.value = other.name;
+			} else {
+				// 3+ themes: cycle to next
+				nextTheme();
+			}
 		}
 
 		// ── Lifecycle ────────────────────────────────────────────────────────

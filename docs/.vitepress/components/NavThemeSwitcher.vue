@@ -44,9 +44,9 @@ const ICON_MAP: Record<string, unknown> = {
     sun:         Sun,
     moon:        Moon,
     coffee:      Coffee,
-    waves:       Waves,
-    'tree-pine': TreePine,
-    sunset:      Sunset,
+    droplets:    Waves,
+    leaf:        TreePine,
+    flame:       Sunset,
     snowflake:   Snowflake,
 }
 
