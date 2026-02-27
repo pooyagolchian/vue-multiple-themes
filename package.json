@@ -68,7 +68,7 @@
   "homepage": "https://pooyagolchian.github.io/vue-multiple-themes",
   "repository": {
     "type": "git",
-    "url": "https://github.com/pooyagolchian/vue-multiple-themes.git"
+    "url": "git+https://github.com/pooyagolchian/vue-multiple-themes.git"
   },
   "bugs": {
     "url": "https://github.com/pooyagolchian/vue-multiple-themes/issues"
