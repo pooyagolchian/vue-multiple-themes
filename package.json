@@ -1,7 +1,7 @@
 {
   "name": "vue-multiple-themes",
-  "version": "4.2.0",
-  "description": "Vue 2 & Vue 3 multiple theme switcher with CSS variables, TailwindCSS and composable API",
+  "version": "4.3.0",
+  "description": "Vue 2 & Vue 3 multiple theme switcher with CSS variables, TailwindCSS, composable API and Lucide icons",
   "author": "Pooya Golchian <pooya.golchian@gmail.com>",
   "license": "MIT",
   "type": "module",

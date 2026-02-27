@@ -1,5 +1,17 @@
 # Changelog
 
+## 4.3.0
+
+### Patch / Docs Changes
+
+- **Nav**: Removed theme-switcher pills from the header entirely — nav bar is now clean with Guide, API, version, GitHub and npm links only.
+- **Nav**: Theme switcher no longer appears in the mobile hamburger menu.
+- **Nav**: Added spacing between nav bar items (padding, gap).
+- **Theming**: VitePress `--vp-c-*` colour vars now fully bridge to `--vmt-*` tokens — selecting a preset theme changes the entire docs page background, text, borders and brand colour.
+- **Buttons**: Fixed "View on GitHub" (alt) button showing invisible text — bridged `--vp-c-default-*` to surface tokens and added explicit `background`/`color` rules.
+- **Typography**: Space Grotesk font now applied to all `<button>`, `<input>`, `<select>`, `<textarea>` elements.
+- **Docs config**: Nav version badge updated to `v4.3`.
+
 ## 4.2.0
 
 ### Minor Changes
