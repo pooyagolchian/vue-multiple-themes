@@ -1,5 +1,30 @@
 # Getting Started
 
+## Running Locally
+
+Want to explore interactively before installing? Clone the repo and try the live playground or this documentation site from source.
+
+```sh
+# 1. Clone & install
+git clone https://github.com/pooyagolchian/vue-multiple-themes.git
+cd vue-multiple-themes
+pnpm install
+
+# 2a. Launch the interactive playground  →  http://localhost:5173
+pnpm dev
+
+# 2b. Launch the documentation site      →  http://localhost:5173
+pnpm docs:dev
+
+# 2c. Run both in parallel (different ports)
+pnpm dev:all
+
+# Run unit tests
+pnpm test
+```
+
+---
+
 ## Installation
 
 ::: code-group
