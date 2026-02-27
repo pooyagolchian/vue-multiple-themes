@@ -1,29 +1,201 @@
-### Vue.js 2 Multiple Themes
+# vue-multiple-themes
 
-The Vue.js 2 Multiple Themes package allows you to implement multiple themes in your Vue.js application. It provides
-easy integration and customization options through CSS variables. This version exclusively uses SVG icons, eliminating
-the need for icon fonts.
+> Seamless multi-theme support for **Vue 2** and **Vue 3** — with TypeScript, CSS custom properties, TailwindCSS utilities, and built-in Lucide icons.
+
+[![npm version](https://img.shields.io/npm/v/vue-multiple-themes)](https://www.npmjs.com/package/vue-multiple-themes)
+[![CI](https://github.com/pooya-po/vue-multiple-themes/actions/workflows/ci.yml/badge.svg)](https://github.com/pooya-po/vue-multiple-themes/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
 ---
 
-![vue-multiple-themes](vue-multiple-themes.gif)
+## Features
 
-### Installation
+- **Vue 2.7+ and Vue 3** — single package, same API via `vue-demi`
+- **TypeScript** — full type definitions included
+- **CSS custom properties** — semantic `--vmt-*` variables injected automatically
+- **TailwindCSS plugin** — `bg-vmt-primary`, `text-vmt-foreground`, etc.
+- **7 preset themes** — light, dark, sepia, ocean, forest, sunset, winter
+- **Lucide SVG icons** — light-weight, `currentColor` aware
+- **`useTheme()` composable** — reactive, SSR-safe, storage-persistent
+- **Zero dependencies** at runtime (only `vue` peer dep)
 
-You can install the package via npm or yarn:
+---
 
-1. **npm**
-   ```bash
-   npm install vue-multiple-themes
-   ```
+## Installation
 
-2. **Yarn**
-   ```bash
-   yarn add vue-multiple-themes
-   ```
+```bash
+# pnpm (recommended)
+pnpm add vue-multiple-themes
+
+# npm
+npm install vue-multiple-themes
+
+# yarn
+yarn add vue-multiple-themes
+```
+
+---
+
+## Quick Start
+
+### Vue 3 — Composition API
+
+```ts
+// main.ts
+import { createApp } from 'vue';
+import { VueMultipleThemesPlugin } from 'vue-multiple-themes';
+import App from './App.vue';
+
+const app = createApp(App);
+app.use(VueMultipleThemesPlugin, {
+  defaultTheme: 'dark',
+  strategy: 'attribute', // or 'class' / 'both'
+  persist: true,
+});
+app.mount('#app');
+```
+
+```vue
+<!-- App.vue -->
+<script setup lang="ts">
+import { useTheme } from 'vue-multiple-themes';
+import { PRESET_THEMES } from 'vue-multiple-themes';
+
+const { currentTheme, setTheme, themes } = useTheme({ themes: PRESET_THEMES });
+</script>
+
+<template>
+  <button v-for="t in themes" :key="t.name" @click="setTheme(t.name)">
+    {{ t.label }}
+  </button>
+</template>
+```
+
+### Vue 2 — Plugin + Options API
+
+```js
+// main.js
+import Vue from 'vue';
+import { VueMultipleThemesPlugin } from 'vue-multiple-themes';
+import App from './App.vue';
+
+Vue.use(VueMultipleThemesPlugin, { defaultTheme: 'light' });
+new Vue({ render: (h) => h(App) }).$mount('#app');
+```
+
+```vue
+<!-- App.vue -->
+<template>
+  <VueMultipleThemes />
+</template>
+<script>
+import { VueMultipleThemes } from 'vue-multiple-themes';
+export default { components: { VueMultipleThemes } };
+</script>
+```
+
+---
+
+## CSS Custom Properties
+
+The plugin auto-injects a `<style>` block with `--vmt-*` variables for every registered theme.
+
+```css
+/* use anywhere in your styles */
+.card {
+  background: var(--vmt-background);
+  color: var(--vmt-foreground);
+  border: 1px solid var(--vmt-border);
+}
+```
+
+---
+
+## TailwindCSS Integration
+
+```js
+// tailwind.config.js
+const { createVmtPlugin } = require('vue-multiple-themes/tailwind');
+
+module.exports = {
+  plugins: [createVmtPlugin()],
+};
+```
+
+This generates semantic utilities such as `bg-vmt-primary`, `text-vmt-foreground`,
+`border-vmt-border`, and `ring-vmt-ring`.
+
+---
+
+## Preset Themes
+
+| Name     | Description           |
+| -------- | --------------------- |
+| `light`  | Clean white + indigo  |
+| `dark`   | Dark gray + violet    |
+| `sepia`  | Warm parchment browns |
+| `ocean`  | Deep sea blues        |
+| `forest` | Rich greens           |
+| `sunset` | Warm oranges & reds   |
+| `winter` | Icy blues & whites    |
+
+```ts
+import { PRESET_THEMES, oceanTheme, forestTheme } from 'vue-multiple-themes';
+```
+
+---
+
+## API
+
+### `useTheme(options)`
+
+| Option         | Type                               | Default                    | Description                 |
+| -------------- | ---------------------------------- | -------------------------- | --------------------------- |
+| `themes`       | `ThemeDefinition[]`                | preset list                | Available themes            |
+| `defaultTheme` | `string`                           | `'light'`                  | Initial theme name          |
+| `strategy`     | `'attribute' \| 'class' \| 'both'` | `'attribute'`              | How theme is applied to DOM |
+| `target`       | `string \| Element`                | `document.documentElement` | Target element              |
+| `persist`      | `boolean`                          | `true`                     | Save choice to localStorage |
+| `storageKey`   | `string`                           | `'vmt-theme'`              | localStorage key            |
+
+Returns: `{ currentTheme, currentName, themes, setTheme, nextTheme, prevTheme }`
+
+---
+
+## Documentation
+
+Full documentation (guides, API reference, live demos) is published to GitHub Pages:
+
+**<https://pooya-po.github.io/vue-multiple-themes/>**
+
+---
+
+## Development
+
+```bash
+# Install all workspace packages
+pnpm install
+
+# Build the library
+pnpm build
+
+# Run the playground dev server
+pnpm dev
+
+# Build the docs site
+pnpm docs:build
+
+# Preview the docs site locally
+pnpm docs:preview
+```
+
+---
+
+## License
+
+[MIT](LICENSE) © Pooya
 
 ### Usage
-
 
 To use the VueMultipleThemes component effectively in a Vue.js application, you would follow these steps to incorporate it into your application, allowing dynamic theme changes based on user interaction. Here’s a simple guide on how to do so:
 
@@ -35,17 +207,16 @@ Register VueMultipleThemes as a component in the parent component or in your Vue
 
 Locally in a Component
 
-
 ```javascript
 import VueMultipleThemes from './VueMultipleThemes.vue'; // Adjust the path as necessary
-    export default {
-    name: 'App',
-    components: {
-    VueMultipleThemes
-    }
+export default {
+  name: 'App',
+  components: {
+    VueMultipleThemes,
+  },
 };
-
 ```
+
 Globally in Your Vue Application
 
 ```javascript
@@ -53,32 +224,28 @@ import Vue from 'vue';
 import VueMultipleThemes from './VueMultipleThemes.vue'; // Adjust the path as necessary
 
 Vue.component('vue-multiple-themes', VueMultipleThemes);
-
 ```
-
 
 Step 3: Use the Component in Your Template
 Insert the vue-multiple-themes component into your template. You can pass in the props as needed.
 
-
 ```vue
-
 <template>
   <div>
     <vue-multiple-themes
-        :defaultTheme="'light'"
-        :themeColorList="['light', 'dark', 'sepia']"
-        :changeThemeOff="true"
+      :defaultTheme="'light'"
+      :themeColorList="['light', 'dark', 'sepia']"
+      :changeThemeOff="true"
     ></vue-multiple-themes>
   </div>
 </template>
 
 <script>
-  import VueMultipleThemes from "vue-multiple-themes";
+import VueMultipleThemes from 'vue-multiple-themes';
 
-  export default {
-    components: {VueMultipleThemes}
-  };
+export default {
+  components: { VueMultipleThemes },
+};
 </script>
 ```
 
@@ -91,13 +258,13 @@ You can also customize the styles and color palette by overriding the CSS variab
   --app-subtitle-color: #555555;
 }
 
-[theme="dark"] {
+[theme='dark'] {
   --app-background-color: #333333;
   --app-title-color: #ffffff;
   --app-subtitle-color: #dddddd;
 }
 
-[theme="sepia"] {
+[theme='sepia'] {
   --app-background-color: #d0bc91;
   --app-title-color: #8a6c44;
   --app-subtitle-color: #5f4938;
@@ -123,6 +290,7 @@ You can also customize the styles and color palette by overriding the CSS variab
   font-weight: normal;
 }
 ```
+
 Step 4: Define Theme Icons (Optional)
 If you have specific SVG icons for each theme, you can pass them through the themeIcons prop. Ensure each icon object has a name, width, height, viewBox, path, stroke, and strokeWidth defined as shown in your component's default prop value.
 
@@ -132,30 +300,24 @@ Ensure that the styles for changing the themes are correctly applied in your app
 Step 6: Theme Persistence (Optional)
 Since the component already handles theme persistence using localStorage, no additional steps are required to maintain the user's theme choice across sessions. However, you might want to add or modify functionality based on specific requirements.
 
-
 ---
 
 ### Props
 
-
 | Prop Name        | Type    | Default Value                                                            | Description                                                                |
-|------------------|---------|--------------------------------------------------------------------------|----------------------------------------------------------------------------|
+| ---------------- | ------- | ------------------------------------------------------------------------ | -------------------------------------------------------------------------- |
 | `defaultTheme`   | String  | `"light"`                                                                | The initial theme to be applied when the component mounts.                 |
 | `themeColorList` | Array   | `() => ["light", "dark", "sepia"]`                                       | An array of strings representing the available themes.                     |
 | `extraClass`     | String  | `''`                                                                     | An additional CSS class that can be added to the component's root element. |
 | `changeThemeOff` | Boolean | `true`                                                                   | Determines whether the theme change functionality is enabled or not.       |
 | `themeIcons`     | Array   | `() => [{name, width, height, viewBox, path, stroke, strokeWidth}, ...]` | An array of objects where each object represents an SVG icon for a theme.  |
 
-
 ### Props Sample
 
 | Attribute      | Description                                  | Type    | Default                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
-|----------------|----------------------------------------------|---------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| -------------- | -------------------------------------------- | ------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | defaultTheme   | Default theme color                          | String  | 'light'                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
 | themeColorList | List of available theme colors               | Array   | ['light', 'dark', 'sepia']                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
 | changeThemeOff | Show or hide the theme change button         | Boolean | true                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
 | extraClass     | Additional custom class for the icon wrapper | String  | null                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
 | themeIcons     | SVG icon array                               | Array   | [{ name: "dark", width: "24px", height: "24px", viewBox: "0 0 24 24", path: "M13 6V3M18.5 12V7M14.5 4.5H11.5M21 9.5H16M15.5548 16.8151C16.7829 16.8151 17.9493 16.5506 19 16.0754C17.6867 18.9794 14.7642 21 11.3698 21C6.74731 21 3 17.2527 3 12.6302C3 9.23576 5.02061 6.31331 7.92462 5C7.44944 6.05072 7.18492 7.21708 7.18492 8.44523C7.18492 13.0678 10.9322 16.8151 15.5548 16.8151Z", stroke: "#ffffff", strokeWidth: "2" },{ name: "light", width: "24px", height: "24px", viewBox: "0 0 24 24", path: "M12 3V4M12 20V21M4 12H3M6.31412 6.31412L5.5 5.5M17.6859 6.31412L18.5 5.5M6.31412 17.69L5.5 18.5001M17.6859 17.69L18.5 18.5001M21 12H20M16 12C16 14.2091 14.2091 16 12 16C9.79086 16 8 14.2091 8 12C8 9.79086 9.79086 8 12 8C14.2091 8 16 9.79086 16 12Z", stroke: "#000000", strokeWidth: "2" },{ name: "sepia", width: "24px", height: "24px", viewBox: "0 0 24 24", path: "M4 20H10.9433M10.9433 20H11.0567M10.9433 20C10.9622 20.0002 10.9811 20.0002 11 20.0002C11.0189 20.0002 11.0378 20.0002 11.0567 20M10.9433 20C7.1034 19.9695 4 16.8468 4 12.9998V8.92285C4 8.41305 4.41305 8 4.92285 8H17.0767C17.5865 8 18 8.41305 18 8.92285V9M11.0567 20H18M11.0567 20C14.8966 19.9695 18 16.8468 18 12.9998M18 9H19.5C20.8807 9 22 10.1193 22 11.5C22 12.8807 20.8807 14 19.5 14H18V12.9998M18 9V12.9998M15 3L14 5M12 3L11 5M9 3L8 5", stroke: "#000000", strokeWidth: "2" }] |
-
-                
-     

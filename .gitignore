@@ -1,2 +1,41 @@
-node_modules
-.idea
+# node_modules
+node_modules/
+**/node_modules/
+
+# Build outputs
+dist/
+**/.vitepress/dist/
+**/.vitepress/cache/
+
+# pnpm
+.pnpm-store/
+.pnpm-debug.log
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# Logs
+*.log
+npm-debug.log*
+pnpm-debug.log*
+
+# Editor
+.DS_Store
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# TypeScript
+*.tsbuildinfo
+
+# Vite
+**/dist-ssr/
+
+# Test coverage
+coverage/
+.nyc_output/
