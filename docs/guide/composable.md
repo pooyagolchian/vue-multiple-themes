@@ -77,4 +77,4 @@ const { current } = useTheme({ themes, storageKey: 'app-theme' });
 
 ## Options reference
 
-See [ThemeOptions](/api/types#themeoptions) for the full list.
+See the [API Reference](/api/) for the full list.

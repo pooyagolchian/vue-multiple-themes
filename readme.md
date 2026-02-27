@@ -1,23 +1,24 @@
 # vue-multiple-themes
 
-> Seamless multi-theme support for **Vue 2** and **Vue 3** — with TypeScript, CSS custom properties, TailwindCSS utilities, and built-in Lucide icons.
+> Dynamic multi-theme support for **Vue 2** and **Vue 3** — CSS custom properties, TailwindCSS, WCAG contrast utilities, and a reactive composable API.
 
 [![npm version](https://img.shields.io/npm/v/vue-multiple-themes)](https://www.npmjs.com/package/vue-multiple-themes)
-[![CI](https://github.com/pooya-po/vue-multiple-themes/actions/workflows/ci.yml/badge.svg)](https://github.com/pooya-po/vue-multiple-themes/actions/workflows/ci.yml)
+[![CI](https://github.com/pooyagolchian/vue-multiple-themes/actions/workflows/ci.yml/badge.svg)](https://github.com/pooyagolchian/vue-multiple-themes/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
 ---
 
 ## Features
 
-- **Vue 2.7+ and Vue 3** — single package, same API via `vue-demi`
+- **Vue 2.7+ and Vue 3** — single package via `vue-demi`
 - **TypeScript** — full type definitions included
 - **CSS custom properties** — semantic `--vmt-*` variables injected automatically
 - **TailwindCSS plugin** — `bg-vmt-primary`, `text-vmt-foreground`, etc.
 - **7 preset themes** — light, dark, sepia, ocean, forest, sunset, winter
-- **Lucide SVG icons** — light-weight, `currentColor` aware
-- **`useTheme()` composable** — reactive, SSR-safe, storage-persistent
-- **Zero dependencies** at runtime (only `vue` peer dep)
+- **Dynamic theme generation** — create themes from a single brand color
+- **Color utilities** — lighten, darken, mix, contrast ratio, WCAG compliance
+- **`useTheme()` composable** — reactive, SSR-safe, localStorage-persistent
+- **Zero runtime dependencies** (only `vue` peer dep + `vue-demi`)
 
 ---
 
@@ -49,7 +50,7 @@ import App from './App.vue';
 const app = createApp(App);
 app.use(VueMultipleThemesPlugin, {
   defaultTheme: 'dark',
-  strategy: 'attribute', // or 'class' / 'both'
+  strategy: 'attribute', // 'attribute' | 'class' | 'both'
   persist: true,
 });
 app.mount('#app');
@@ -58,8 +59,7 @@ app.mount('#app');
 ```vue
 <!-- App.vue -->
 <script setup lang="ts">
-import { useTheme } from 'vue-multiple-themes';
-import { PRESET_THEMES } from 'vue-multiple-themes';
+import { useTheme, PRESET_THEMES } from 'vue-multiple-themes';
 
 const { currentTheme, setTheme, themes } = useTheme({ themes: PRESET_THEMES });
 </script>
@@ -71,37 +71,22 @@ const { currentTheme, setTheme, themes } = useTheme({ themes: PRESET_THEMES });
 </template>
 ```
 
-### Vue 2 — Plugin + Options API
+### Vue 2 — Plugin
 
 ```js
-// main.js
 import Vue from 'vue';
 import { VueMultipleThemesPlugin } from 'vue-multiple-themes';
-import App from './App.vue';
 
 Vue.use(VueMultipleThemesPlugin, { defaultTheme: 'light' });
-new Vue({ render: (h) => h(App) }).$mount('#app');
-```
-
-```vue
-<!-- App.vue -->
-<template>
-  <VueMultipleThemes />
-</template>
-<script>
-import { VueMultipleThemes } from 'vue-multiple-themes';
-export default { components: { VueMultipleThemes } };
-</script>
 ```
 
 ---
 
 ## CSS Custom Properties
 
-The plugin auto-injects a `<style>` block with `--vmt-*` variables for every registered theme.
+Themes inject `--vmt-*` CSS variables on the target element (default: `<html>`):
 
 ```css
-/* use anywhere in your styles */
 .card {
   background: var(--vmt-background);
   color: var(--vmt-foreground);
@@ -122,8 +107,7 @@ module.exports = {
 };
 ```
 
-This generates semantic utilities such as `bg-vmt-primary`, `text-vmt-foreground`,
-`border-vmt-border`, and `ring-vmt-ring`.
+Generates utilities: `bg-vmt-primary`, `text-vmt-foreground`, `border-vmt-border`, `ring-vmt-ring`.
 
 ---
 
@@ -145,6 +129,53 @@ import { PRESET_THEMES, oceanTheme, forestTheme } from 'vue-multiple-themes';
 
 ---
 
+## Dynamic Theme Generation
+
+Create light/dark theme pairs from a single brand color:
+
+```ts
+import { generateThemePair } from 'vue-multiple-themes';
+
+const { light, dark } = generateThemePair('#6366f1'); // indigo
+```
+
+Generate a full color scale:
+
+```ts
+import { generateColorScale } from 'vue-multiple-themes';
+
+const scale = generateColorScale('#6366f1', 9); // 9-step palette
+```
+
+---
+
+## Color Utilities
+
+All utilities are SSR-safe (no DOM dependency) and tree-shakeable:
+
+```ts
+import {
+  lighten,
+  darken,
+  mix,
+  contrastRatio,
+  autoContrast,
+  checkContrast,
+  complementary,
+  triadic,
+  analogous,
+} from 'vue-multiple-themes';
+
+lighten('#6366f1', 0.2); // lighter hex
+darken('#6366f1', 0.3); // darker hex
+mix('#ff0000', '#0000ff', 0.5); // purple blend
+contrastRatio('#000', '#fff'); // 21
+autoContrast('#6366f1'); // '#ffffff' or '#000000'
+checkContrast('#6366f1', '#fff'); // { ratio, aa, aaa, aaLarge, aaaLarge }
+```
+
+---
+
 ## API
 
 ### `useTheme(options)`
@@ -158,166 +189,31 @@ import { PRESET_THEMES, oceanTheme, forestTheme } from 'vue-multiple-themes';
 | `persist`      | `boolean`                          | `true`                     | Save choice to localStorage |
 | `storageKey`   | `string`                           | `'vmt-theme'`              | localStorage key            |
 
-Returns: `{ currentTheme, currentName, themes, setTheme, nextTheme, prevTheme }`
+**Returns:** `{ currentTheme, currentName, themes, setTheme, nextTheme, prevTheme }`
 
 ---
 
 ## Documentation
 
-Full documentation (guides, API reference, live demos) is published to GitHub Pages:
+Full documentation and live demos:
 
-**<https://pooya-po.github.io/vue-multiple-themes/>**
+**<https://pooyagolchian.github.io/vue-multiple-themes/>**
 
 ---
 
 ## Development
 
 ```bash
-# Install all workspace packages
-pnpm install
-
-# Build the library
-pnpm build
-
-# Run the playground dev server
-pnpm dev
-
-# Build the docs site
-pnpm docs:build
-
-# Preview the docs site locally
-pnpm docs:preview
+pnpm install          # install all workspace packages
+pnpm build            # build the library
+pnpm test             # run 218+ unit tests
+pnpm dev              # playground dev server
+pnpm docs:dev         # docs dev server
+pnpm docs:build       # build docs for production
 ```
 
 ---
 
 ## License
 
-[MIT](LICENSE) © Pooya
-
-### Usage
-
-To use the VueMultipleThemes component effectively in a Vue.js application, you would follow these steps to incorporate it into your application, allowing dynamic theme changes based on user interaction. Here’s a simple guide on how to do so:
-
-Step 1: Import the Component
-First, ensure that the VueMultipleThemes component is properly exported and then import it into the parent component or your main application file where you intend to use it.
-
-Step 2: Register the Component
-Register VueMultipleThemes as a component in the parent component or in your Vue application globally.
-
-Locally in a Component
-
-```javascript
-import VueMultipleThemes from './VueMultipleThemes.vue'; // Adjust the path as necessary
-export default {
-  name: 'App',
-  components: {
-    VueMultipleThemes,
-  },
-};
-```
-
-Globally in Your Vue Application
-
-```javascript
-import Vue from 'vue';
-import VueMultipleThemes from './VueMultipleThemes.vue'; // Adjust the path as necessary
-
-Vue.component('vue-multiple-themes', VueMultipleThemes);
-```
-
-Step 3: Use the Component in Your Template
-Insert the vue-multiple-themes component into your template. You can pass in the props as needed.
-
-```vue
-<template>
-  <div>
-    <vue-multiple-themes
-      :defaultTheme="'light'"
-      :themeColorList="['light', 'dark', 'sepia']"
-      :changeThemeOff="true"
-    ></vue-multiple-themes>
-  </div>
-</template>
-
-<script>
-import VueMultipleThemes from 'vue-multiple-themes';
-
-export default {
-  components: { VueMultipleThemes },
-};
-</script>
-```
-
-You can also customize the styles and color palette by overriding the CSS variables:
-
-```scss
-:root {
-  --app-background-color: #ffffff;
-  --app-title-color: #333333;
-  --app-subtitle-color: #555555;
-}
-
-[theme='dark'] {
-  --app-background-color: #333333;
-  --app-title-color: #ffffff;
-  --app-subtitle-color: #dddddd;
-}
-
-[theme='sepia'] {
-  --app-background-color: #d0bc91;
-  --app-title-color: #8a6c44;
-  --app-subtitle-color: #5f4938;
-}
-
-.app-background {
-  background-color: var(--app-background-color);
-}
-
-.app-title {
-  color: var(--app-title-color);
-}
-
-.app-subtitle {
-  color: var(--app-subtitle-color);
-  padding-top: 10px;
-}
-
-.change-theme-box {
-  cursor: pointer;
-  color: var(--app-subtitle-color);
-  font-size: 1em;
-  font-weight: normal;
-}
-```
-
-Step 4: Define Theme Icons (Optional)
-If you have specific SVG icons for each theme, you can pass them through the themeIcons prop. Ensure each icon object has a name, width, height, viewBox, path, stroke, and strokeWidth defined as shown in your component's default prop value.
-
-Step 5: Styling (Optional)
-Ensure that the styles for changing the themes are correctly applied in your application. You might need to adjust the CSS based on your application's structure or styling requirements.
-
-Step 6: Theme Persistence (Optional)
-Since the component already handles theme persistence using localStorage, no additional steps are required to maintain the user's theme choice across sessions. However, you might want to add or modify functionality based on specific requirements.
-
----
-
-### Props
-
-| Prop Name        | Type    | Default Value                                                            | Description                                                                |
-| ---------------- | ------- | ------------------------------------------------------------------------ | -------------------------------------------------------------------------- |
-| `defaultTheme`   | String  | `"light"`                                                                | The initial theme to be applied when the component mounts.                 |
-| `themeColorList` | Array   | `() => ["light", "dark", "sepia"]`                                       | An array of strings representing the available themes.                     |
-| `extraClass`     | String  | `''`                                                                     | An additional CSS class that can be added to the component's root element. |
-| `changeThemeOff` | Boolean | `true`                                                                   | Determines whether the theme change functionality is enabled or not.       |
-| `themeIcons`     | Array   | `() => [{name, width, height, viewBox, path, stroke, strokeWidth}, ...]` | An array of objects where each object represents an SVG icon for a theme.  |
-
-### Props Sample
-
-| Attribute      | Description                                  | Type    | Default                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
-| -------------- | -------------------------------------------- | ------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| defaultTheme   | Default theme color                          | String  | 'light'                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
-| themeColorList | List of available theme colors               | Array   | ['light', 'dark', 'sepia']                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
-| changeThemeOff | Show or hide the theme change button         | Boolean | true                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
-| extraClass     | Additional custom class for the icon wrapper | String  | null                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
-| themeIcons     | SVG icon array                               | Array   | [{ name: "dark", width: "24px", height: "24px", viewBox: "0 0 24 24", path: "M13 6V3M18.5 12V7M14.5 4.5H11.5M21 9.5H16M15.5548 16.8151C16.7829 16.8151 17.9493 16.5506 19 16.0754C17.6867 18.9794 14.7642 21 11.3698 21C6.74731 21 3 17.2527 3 12.6302C3 9.23576 5.02061 6.31331 7.92462 5C7.44944 6.05072 7.18492 7.21708 7.18492 8.44523C7.18492 13.0678 10.9322 16.8151 15.5548 16.8151Z", stroke: "#ffffff", strokeWidth: "2" },{ name: "light", width: "24px", height: "24px", viewBox: "0 0 24 24", path: "M12 3V4M12 20V21M4 12H3M6.31412 6.31412L5.5 5.5M17.6859 6.31412L18.5 5.5M6.31412 17.69L5.5 18.5001M17.6859 17.69L18.5 18.5001M21 12H20M16 12C16 14.2091 14.2091 16 12 16C9.79086 16 8 14.2091 8 12C8 9.79086 9.79086 8 12 8C14.2091 8 16 9.79086 16 12Z", stroke: "#000000", strokeWidth: "2" },{ name: "sepia", width: "24px", height: "24px", viewBox: "0 0 24 24", path: "M4 20H10.9433M10.9433 20H11.0567M10.9433 20C10.9622 20.0002 10.9811 20.0002 11 20.0002C11.0189 20.0002 11.0378 20.0002 11.0567 20M10.9433 20C7.1034 19.9695 4 16.8468 4 12.9998V8.92285C4 8.41305 4.41305 8 4.92285 8H17.0767C17.5865 8 18 8.41305 18 8.92285V9M11.0567 20H18M11.0567 20C14.8966 19.9695 18 16.8468 18 12.9998M18 9H19.5C20.8807 9 22 10.1193 22 11.5C22 12.8807 20.8807 14 19.5 14H18V12.9998M18 9V12.9998M15 3L14 5M12 3L11 5M9 3L8 5", stroke: "#000000", strokeWidth: "2" }] |
+[MIT](LICENSE) © Pooya Golchian

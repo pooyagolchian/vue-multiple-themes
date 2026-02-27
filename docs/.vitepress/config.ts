@@ -51,7 +51,6 @@ export default defineConfig({
     nav: [
       { text: 'Guide', link: '/guide/getting-started' },
       { text: 'API', link: '/api/' },
-      { text: 'Demo', link: '/demo' },
       {
         text: 'v4.0',
         items: [
@@ -66,36 +65,21 @@ export default defineConfig({
         {
           text: 'Introduction',
           items: [
-            { text: 'What is it?',       link: '/guide/what-is-it' },
-            { text: 'Getting Started',   link: '/guide/getting-started' },
-            { text: 'Quick Start',       link: '/guide/quick-start' },
+            { text: 'Getting Started', link: '/guide/getting-started' },
           ],
         },
         {
           text: 'Strategies',
           items: [
-            { text: 'CSS Variables',   link: '/guide/css-variables' },
-            { text: 'TailwindCSS',     link: '/guide/tailwindcss' },
-            { text: 'Both (Combined)', link: '/guide/combined' },
+            { text: 'CSS Variables', link: '/guide/css-variables' },
+            { text: 'TailwindCSS',   link: '/guide/tailwindcss' },
           ],
         },
         {
           text: 'API',
           items: [
-            { text: 'Composable – useTheme()',    link: '/guide/composable' },
-            { text: 'Component',                  link: '/guide/component' },
-            { text: 'Plugin',                     link: '/guide/plugin' },
-            { text: 'Tailwind Plugin',            link: '/guide/tailwind-plugin' },
-            { text: 'Preset Themes',              link: '/guide/presets' },
-          ],
-        },
-        {
-          text: 'Advanced',
-          items: [
-            { text: 'Custom Icons',         link: '/guide/custom-icons' },
-            { text: 'SSR / Nuxt',           link: '/guide/ssr' },
-            { text: 'Vue 2 Setup',          link: '/guide/vue2' },
-            { text: 'TypeScript',           link: '/guide/typescript' },
+            { text: 'Composable – useTheme()', link: '/guide/composable' },
+            { text: 'Preset Themes',           link: '/guide/presets' },
           ],
         },
       ],
@@ -103,11 +87,7 @@ export default defineConfig({
         {
           text: 'API Reference',
           items: [
-            { text: 'Overview',         link: '/api/' },
-            { text: 'Types',            link: '/api/types' },
-            { text: 'useTheme()',       link: '/api/use-theme' },
-            { text: 'Component Props', link: '/api/component' },
-            { text: 'Tailwind Plugin', link: '/api/tailwind' },
+            { text: 'Overview', link: '/api/' },
           ],
         },
       ],
