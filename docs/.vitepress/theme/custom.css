@@ -27,6 +27,17 @@
   --vp-c-text-1:     var(--vmt-text,              #09090b);
   --vp-c-text-2:     var(--vmt-text-muted,        #52525b);
   --vp-c-text-3:     var(--vmt-text-muted,        #a1a1aa);
+
+  /* --vp-c-default-* drives the "alt" button background — bridge to surface tokens */
+  --vp-c-default-1:    var(--vmt-surface-elevated, #e4e4e7);
+  --vp-c-default-2:    var(--vmt-surface,           #f4f4f5);
+  --vp-c-default-3:    var(--vmt-border,            #e4e4e7);
+  --vp-c-default-soft: color-mix(in srgb, var(--vmt-border, #e4e4e7) 40%, transparent);
+}
+
+/* ── Hide theme switcher in the mobile hamburger overlay ───────────────── */
+.VPNavScreen .vmt-ns {
+  display: none !important;
 }
 
 /* ── Nav & Sidebar refinements ──────────────────────────────────────────── */
@@ -74,6 +85,11 @@
   letter-spacing: 0;
 }
 
+/* ── Buttons & inputs: always use Space Grotesk ─────────────────────────── */
+button, input, select, textarea, .VPButton {
+  font-family: var(--vp-font-family-base) !important;
+}
+
 /* ── Hero action buttons ─────────────────────────────────────────────────── */
 .VPButton.brand {
   background: var(--vmt-primary, #09090b) !important;
@@ -90,13 +106,18 @@
   box-shadow: 0 4px 12px color-mix(in srgb, var(--vmt-primary, #000) 30%, transparent);
 }
 .VPButton.alt {
-  border-color: var(--vp-c-divider) !important;
+  background: var(--vmt-surface-elevated, var(--vp-c-bg-mute)) !important;
+  border: 1px solid var(--vmt-border, var(--vp-c-divider)) !important;
+  color: var(--vmt-text, var(--vp-c-text-1)) !important;
   font-weight: 500;
   border-radius: 8px !important;
+  transition: background 0.2s, border-color 0.2s, box-shadow 0.2s;
 }
 .VPButton.alt:hover {
-  border-color: var(--vp-c-brand-1) !important;
-  background: var(--vp-c-brand-soft) !important;
+  background: var(--vmt-surface, var(--vp-c-bg-soft)) !important;
+  border-color: var(--vmt-primary, var(--vp-c-brand-1)) !important;
+  color: var(--vmt-text, var(--vp-c-text-1)) !important;
+  box-shadow: 0 2px 8px color-mix(in srgb, var(--vmt-primary, #000) 12%, transparent);
 }
 
 /* ── Feature cards ───────────────────────────────────────────────────────── */
