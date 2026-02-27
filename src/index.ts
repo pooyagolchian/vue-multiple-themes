@@ -40,5 +40,54 @@ export type { LucideIconData } from './icons'
 // ─── Utility re-exports (tree-shakeable) ─────────────────────────────────────
 export { buildCssVars, injectStyles, removeStyles } from './utils/css-injector'
 
+// ─── Color utilities ─────────────────────────────────────────────────────────
+export {
+  hexToRgb,
+  rgbToHex,
+  rgbToHsl,
+  hslToRgb,
+  hexToHsl,
+  hslToHex,
+  parseColor,
+  lighten,
+  darken,
+  saturate,
+  rotateHue,
+  mix,
+  withAlpha,
+  luminance,
+  contrastRatio,
+  autoContrast,
+  ensureContrast,
+  generateColorScale,
+  complementary,
+  splitComplementary,
+  triadic,
+  analogous,
+} from './utils/color'
+export type { RGB, RGBA, HSL } from './utils/color'
+
+// ─── Dynamic theme generators ────────────────────────────────────────────────
+export {
+  generateLightTheme,
+  generateDarkTheme,
+  generateThemePair,
+  generateThemeFromPalette,
+  generateSeasonalThemes,
+  buildCssMixTheme,
+  readCssVarsAsColors,
+  checkContrast,
+} from './utils/generate-theme'
+export type { GenerateThemeOptions, BrandPalette, ContrastReport } from './utils/generate-theme'
+
 // ─── Preset themes (ready-to-use) ────────────────────────────────────────────
-export { PRESET_THEMES, lightTheme, darkTheme, sepiaTheme, oceanTheme, forestTheme, sunsetTheme } from './themes/presets'
+export {
+  PRESET_THEMES,
+  lightTheme,
+  darkTheme,
+  sepiaTheme,
+  oceanTheme,
+  forestTheme,
+  sunsetTheme,
+  winterTheme,
+} from './themes/presets'

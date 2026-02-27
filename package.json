@@ -34,6 +34,7 @@
     "docs:preview": "pnpm --filter docs preview",
     "test": "vitest run",
     "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
     "prepublishOnly": "pnpm build"
   },
   "keywords": [
@@ -72,8 +73,10 @@
   "devDependencies": {
     "@types/node": "^20.14.0",
     "@vitejs/plugin-vue": "^5.0.5",
+    "@vitest/coverage-v8": "^1.6.1",
     "@vue/composition-api": "^1.7.2",
     "autoprefixer": "^10.4.19",
+    "happy-dom": "^20.7.0",
     "postcss": "^8.4.38",
     "tailwindcss": "^3.4.4",
     "typescript": "^5.4.5",

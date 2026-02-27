@@ -2,21 +2,91 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Use CSS vars from the library on body */
-body {
-  background-color: var(--vmt-background, #ffffff);
-  color: var(--vmt-text, #111827);
-  font-family:
-    system-ui,
-    -apple-system,
-    sans-serif;
-  transition:
-    background-color 0.3s ease,
-    color 0.3s ease;
-  min-height: 100vh;
-  margin: 0;
+@import url('https://fonts.googleapis.com/css2?family=Geist+Mono:wght@300;400;500;600&display=swap');
+
+:root {
+  --noir-bg: #09090b;
+  --noir-surface: #18181b;
+  --noir-surface-raised: #1c1c1f;
+  --noir-border: #27272a;
+  --noir-border-strong: #3f3f46;
+  --noir-text: #fafafa;
+  --noir-muted: #71717a;
+  --noir-subtle: #a1a1aa;
 }
 
 * {
   box-sizing: border-box;
+}
+
+html,
+body {
+  background: var(--noir-bg);
+  color: var(--noir-text);
+  font-family:
+    'Geist Mono', 'JetBrains Mono', 'Fira Code', ui-monospace, 'Cascadia Code',
+    monospace;
+  min-height: 100vh;
+  margin: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* film-grain overlay */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0.03;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 200px;
+}
+
+/* scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--noir-bg);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--noir-border-strong);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--noir-muted);
+}
+
+/* selection */
+::selection {
+  background: #fafafa22;
+  color: #fff;
+}
+
+/* code */
+code {
+  font-family: inherit;
+  font-size: 0.85em;
+  background: #ffffff0a;
+  border: 1px solid var(--noir-border);
+  border-radius: 4px;
+  padding: 0.15em 0.4em;
+  color: var(--noir-subtle);
+}
+
+pre code {
+  background: none;
+  border: none;
+  padding: 0;
+  color: inherit;
+}
+
+/* transition on theme switches (still used internally) */
+body {
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease;
 }
