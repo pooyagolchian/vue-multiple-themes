@@ -1,0 +1,145 @@
+# vue-multiple-themes
+
+> Vue 2 & Vue 3 runtime theme switching library using CSS custom properties, TailwindCSS utilities, and a composable API. SSR-safe. WCAG-contrast aware.
+
+## Summary
+
+`vue-multiple-themes` lets Vue applications switch between multiple named themes at runtime. Themes are defined as plain objects with color tokens that map to CSS custom properties (e.g. `--vmt-primary`) and optional TailwindCSS utility class generation. The library works in Vue 2 (via `vue-demi`) and Vue 3 with zero framework-level opinions.
+
+## Installation
+
+```
+npm install vue-multiple-themes
+# or
+pnpm add vue-multiple-themes
+```
+
+## Core Concepts
+
+### ThemeDefinition shape
+```ts
+{
+  name: string            // unique theme identifier
+  label?: string          // display name
+  isDark?: boolean        // mark as dark variant
+  colors: {
+    primary: string       // hex color
+    secondary: string
+    accent: string
+    background: string
+    surface: string
+    muted: string
+    border: string
+    text: string
+    heading: string
+    'text-muted': string
+    success?: string
+    warning?: string
+    error?: string
+    info?: string
+  }
+  // any additional string properties are injected as --vmt-<key>
+}
+```
+
+### CSS custom properties
+Every color token is injected on `:root` as `--vmt-<token>`. For example `primary` becomes `--vmt-primary`. Apply with standard CSS: `color: var(--vmt-primary)`.
+
+### TailwindCSS integration
+```js
+// tailwind.config.js
+const { vueMultipleThemesPlugin } = require('vue-multiple-themes/tailwind')
+module.exports = {
+  plugins: [vueMultipleThemesPlugin()],
+}
+```
+Generates utility classes: `text-vmt-primary`, `bg-vmt-surface`, `border-vmt-border`, etc.
+
+## Key APIs
+
+### `useTheme(options)` — Composable
+```ts
+import { useTheme } from 'vue-multiple-themes'
+const {
+  current,       // Ref<string> — active theme name
+  theme,         // ComputedRef<ThemeDefinition> — full active theme object
+  isDark,        // ComputedRef<boolean>
+  themes,        // ComputedRef<ThemeDefinition[]>
+  setTheme,      // (name: string) => void
+  nextTheme,     // () => void
+  prevTheme,     // () => void
+  toggleTheme,   // () => void — toggles between first two themes
+} = useTheme({ themes: [...], defaultTheme: 'light' })
+```
+
+### `VueMultipleThemes` — Component
+```vue
+<VueMultipleThemes :themes="themes" :default-theme="'light'">
+  <template #default="{ current, setTheme }">
+    <!-- custom switcher UI -->
+  </template>
+</VueMultipleThemes>
+```
+
+### `VueMultipleThemesPlugin` — Plugin
+```ts
+import { VueMultipleThemesPlugin } from 'vue-multiple-themes'
+app.use(VueMultipleThemesPlugin, { themes, defaultTheme: 'light' })
+```
+
+## Color Utility APIs
+
+### `generateThemePair(hex, opts?)` → `[ThemeDefinition, ThemeDefinition]`
+Generate a WCAG-compliant `[lightTheme, darkTheme]` tuple from a single brand hex color.
+```ts
+import { generateThemePair } from 'vue-multiple-themes'
+const [light, dark] = generateThemePair('#6366f1')
+```
+
+### `generateLightTheme(hex, opts?)` → `ThemeDefinition`
+### `generateDarkTheme(hex, opts?)` → `ThemeDefinition`
+Generate a single light or dark theme from a brand color.
+
+### `generateThemeFromPalette(palette, variant?, opts?)` → `ThemeDefinition`
+Generate a theme from a `{ primary, secondary?, accent? }` palette object.
+
+### `generateSeasonalThemes(season)` → `ThemeDefinition`
+Returns a pre-built theme for: `'spring' | 'summer' | 'autumn' | 'winter' | 'midnight' | 'neon' | 'pastel'`.
+
+### `checkContrast(fg, bg)` → `ContrastReport`
+```ts
+{ ratio: number; aa: boolean; aaLarge: boolean; aaa: boolean; aaaLarge: boolean }
+```
+WCAG 2.1 contrast check between two hex colors.
+
+### `contrastRatio(hex1, hex2)` → `number`
+Raw WCAG contrast ratio (1–21).
+
+### `generateColorScale(hex)` → `Record<50|100|200|300|400|500|600|700|800|900|950, string>`
+11-stop Tailwind-style scale from a base color.
+
+### Color manipulation
+```ts
+import { lighten, darken, saturate, rotateHue, mix, withAlpha, complementary, triadic, analogous } from 'vue-multiple-themes'
+```
+
+## Built-in Presets
+
+```ts
+import { lightTheme, darkTheme, oceanTheme, forestTheme, sunsetTheme, roseTheme, winterTheme } from 'vue-multiple-themes'
+```
+
+## SSR / Nuxt Usage
+
+All color APIs are SSR-safe (no DOM or `window` access). CSS injection runs only in the browser. For SSR, set `ssr: true` in plugin options to skip client-side injection during hydration.
+
+## Browser Support
+
+Modern browsers with CSS custom property support (--var syntax). IE11 is not supported.
+
+## Source & Docs
+
+- GitHub: https://github.com/pooyagolchian/vue-multiple-themes
+- Docs: https://pooyagolchian.github.io/vue-multiple-themes
+- npm: https://www.npmjs.com/package/vue-multiple-themes
+- Changelog: https://github.com/pooyagolchian/vue-multiple-themes/blob/main/CHANGELOG.md

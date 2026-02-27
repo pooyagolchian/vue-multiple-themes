@@ -35,6 +35,10 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage",
+    "generate:logo": "node scripts/generate-logo.mjs",
+    "changeset": "changeset",
+    "version-packages": "changeset version",
+    "release": "pnpm build && changeset publish",
     "prepublishOnly": "pnpm build"
   },
   "keywords": [
@@ -71,6 +75,7 @@
     "vue-demi": "^0.14.10"
   },
   "devDependencies": {
+    "@changesets/cli": "^2.29.8",
     "@types/node": "^20.14.0",
     "@vitejs/plugin-vue": "^5.0.5",
     "@vitest/coverage-v8": "^1.6.1",
