@@ -1,87 +1,91 @@
 <template>
-    <div class="min-h-screen" style="background: var(--vmt-background); color: var(--vmt-text)">
+    <div class="min-h-screen bg-noir-950 text-white font-sans">
         <!-- ── Header ─────────────────────────────────────────────────────────── -->
-        <header class="sticky top-0 z-50 border-b px-6 py-3 flex items-center justify-between"
-            style="background: var(--vmt-surface); border-color: var(--vmt-border)">
-            <div class="flex items-center gap-3">
-                <span class="text-xl font-bold" style="color: var(--vmt-primary)">🎨</span>
-                <span class="font-semibold text-sm">vue-multiple-themes</span>
-                <span class="text-xs px-2 py-0.5 rounded-full font-mono"
-                    style="background: var(--vmt-surface-elevated); color: var(--vmt-text-muted)">
-                    v4.0
-                </span>
-            </div>
-
-            <!-- Theme switcher component with custom picker slot -->
-            <VueMultipleThemes :themes="themes" strategy="both" storage-key="pg-theme" :show-toggle="false"
-                @change="handleThemeChange">
-                <template #default="{ theme, themes: allThemes, setTheme }">
-                    <div class="flex items-center gap-1">
-                        <button v-for="t in allThemes" :key="t.name" :title="t.label ?? t.name"
-                            class="w-8 h-8 rounded-full border-2 transition-all duration-200 flex items-center justify-center text-xs"
-                            :style="{
-                                background: t.colors.primary ?? '#3b82f6',
-                                borderColor: t.name === theme.name ? 'var(--vmt-text)' : 'transparent',
-                                transform: t.name === theme.name ? 'scale(1.2)' : 'scale(1)',
-                            }" @click="setTheme(t.name)">
-                            <span class="sr-only">{{ t.label ?? t.name }}</span>
-                        </button>
+        <header
+            class="sticky top-0 z-50 border-b border-noir-800 backdrop-blur-md bg-noir-950/80">
+            <div class="max-w-6xl mx-auto px-6 h-14 flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                    <div class="w-7 h-7 rounded-md bg-white flex items-center justify-center">
+                        <span class="text-noir-950 text-xs font-bold">V</span>
                     </div>
-                </template>
-            </VueMultipleThemes>
+                    <span class="font-semibold text-sm tracking-tight">vue-multiple-themes</span>
+                    <span
+                        class="badge border border-noir-800 bg-noir-900 text-noir-500">v4.1</span>
+                </div>
+
+                <!-- Theme dot picker -->
+                <VueMultipleThemes :themes="themes" strategy="both" storage-key="pg-theme" :show-toggle="false"
+                    @change="handleThemeChange">
+                    <template #default="{ theme, themes: allThemes, setTheme }">
+                        <div class="flex items-center gap-1.5">
+                            <button v-for="t in allThemes" :key="t.name" :title="t.label ?? t.name"
+                                class="w-6 h-6 rounded-full border-2 transition-all duration-200 hover:scale-110 focus-ring"
+                                :style="{
+                                    background: t.colors.primary ?? '#3b82f6',
+                                    borderColor: t.name === theme.name ? '#fafafa' : 'transparent',
+                                    transform: t.name === theme.name ? 'scale(1.15)' : 'scale(1)',
+                                }" @click="setTheme(t.name)">
+                                <span class="sr-only">{{ t.label ?? t.name }}</span>
+                            </button>
+                        </div>
+                    </template>
+                </VueMultipleThemes>
+            </div>
         </header>
 
         <!-- ── Main content ───────────────────────────────────────────────────── -->
-        <main class="max-w-5xl mx-auto p-6 space-y-10">
+        <main class="max-w-6xl mx-auto px-6 py-12 space-y-16">
 
-            <!-- Active theme info -->
-            <section class="rounded-2xl p-6 border"
-                style="background: var(--vmt-surface); border-color: var(--vmt-border)">
-                <h1 class="text-2xl font-bold mb-1" style="color: var(--vmt-primary)">
-                    🎨 vue-multiple-themes Playground
-                </h1>
-                <p class="text-sm" style="color: var(--vmt-text-muted)">
-                    Active theme: <strong style="color: var(--vmt-text)">{{ activeTheme?.label ?? activeTheme?.name
-                        }}</strong>
-                </p>
+            <!-- Hero section -->
+            <section class="space-y-6">
+                <div class="space-y-3">
+                    <h1 class="text-3xl sm:text-4xl font-bold tracking-tight">
+                        Playground
+                    </h1>
+                    <p class="text-noir-500 text-base max-w-2xl leading-relaxed">
+                        Interactive showcase of every feature in vue-multiple-themes.
+                        Switch themes using the dots above to see everything update live.
+                    </p>
+                </div>
 
-                <!-- Quick toggle -->
-                <div class="mt-4 flex flex-wrap gap-2">
+                <!-- Theme pills -->
+                <div class="flex flex-wrap gap-2">
                     <button v-for="t in themes" :key="t.name"
-                        class="px-4 py-1.5 rounded-lg text-sm font-medium border transition-all" :style="{
-                            background: currentThemeName === t.name ? t.colors.primary : 'transparent',
-                            color: currentThemeName === t.name ? (t.colors.textInverse ?? '#fff') : 'var(--vmt-text)',
-                            borderColor: currentThemeName === t.name ? 'transparent' : 'var(--vmt-border)',
-                        }" @click="switchTheme(t.name)">
+                        class="btn text-xs px-3 py-1.5 transition-all"
+                        :class="currentThemeName === t.name
+                            ? 'bg-white text-noir-950 hover:bg-noir-200'
+                            : 'btn-secondary'"
+                        @click="switchTheme(t.name)">
                         {{ t.label ?? t.name }}
                     </button>
                 </div>
+
+                <div class="flex items-center gap-3 text-xs text-noir-600 font-mono">
+                    <div class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                    Active: <span class="text-noir-400">{{ activeTheme?.label ?? activeTheme?.name }}</span>
+                </div>
             </section>
 
-            <!-- Color palette preview -->
+            <!-- Separator -->
+            <div class="border-t border-noir-800/50" />
+
+            <!-- Demo sections -->
             <ColorPaletteDemo :theme="activeTheme" />
-
-            <!-- Component demo -->
             <ComponentsDemo />
-
-            <!-- CSS Variables demo -->
             <CssVarsDemo />
-
-            <!-- Tailwind demo -->
             <TailwindDemo />
-
-            <!-- Composable API demo -->
             <ComposableDemo />
-
-            <!-- Theme Generator demo -->
             <GeneratorDemo />
-
-            <!-- Color Utilities demo -->
             <ColorUtilsDemo />
-
-            <!-- Icons demo -->
             <IconsDemo />
 
+            <!-- Footer -->
+            <footer class="border-t border-noir-800/50 pt-8 pb-12">
+                <div class="flex items-center justify-between text-xs text-noir-600">
+                    <span class="font-mono">vue-multiple-themes</span>
+                    <span>MIT &middot; Pooya Golchian</span>
+                </div>
+            </footer>
         </main>
     </div>
 </template>
@@ -113,7 +117,6 @@ function switchTheme(name: string) {
     if (!t) return
     currentThemeName.value = name
     activeTheme.value = t
-    // Apply directly
     document.documentElement.setAttribute('data-theme', name)
 }
 </script>

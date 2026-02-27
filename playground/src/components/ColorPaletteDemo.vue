@@ -1,46 +1,47 @@
 <template>
-  <div class="space-y-6">
+  <section class="space-y-6">
     <div>
-      <h2 class="text-lg font-semibold text-zinc-100 mb-1">Color Palette</h2>
-      <p class="text-xs font-mono" style="color: var(--noir-muted)">
-        Theme "{{ theme?.label ?? theme?.name }}" — {{ colorEntries.length }} tokens
+      <h2 class="section-title">Color Palette</h2>
+      <p class="section-desc font-mono">
+        {{ theme?.label ?? theme?.name }} — {{ colorEntries.length }} design tokens
       </p>
     </div>
 
-    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
-      <div v-for="[key, value] in colorEntries" :key="key"
-        class="rounded-md overflow-hidden border cursor-pointer transition-all hover:border-zinc-600"
-        style="border-color: var(--noir-border)"
+    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
+      <button v-for="[key, value] in colorEntries" :key="key"
+        class="group rounded-lg border border-noir-800 overflow-hidden transition-all hover:border-noir-600 focus-ring text-left"
         @click="copyColor(value, key)">
-        <div class="h-16 w-full" :style="{ background: value }" />
-        <div class="p-2.5" style="background: var(--noir-surface)">
-          <p class="text-xs font-mono font-medium text-zinc-300 truncate">{{ key }}</p>
-          <p class="text-xs font-mono mt-0.5 flex items-center gap-1" style="color: var(--noir-muted)">
+        <div class="h-14 w-full transition-transform group-hover:scale-[1.02]" :style="{ background: value }" />
+        <div class="p-3 bg-noir-950">
+          <p class="text-xs font-medium text-noir-300 truncate tracking-tight">{{ key }}</p>
+          <p class="text-xs font-mono text-noir-600 mt-0.5 flex items-center gap-1">
             {{ value }}
-            <span v-if="copied === key" class="text-zinc-400">&#10003;</span>
+            <span v-if="copied === key" class="text-noir-400 text-[10px]">&#10003;</span>
           </p>
         </div>
-      </div>
+      </button>
     </div>
 
-    <div class="rounded-md border p-4 space-y-3"
-      style="background: var(--noir-surface); border-color: var(--noir-border)">
-      <h3 class="text-sm font-mono text-zinc-400">// WCAG contrast ratios</h3>
+    <div class="card-surface space-y-4">
+      <p class="label-mono">WCAG 2.1 contrast ratios</p>
       <div class="grid sm:grid-cols-2 gap-2">
         <div v-for="pair in contrastPairs" :key="pair.label"
-          class="flex items-center justify-between rounded border px-3 py-2 text-xs font-mono"
-          style="border-color: var(--noir-border); background: #09090b">
-          <span style="color: var(--noir-muted)">{{ pair.label }}</span>
-          <span :class="pair.ratio >= 4.5 ? 'text-zinc-200' : 'text-zinc-500'" class="tabular-nums">
-            {{ pair.ratio.toFixed(2) }}:1
-            <span class="ml-1" :class="pair.ratio >= 4.5 ? 'text-zinc-400' : 'text-zinc-600'">
+          class="flex items-center justify-between rounded-md border border-noir-800 bg-noir-950 px-3.5 py-2.5">
+          <span class="text-xs text-noir-500">{{ pair.label }}</span>
+          <span class="flex items-center gap-2">
+            <span class="text-xs font-mono tabular-nums"
+              :class="pair.ratio >= 4.5 ? 'text-white' : 'text-noir-600'">
+              {{ pair.ratio.toFixed(2) }}:1
+            </span>
+            <span class="text-[10px] font-mono font-bold px-1.5 py-0.5 rounded"
+              :class="pair.ratio >= 7 ? 'bg-white text-noir-950' : pair.ratio >= 4.5 ? 'bg-noir-700 text-noir-200' : 'bg-noir-800 text-noir-600'">
               {{ pair.ratio >= 7 ? 'AAA' : pair.ratio >= 4.5 ? 'AA' : 'FAIL' }}
             </span>
           </span>
         </div>
       </div>
     </div>
-  </div>
+  </section>
 </template>
 
 <script setup lang="ts">

@@ -1,81 +1,92 @@
 <template>
-  <div class="space-y-8">
+  <section class="space-y-8">
     <div>
-      <h2 class="text-lg font-semibold text-zinc-100 mb-1">UI Components</h2>
-      <p class="text-xs font-mono" style="color: var(--noir-muted)">shadcn-style, driven by CSS custom properties</p>
+      <h2 class="section-title">UI Components</h2>
+      <p class="section-desc">shadcn-inspired, styled via CSS custom properties</p>
     </div>
 
-    <div class="rounded-md border p-5 space-y-4" style="background: var(--noir-surface); border-color: var(--noir-border)">
-      <p class="text-xs font-mono text-zinc-400">// buttons</p>
-      <div class="flex flex-wrap gap-2">
-        <button class="px-4 py-2 rounded-md text-sm font-medium bg-white text-zinc-950 hover:bg-zinc-200 transition-all active:scale-95">Primary</button>
-        <button class="px-4 py-2 rounded-md text-sm font-medium border text-zinc-100 hover:bg-zinc-800 transition-all"
-          style="border-color: var(--noir-border-strong)">Secondary</button>
-        <button class="px-4 py-2 rounded-md text-sm font-medium text-zinc-400 hover:text-zinc-100 hover:bg-zinc-800 transition-all">Ghost</button>
-        <button class="px-4 py-2 rounded-md text-sm font-medium border text-red-400 hover:bg-red-950 transition-all" style="border-color: #7f1d1d">Destructive</button>
-        <button class="px-4 py-2 rounded-md text-sm font-medium text-zinc-600 cursor-not-allowed opacity-50" disabled>Disabled</button>
+    <!-- Buttons -->
+    <div class="card-surface space-y-5">
+      <p class="label-mono">Buttons</p>
+      <div class="flex flex-wrap gap-2.5">
+        <button class="btn-primary">Primary</button>
+        <button class="btn-secondary">Secondary</button>
+        <button class="btn-ghost">Ghost</button>
+        <button class="btn-destructive">Destructive</button>
+        <button class="btn text-noir-700 cursor-not-allowed opacity-50" disabled>Disabled</button>
       </div>
-      <div class="flex flex-wrap gap-2 pt-3 border-t" style="border-color: var(--noir-border)">
-        <p class="w-full text-xs font-mono text-zinc-600">// live theme vars</p>
-        <button class="px-4 py-2 rounded-md text-sm font-medium" style="background: var(--vmt-primary); color: var(--vmt-text-inverse)">vmt-primary</button>
-        <button class="px-4 py-2 rounded-md text-sm font-medium" style="background: var(--vmt-secondary); color: var(--vmt-text-inverse)">vmt-secondary</button>
-        <button class="px-4 py-2 rounded-md text-sm font-medium" style="background: var(--vmt-accent); color: var(--vmt-text-inverse)">vmt-accent</button>
-      </div>
-    </div>
-
-    <div class="rounded-md border p-5 space-y-3" style="background: var(--noir-surface); border-color: var(--noir-border)">
-      <p class="text-xs font-mono text-zinc-400">// badges</p>
-      <div class="flex flex-wrap gap-2">
-        <span class="text-xs px-2.5 py-0.5 rounded-full border font-mono text-zinc-300"
-          style="border-color: var(--noir-border-strong); background: var(--noir-surface-raised)">default</span>
-        <span class="text-xs px-2.5 py-0.5 rounded-full bg-white text-zinc-950 font-mono">solid</span>
-        <span class="text-xs px-2.5 py-0.5 rounded-full border font-mono"
-          style="border-color: var(--vmt-primary); color: var(--vmt-primary)">outline</span>
-        <span class="text-xs px-2.5 py-0.5 rounded-full font-mono" style="background: var(--vmt-success); color: #fff">success</span>
-        <span class="text-xs px-2.5 py-0.5 rounded-full font-mono" style="background: var(--vmt-warning); color: #000">warning</span>
-        <span class="text-xs px-2.5 py-0.5 rounded-full font-mono" style="background: var(--vmt-error); color: #fff">error</span>
+      <div class="border-t border-noir-800 pt-4">
+        <p class="label-mono mb-3">Live theme vars</p>
+        <div class="flex flex-wrap gap-2.5">
+          <button class="btn rounded-md text-sm font-medium active:scale-[0.97]"
+            style="background: var(--vmt-primary); color: var(--vmt-text-inverse)">vmt-primary</button>
+          <button class="btn rounded-md text-sm font-medium active:scale-[0.97]"
+            style="background: var(--vmt-secondary); color: var(--vmt-text-inverse)">vmt-secondary</button>
+          <button class="btn rounded-md text-sm font-medium active:scale-[0.97]"
+            style="background: var(--vmt-accent); color: var(--vmt-text-inverse)">vmt-accent</button>
+        </div>
       </div>
     </div>
 
+    <!-- Badges -->
+    <div class="card-surface space-y-4">
+      <p class="label-mono">Badges</p>
+      <div class="flex flex-wrap gap-2.5">
+        <span class="badge border border-noir-800 bg-noir-900 text-noir-400">default</span>
+        <span class="badge bg-white text-noir-950">solid</span>
+        <span class="badge border text-vmt-primary" style="border-color: var(--vmt-primary)">outline</span>
+        <span class="badge text-white" style="background: var(--vmt-success)">success</span>
+        <span class="badge text-noir-950" style="background: var(--vmt-warning)">warning</span>
+        <span class="badge text-white" style="background: var(--vmt-error)">error</span>
+      </div>
+    </div>
+
+    <!-- Cards -->
     <div class="grid sm:grid-cols-2 gap-4">
-      <div class="rounded-md border p-5 space-y-3 hover:border-zinc-600 transition-all"
-        style="background: var(--noir-surface); border-color: var(--noir-border)">
-        <div class="w-9 h-9 rounded-md border grid place-content-center text-base"
-          style="border-color: var(--noir-border-strong)">&#10022;</div>
-        <h4 class="text-sm font-semibold text-zinc-100">Feature Card</h4>
-        <p class="text-xs leading-relaxed" style="color: var(--noir-muted)">
+      <div class="card-surface group hover:border-noir-600 transition-all space-y-3">
+        <div class="w-9 h-9 rounded-md border border-noir-700 grid place-content-center text-noir-400">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/></svg>
+        </div>
+        <h4 class="text-sm font-semibold text-white tracking-tight">Feature Card</h4>
+        <p class="text-xs text-noir-500 leading-relaxed">
           Automatically inherits all CSS custom properties from the active theme.
         </p>
       </div>
-      <div class="rounded-md border p-5 space-y-3 hover:border-zinc-600 transition-all"
-        style="background: var(--noir-surface); border-color: var(--noir-border)">
+      <div class="card-surface group hover:border-noir-600 transition-all space-y-3">
         <div class="flex items-center gap-3">
-          <div class="w-8 h-8 rounded-full bg-zinc-700 grid place-content-center text-xs font-mono text-zinc-300 border"
-            style="border-color: var(--noir-border-strong)">PG</div>
+          <div class="w-8 h-8 rounded-full bg-noir-800 border border-noir-700 grid place-content-center text-xs font-mono text-noir-400">
+            PG
+          </div>
           <div>
-            <p class="text-sm font-medium text-zinc-100">Pooya Golchian</p>
-            <p class="text-xs font-mono" style="color: var(--noir-muted)">Author</p>
+            <p class="text-sm font-medium text-white tracking-tight">Pooya Golchian</p>
+            <p class="text-xs text-noir-600 font-mono">Author</p>
           </div>
         </div>
-        <p class="text-xs leading-relaxed" style="color: var(--noir-muted)">Adaptive design. Works with Vue 2 and Vue 3.</p>
+        <p class="text-xs text-noir-500 leading-relaxed">
+          Adaptive design. Works seamlessly with Vue 2 and Vue 3.
+        </p>
       </div>
     </div>
 
-    <div class="rounded-md border p-5 space-y-3" style="background: var(--noir-surface); border-color: var(--noir-border)">
-      <p class="text-xs font-mono text-zinc-400">// form inputs</p>
+    <!-- Form inputs -->
+    <div class="card-surface space-y-4">
+      <p class="label-mono">Form inputs</p>
       <div class="space-y-3 max-w-sm">
-        <input type="text" placeholder="Enter your email..."
-          class="w-full px-3 py-2 rounded-md border text-sm font-mono outline-none transition-all focus:border-zinc-400 placeholder:text-zinc-600"
-          style="background: #09090b; color: var(--noir-text); border-color: var(--noir-border)" />
-        <select class="w-full px-3 py-2 rounded-md border text-sm font-mono outline-none"
-          style="background: #09090b; color: var(--noir-text); border-color: var(--noir-border)">
-          <option>light theme</option><option>dark theme</option><option>midnight</option>
+        <input type="text" placeholder="Enter your email..." class="input" />
+        <select class="input">
+          <option>light</option><option>dark</option><option>ocean</option><option>forest</option>
         </select>
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-5 rounded-full bg-noir-800 border border-noir-700 relative cursor-pointer transition-colors hover:border-noir-600">
+            <div class="w-3.5 h-3.5 rounded-full bg-noir-400 absolute left-0.5 top-0.5 transition-transform" />
+          </div>
+          <span class="text-xs text-noir-500">Toggle switch</span>
+        </div>
       </div>
     </div>
-  </div>
+  </section>
 </template>
 
 <script setup lang="ts">
-// Pure template demo
+// Pure template demo — all styles via Tailwind + CSS vars
 </script>
