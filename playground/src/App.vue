@@ -73,6 +73,15 @@
             <!-- Composable API demo -->
             <ComposableDemo />
 
+            <!-- Theme Generator demo -->
+            <GeneratorDemo />
+
+            <!-- Color Utilities demo -->
+            <ColorUtilsDemo />
+
+            <!-- Icons demo -->
+            <IconsDemo />
+
         </main>
     </div>
 </template>
@@ -82,9 +91,12 @@ import { ref } from 'vue'
 import { PRESET_THEMES } from 'vue-multiple-themes'
 import type { ThemeDefinition } from 'vue-multiple-themes'
 import ColorPaletteDemo from './components/ColorPaletteDemo.vue'
+import ColorUtilsDemo from './components/ColorUtilsDemo.vue'
 import ComponentsDemo from './components/ComponentsDemo.vue'
 import ComposableDemo from './components/ComposableDemo.vue'
 import CssVarsDemo from './components/CssVarsDemo.vue'
+import GeneratorDemo from './components/GeneratorDemo.vue'
+import IconsDemo from './components/IconsDemo.vue'
 import TailwindDemo from './components/TailwindDemo.vue'
 
 const themes = PRESET_THEMES
