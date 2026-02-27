@@ -1,21 +1,51 @@
 import { resolve } from 'node:path'
 import { defineConfig } from 'vitepress'
 
+const SITE_URL = 'https://pooyagolchian.github.io/vue-multiple-themes'
+const OG_IMAGE = `${SITE_URL}/og-image.png`
+
 export default defineConfig({
   lang: 'en-US',
   title: 'vue-multiple-themes',
   description: 'Vue 2 & Vue 3 theme switcher – CSS Variables, TailwindCSS, Composable API',
   base: '/vue-multiple-themes/',
 
+  // ── Sitemap ────────────────────────────────────────────────────────────────
+  sitemap: {
+    hostname: SITE_URL,
+  },
+
   head: [
-    ['link', { rel: 'icon', href: '/vue-multiple-themes/favicon.svg', type: 'image/svg+xml' }],
-    ['meta', { name: 'og:type', content: 'website' }],
-    ['meta', { name: 'og:locale', content: 'en' }],
-    ['meta', { name: 'og:site_name', content: 'vue-multiple-themes' }],
+    // Favicon
+    ['link', { rel: 'icon', href: '/vue-multiple-themes/logo.svg', type: 'image/svg+xml' }],
+    ['link', { rel: 'icon', href: '/vue-multiple-themes/favicon.png', type: 'image/png', sizes: '32x32' }],
+    ['link', { rel: 'apple-touch-icon', href: '/vue-multiple-themes/apple-touch-icon.png' }],
+
+    // Open Graph
+    ['meta', { property: 'og:type',        content: 'website' }],
+    ['meta', { property: 'og:locale',      content: 'en_US' }],
+    ['meta', { property: 'og:site_name',   content: 'vue-multiple-themes' }],
+    ['meta', { property: 'og:title',       content: 'vue-multiple-themes — Dynamic Theme Switching for Vue' }],
+    ['meta', { property: 'og:description', content: 'Vue 2 & Vue 3 theme switcher with CSS Variables, TailwindCSS, SSR-safe, WCAG contrast, composable API.' }],
+    ['meta', { property: 'og:image',       content: OG_IMAGE }],
+    ['meta', { property: 'og:image:width',  content: '1200' }],
+    ['meta', { property: 'og:image:height', content: '630' }],
+    ['meta', { property: 'og:url',         content: SITE_URL }],
+
+    // Twitter / X card
+    ['meta', { name: 'twitter:card',        content: 'summary_large_image' }],
+    ['meta', { name: 'twitter:title',       content: 'vue-multiple-themes' }],
+    ['meta', { name: 'twitter:description', content: 'Dynamic theme switching for Vue 2 & 3. CSS Variables, TailwindCSS, composable API.' }],
+    ['meta', { name: 'twitter:image',       content: OG_IMAGE }],
+
+    // Canonical / general SEO
+    ['meta', { name: 'author',    content: 'Pooya Golchian' }],
+    ['meta', { name: 'keywords',  content: 'vue, vue3, vue2, themes, dark mode, css variables, tailwindcss, composable, typescript' }],
+    ['link', { rel: 'canonical',  href: SITE_URL }],
   ],
 
   themeConfig: {
-    logo: { src: '/favicon.svg', width: 24, height: 24 },
+    logo: { src: '/logo.svg', width: 24, height: 24 },
     siteTitle: 'vue-multiple-themes',
 
     nav: [
