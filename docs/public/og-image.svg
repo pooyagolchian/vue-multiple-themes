@@ -1,0 +1,70 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#09090b"/>
+      <stop offset="100%" stop-color="#0e0e10"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="630" fill="url(#bg)"/>
+
+  <!-- Subtle grid -->
+  <line x1="0" y1="315" x2="1200" y2="315" stroke="#ffffff" stroke-opacity="0.03" stroke-width="1"/>
+  <line x1="600" y1="0" x2="600" y2="630" stroke="#ffffff" stroke-opacity="0.03" stroke-width="1"/>
+
+  <!-- Top-left corner mark -->
+  <line x1="40" y1="40" x2="80" y2="40" stroke="#3f3f46" stroke-width="1.5"/>
+  <line x1="40" y1="40" x2="40" y2="80" stroke="#3f3f46" stroke-width="1.5"/>
+  <!-- Top-right corner mark -->
+  <line x1="1120" y1="40" x2="1160" y2="40" stroke="#3f3f46" stroke-width="1.5"/>
+  <line x1="1160" y1="40" x2="1160" y2="80" stroke="#3f3f46" stroke-width="1.5"/>
+  <!-- Bottom-left corner mark -->
+  <line x1="40" y1="590" x2="80" y2="590" stroke="#3f3f46" stroke-width="1.5"/>
+  <line x1="40" y1="550" x2="40" y2="590" stroke="#3f3f46" stroke-width="1.5"/>
+  <!-- Bottom-right corner mark -->
+  <line x1="1120" y1="590" x2="1160" y2="590" stroke="#3f3f46" stroke-width="1.5"/>
+  <line x1="1160" y1="550" x2="1160" y2="590" stroke="#3f3f46" stroke-width="1.5"/>
+
+  <!-- Logo mark -->
+  <g transform="translate(100, 215)">
+    <!-- Yin-yang symbol, 100px -->
+    <path d="M 100 0 A 100 100 0 0 0 100 200" fill="#fafafa" opacity="0.95"/>
+    <path d="M 100 0 A 100 100 0 0 1 100 200" fill="#27272a"/>
+    <circle cx="100" cy="50" r="25" fill="#18181b"/>
+    <circle cx="100" cy="150" r="25" fill="#fafafa"/>
+    <circle cx="100" cy="25" r="3" fill="#71717a"/>
+    <circle cx="100" cy="175" r="3" fill="#3f3f46"/>
+    <circle cx="100" cy="100" r="100" fill="none" stroke="#3f3f46" stroke-width="1.5"/>
+  </g>
+
+  <!-- Title text -->
+  <text x="280" y="270" font-family="'Geist Mono', 'JetBrains Mono', monospace" font-size="72" font-weight="600"
+    fill="#fafafa" letter-spacing="-2">vue-multiple-themes</text>
+
+  <!-- Subtitle -->
+  <text x="282" y="330" font-family="'Geist Mono', 'JetBrains Mono', monospace" font-size="24" font-weight="400"
+    fill="#71717a" letter-spacing="0">Dynamic theme switching for Vue 2 &amp; 3</text>
+
+  <!-- Feature tags -->
+  <g transform="translate(282, 370)">
+    <!-- Tag 1 -->
+    <rect x="0" y="0" width="170" height="36" rx="6" fill="#18181b" stroke="#27272a" stroke-width="1"/>
+    <text x="14" y="23" font-family="monospace" font-size="14" fill="#a1a1aa">CSS variables</text>
+    <!-- Tag 2 -->
+    <rect x="186" y="0" width="140" height="36" rx="6" fill="#18181b" stroke="#27272a" stroke-width="1"/>
+    <text x="14" y="23" font-family="monospace" font-size="14" fill="#a1a1aa" transform="translate(186,0)">TailwindCSS</text>
+    <!-- Tag 3 -->
+    <rect x="342" y="0" width="130" height="36" rx="6" fill="#18181b" stroke="#27272a" stroke-width="1"/>
+    <text x="14" y="23" font-family="monospace" font-size="14" fill="#a1a1aa" transform="translate(342,0)">SSR-safe</text>
+    <!-- Tag 4 -->
+    <rect x="488" y="0" width="160" height="36" rx="6" fill="#18181b" stroke="#27272a" stroke-width="1"/>
+    <text x="14" y="23" font-family="monospace" font-size="14" fill="#a1a1aa" transform="translate(488,0)">WCAG contrast</text>
+  </g>
+
+  <!-- npm badge bottom right -->
+  <text x="1060" y="580" text-anchor="end"
+    font-family="'Geist Mono', monospace" font-size="14" fill="#3f3f46">
+    npm install vue-multiple-themes
+  </text>
+</svg>
