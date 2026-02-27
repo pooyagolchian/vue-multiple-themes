@@ -35,6 +35,20 @@
   backdrop-filter: saturate(180%) blur(16px);
   background: color-mix(in srgb, var(--vmt-background, #ffffff) 85%, transparent) !important;
 }
+
+/* Space out nav menu items */
+.VPNavBarMenu .VPNavBarMenuLink,
+.VPNavBarMenu .VPNavBarMenuGroup > .button {
+  padding: 0 14px !important;
+  letter-spacing: -0.01em;
+}
+.VPNavBarMenu {
+  gap: 4px;
+}
+/* Give the nav-bar-content-after area a little breathing room */
+.VPNavBarContent .content-body {
+  gap: 8px;
+}
 .VPNavBar .title {
   font-weight: 700;
   letter-spacing: -0.02em;
