@@ -1,12 +1,14 @@
+<script lang="ts">
 import {
+    type PropType,
+    computed,
 	defineComponent,
-	computed,
+    onBeforeUnmount,
+    onMounted,
 	ref,
-	watch,
-	onMounted,
-	onBeforeUnmount,
-	type PropType,
+    watch,
 } from "vue-demi";
+import { iconToSvg } from "../icons";
 import type {
 	ThemeDefinition,
 	ThemeOptions,
@@ -20,11 +22,10 @@ import {
 } from "../utils/css-injector";
 import {
 	applyThemeToDom,
+    getSystemPreference,
 	readStorage,
-	writeStorage,
-	getSystemPreference,
+    writeStorage,
 } from "../utils/dom";
-import { iconToSvg } from "../icons";
 
 export default defineComponent({
 	name: "VueMultipleThemes",
@@ -322,3 +323,73 @@ export default defineComponent({
 		};
 	},
 });
+</script>
+
+<template>
+    <div class="vmt-root" :class="[extraClass, isDark ? 'vmt-dark' : 'vmt-light']">
+        <!-- Default slot: completely custom UI -->
+        <slot :current="currentTheme" :themes="themes" :set-theme="setTheme" :next-theme="nextTheme"
+            :prev-theme="prevTheme" :toggle-theme="toggleTheme" :is-dark="isDark">
+            <!-- Built-in toggle button (shown when no default slot is provided) -->
+            <button v-if="showToggle" class="vmt-toggle"
+                :aria-label="'Current theme: ' + currentTheme.label + '. Click to switch theme.'"
+                :title="currentTheme.label" @click="nextTheme">
+                <!-- icon -->
+                <span class="vmt-icon" v-html="currentIconSvg" />
+                <!-- label -->
+                <span v-if="showLabel" class="vmt-label">
+                    {{ currentTheme.label }}
+                </span>
+            </button>
+        </slot>
+
+        <!-- Picker slot: list of all themes -->
+        <slot name="picker" :current="currentTheme" :themes="themes" :set-theme="setTheme" />
+    </div>
+</template>
+
+<style>
+.vmt-root {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    position: relative;
+}
+
+.vmt-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.4rem 0.6rem;
+    border-radius: 0.5rem;
+    border: 1px solid var(--vmt-border, #e5e7eb);
+    background: var(--vmt-surface, transparent);
+    color: var(--vmt-foreground, inherit);
+    cursor: pointer;
+    transition: background 0.2s, border-color 0.2s;
+    outline: none;
+}
+
+.vmt-toggle:hover {
+    background: var(--vmt-surface-elevated, rgba(0, 0, 0, 0.05));
+}
+
+.vmt-toggle:focus-visible {
+    outline: 2px solid var(--vmt-ring, #4f46e5);
+    outline-offset: 2px;
+}
+
+.vmt-icon {
+    display: inline-flex;
+    align-items: center;
+    color: var(--vmt-icon-color, var(--vmt-foreground, currentColor));
+    flex-shrink: 0;
+}
+
+.vmt-label {
+    font-size: 0.875rem;
+    font-weight: 500;
+    white-space: nowrap;
+    color: var(--vmt-foreground, inherit);
+}
+</style>

@@ -101,7 +101,7 @@ export function useTheme(options: ThemeOptions): UseThemeReturn {
   )
 
   const isDark = computed<boolean>(() =>
-    currentName.value.toLowerCase().includes('dark'),
+    (currentName.value ?? '').toLowerCase().includes('dark'),
   )
 
   // ─── Apply theme to DOM ─────────────────────────────────────────────────
@@ -155,11 +155,11 @@ export function useTheme(options: ThemeOptions): UseThemeReturn {
   // ─── Lifecycle ──────────────────────────────────────────────────────────
   onMounted(() => {
     ensureStyles()
-    applyTheme(currentName.value)
+    if (currentName.value) applyTheme(currentName.value)
   })
 
   watch(currentName, (name) => {
-    applyTheme(name)
+    if (name) applyTheme(name)
   })
 
   // Clean up injected styles only when ALL instances are unmounted
@@ -180,7 +180,7 @@ export function useTheme(options: ThemeOptions): UseThemeReturn {
 
   return {
     get current() {
-      return currentName.value
+      return currentName.value ?? themes[0]?.name ?? ''
     },
     get theme() {
       return theme.value
