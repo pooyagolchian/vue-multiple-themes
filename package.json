@@ -27,6 +27,7 @@
   ],
   "scripts": {
     "dev": "pnpm --filter playground dev",
+    "dev:all": "pnpm run --parallel --filter=playground --filter=docs dev",
     "build": "vite build",
     "build:check": "vue-tsc --noEmit",
     "docs:dev": "pnpm --filter docs dev",

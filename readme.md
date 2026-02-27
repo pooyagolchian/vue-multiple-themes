@@ -8,6 +8,35 @@
 
 ---
 
+## Development
+
+> **Prerequisites:** [pnpm](https://pnpm.io) v9+ and Node.js v18+
+
+```bash
+# Install all workspace dependencies
+pnpm install
+
+# Run the interactive playground (Vite dev server → http://localhost:5173)
+pnpm dev
+
+# Run the documentation site (VitePress → http://localhost:5173)
+pnpm docs:dev
+
+# Run playground AND docs simultaneously (two ports in parallel)
+pnpm dev:all
+
+# Run the full unit-test suite
+pnpm test
+
+# Run tests in watch mode
+pnpm test:watch
+
+# Build the library
+pnpm build
+```
+
+---
+
 ## Features
 
 - **Vue 2.7+ and Vue 3** — single package via `vue-demi`
