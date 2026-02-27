@@ -1,5 +1,11 @@
 # Changelog
 
+## 4.1.0
+
+### Minor Changes
+
+- Replaced `v-html` icon rendering with proper Vue `VmtIcon` component using render functions. Added `#icon` slot to `VueMultipleThemes` for custom icon rendering. Exported `VmtIcon` as a standalone component. Removed all legacy v2/v3 files (`vue-multiple-themes.vue`, `entry.js`, `build/`, `dev/`, `babel.config.js`, `publish.sh`).
+
 ## [4.0.0] — Unreleased
 
 ### Breaking Changes

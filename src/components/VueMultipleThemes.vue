@@ -8,7 +8,6 @@ import {
 	ref,
     watch,
 } from "vue-demi";
-import { iconToSvg } from "../icons";
 import type {
 	ThemeDefinition,
 	ThemeOptions,
@@ -26,9 +25,12 @@ import {
 	readStorage,
     writeStorage,
 } from "../utils/dom";
+import VmtIcon from "./VmtIcon.vue";
 
 export default defineComponent({
 	name: "VueMultipleThemes",
+
+    components: { VmtIcon },
 
 	props: {
 		/** All available theme definitions */
@@ -224,13 +226,8 @@ export default defineComponent({
 			currentName.value.toLowerCase().includes("dark"),
 		);
 
-		const currentIconSvg = computed<string>(() =>
-			iconToSvg(
-				currentTheme.value.icon ?? "palette",
-				props.iconSize,
-				"currentColor",
-				2,
-			),
+        const currentIconName = computed<string>(
+            () => currentTheme.value.icon ?? "palette",
 		);
 
 		// ── Apply to DOM ────────────────────────────────────────────────────
@@ -315,7 +312,7 @@ export default defineComponent({
 			currentName,
 			currentTheme,
 			isDark,
-			currentIconSvg,
+            currentIconName,
 			setTheme,
 			nextTheme,
 			prevTheme,
@@ -334,8 +331,12 @@ export default defineComponent({
             <button v-if="showToggle" class="vmt-toggle"
                 :aria-label="'Current theme: ' + currentTheme.label + '. Click to switch theme.'"
                 :title="currentTheme.label" @click="nextTheme">
-                <!-- icon -->
-                <span class="vmt-icon" v-html="currentIconSvg" />
+                <!-- icon (use #icon slot for custom icons, or built-in VmtIcon) -->
+                <span class="vmt-icon">
+                    <slot name="icon" :icon="currentIconName" :size="iconSize" :theme="currentTheme">
+                        <VmtIcon :name="currentIconName" :size="iconSize" />
+                    </slot>
+                </span>
                 <!-- label -->
                 <span v-if="showLabel" class="vmt-label">
                     {{ currentTheme.label }}

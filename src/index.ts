@@ -14,6 +14,7 @@
 
 // ─── Core component ───────────────────────────────────────────────────────────
 export { default as VueMultipleThemes } from './components/VueMultipleThemes.vue'
+export { default as VmtIcon } from './components/VmtIcon.vue'
 
 // ─── Plugin ───────────────────────────────────────────────────────────────────
 export { VueMultipleThemesPlugin } from './plugin'
