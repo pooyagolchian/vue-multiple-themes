@@ -153,9 +153,20 @@ export function useTheme(options: ThemeOptions): UseThemeReturn {
   }
 
   // ─── Lifecycle ──────────────────────────────────────────────────────────
-  onMounted(() => {
+  // Apply immediately in browser context to prevent flash of wrong theme on refresh.
+  // onMounted is kept as an SSR fallback (when document was unavailable during setup).
+  let appliedInSetup = false
+  if (typeof document !== 'undefined') {
     ensureStyles()
-    if (currentName.value) applyTheme(currentName.value)
+    applyTheme(currentName.value)
+    appliedInSetup = true
+  }
+
+  onMounted(() => {
+    if (!appliedInSetup) {
+      ensureStyles()
+      if (currentName.value) applyTheme(currentName.value)
+    }
   })
 
   watch(currentName, (name) => {

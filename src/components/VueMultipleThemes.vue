@@ -286,7 +286,8 @@ export default defineComponent({
 		}
 
 		// ── Lifecycle ────────────────────────────────────────────────────────
-		onMounted(() => {
+		// Apply immediately in browser context to prevent flash of wrong theme on refresh.
+		function ensureStylesAndApply() {
 			if (props.injectCssVars) {
 				const css = buildCssVars(props.themes, {
 					strategy: props.strategy,
@@ -298,6 +299,18 @@ export default defineComponent({
 				injectStyles(css);
 			}
 			applyTheme(currentName.value);
+		}
+
+		let appliedInSetup = false;
+		if (typeof document !== "undefined") {
+			ensureStylesAndApply();
+			appliedInSetup = true;
+		}
+
+		onMounted(() => {
+			if (!appliedInSetup) {
+				ensureStylesAndApply();
+			}
 		});
 
 		watch(currentName, (name) => {
