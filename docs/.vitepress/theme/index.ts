@@ -1,9 +1,9 @@
 import type { Theme } from 'vitepress'
 import DefaultTheme from 'vitepress/theme'
 import { PRESET_THEMES, VueMultipleThemesPlugin } from 'vue-multiple-themes'
-import ColorGrid from './components/ColorGrid.vue'
-import LiveDemo from './components/LiveDemo.vue'
-import ThemeDemo from './components/ThemeDemo.vue'
+import ColorGrid from '../components/ColorGrid.vue'
+import LiveDemo from '../components/LiveDemo.vue'
+import ThemeDemo from '../components/ThemeDemo.vue'
 import './custom.css'
 
 export default {
