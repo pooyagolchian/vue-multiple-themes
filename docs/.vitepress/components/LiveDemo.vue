@@ -1,50 +1,61 @@
 <template>
-    <div class="not-prose my-6 rounded-xl border p-6"
-        style="border-color: var(--vmt-border, #e5e7eb); background: var(--vmt-surface, #f8fafc)">
-        <!-- Theme switcher: buttons wired directly to useTheme so active state stays in sync -->
-        <div class="flex items-center gap-3 mb-4">
-            <div class="flex flex-wrap gap-2">
-                <button
-                    v-for="t in ts.themes"
-                    :key="t.name"
-                    class="px-3 py-1 rounded-full text-xs font-medium border transition-all"
-                    :style="{
-                        background: ts.current === t.name ? (t.colors.primary ?? '#3b82f6') : 'transparent',
-                        color: ts.current === t.name ? '#fff' : 'var(--vmt-text, #111827)',
-                        borderColor: t.colors.primary ?? '#3b82f6',
-                    }"
-                    @click="ts.setTheme(t.name)"
-                >
-                    {{ t.label ?? t.name }}
+    <div class="vmt-live-demo not-prose">
+        <!-- ── Header ─────────────────────────────────────────────────────── -->
+        <div class="vmt-live-demo__header">
+            <div class="vmt-live-demo__header-left">
+                <span class="vmt-live-demo__badge">
+                    <Palette :size="12" />
+                    Live Preview
+                </span>
+                <span class="vmt-live-demo__title">
+                    <component :is="iconFor(ts.theme)" :size="16" />
+                    {{ ts.theme.label ?? ts.theme.name }}
+                </span>
+            </div>
+            <div class="vmt-live-demo__nav">
+                <button class="vmt-icon-btn" title="Previous theme" @click="ts.prevTheme()">
+                    <ChevronLeft :size="14" />
+                </button>
+                <button class="vmt-icon-btn" title="Next theme" @click="ts.nextTheme()">
+                    <ChevronRight :size="14" />
                 </button>
             </div>
         </div>
 
-        <!-- Current theme info -->
-        <div class="mb-4">
-            <div class="flex items-center gap-2 mb-2">
-                <span
-                    class="inline-flex items-center justify-center w-8 h-8 rounded-lg text-sm font-bold text-white"
-                    :style="{ background: ts.theme.colors.primary ?? '#3b82f6' }"
-                >
-                    {{ currentInitial }}
-                </span>
-                <span class="font-semibold text-sm" style="color: var(--vmt-text)">
-                    {{ currentLabel }}
-                </span>
-            </div>
+        <!-- ── Theme picker ───────────────────────────────────────────────── -->
+        <div class="vmt-live-demo__picker">
+            <button
+                v-for="t in ts.themes"
+                :key="t.name"
+                class="vmt-theme-btn"
+                :class="{ 'is-active': ts.current === t.name }"
+                :style="ts.current === t.name ? {
+                    background: t.colors.primary,
+                    borderColor: t.colors.primary,
+                    color: t.colors.textInverse ?? '#fff',
+                } : {}"
+                @click="ts.setTheme(t.name)"
+            >
+                <component :is="iconFor(t)" :size="12" />
+                {{ t.label ?? t.name }}
+                <Check v-if="ts.current === t.name" :size="11" class="vmt-theme-btn__check" />
+            </button>
         </div>
 
-        <!-- Color swatches -->
-        <div class="grid grid-cols-3 sm:grid-cols-6 gap-2">
-            <div v-for="[name, color] in Object.entries(previewColors)" :key="name" class="flex flex-col items-center">
-                <div
-                    class="w-full h-10 rounded-lg border"
-                    :style="{ background: color, borderColor: 'var(--vmt-border, #e5e7eb)' }"
-                />
-                <span class="text-xs mt-1 font-mono" :style="{ color: 'var(--vmt-text-muted, #6b7280)' }">
-                    {{ name }}
-                </span>
+        <!-- ── Divider ────────────────────────────────────────────────────── -->
+        <div class="vmt-live-demo__divider" />
+
+        <!-- ── Swatch grid ────────────────────────────────────────────────── -->
+        <div class="vmt-live-demo__swatches">
+            <div
+                v-for="[token, color] in swatches"
+                :key="token"
+                class="vmt-swatch"
+                :title="color"
+            >
+                <div class="vmt-swatch__color" :style="{ background: color }" />
+                <span class="vmt-swatch__token">{{ token }}</span>
+                <span class="vmt-swatch__hex">{{ color }}</span>
             </div>
         </div>
     </div>
@@ -52,13 +63,25 @@
 
 <script setup lang="ts">
 import { computed } from "vue";
+import {
+    Check,
+    ChevronLeft,
+    ChevronRight,
+    Coffee,
+    Moon,
+    Palette,
+    Snowflake,
+    Sun,
+    Sunset,
+    TreePine,
+    Waves,
+} from "lucide-vue-next";
+import type { ThemeDefinition } from "vue-multiple-themes";
 import { PRESET_THEMES, useTheme } from "vue-multiple-themes";
 
 /**
- * IMPORTANT: Do NOT destructure `current` or `theme` from useTheme().
- * They are getters on the return object — Vue tracks the reactive dependency
- * (currentName.value inside the getter) only when the getter is called during
- * render. Destructuring captures a one-time snapshot, breaking reactivity.
+ * Access theme as `ts.current` / `ts.theme` — do NOT destructure these getters
+ * or Vue will lose reactivity (one-time snapshot instead of tracked dependency).
  */
 const ts = useTheme({
     themes: PRESET_THEMES,
@@ -67,17 +90,180 @@ const ts = useTheme({
     injectCssVars: false,
 });
 
-const currentLabel = computed(() => ts.theme.label ?? ts.theme.name);
-const currentInitial = computed(() =>
-    (ts.theme.label ?? ts.theme.name).charAt(0).toUpperCase(),
-);
+const ICON_MAP: Record<string, unknown> = {
+    sun: Sun,
+    moon: Moon,
+    coffee: Coffee,
+    waves: Waves,
+    "tree-pine": TreePine,
+    sunset: Sunset,
+    snowflake: Snowflake,
+};
 
-const previewColors = computed(() => ({
-    primary: ts.theme.colors.primary ?? "",
-    secondary: ts.theme.colors.secondary ?? "",
-    accent: ts.theme.colors.accent ?? "",
-    success: ts.theme.colors.success ?? "",
-    warning: ts.theme.colors.warning ?? "",
-    error: ts.theme.colors.error ?? "",
-}));
+function iconFor(t: ThemeDefinition) {
+    return ICON_MAP[t.icon ?? ""] ?? Palette;
+}
+
+const SWATCH_TOKENS = [
+    "primary", "secondary", "accent", "success", "warning", "error",
+] as const;
+
+const swatches = computed(() =>
+    SWATCH_TOKENS.map((k) => [k, ts.theme.colors[k] ?? ""] as const).filter(([, v]) => v),
+);
 </script>
+
+<style scoped>
+/* ── Shell ────────────────────────────────────────────────────────────────── */
+.vmt-live-demo {
+    margin: 1.75rem 0;
+    border: 1px solid var(--vp-c-divider);
+    border-radius: 14px;
+    overflow: hidden;
+    background: var(--vp-c-bg);
+    box-shadow: 0 1px 4px rgba(0,0,0,.04);
+}
+
+/* ── Header ───────────────────────────────────────────────────────────────── */
+.vmt-live-demo__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.75rem 1.25rem;
+    background: var(--vp-c-bg-soft);
+    border-bottom: 1px solid var(--vp-c-divider);
+}
+.vmt-live-demo__header-left {
+    display: flex;
+    align-items: center;
+    gap: 0.875rem;
+}
+.vmt-live-demo__badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--vp-c-text-3);
+    background: var(--vp-c-bg-mute);
+    border: 1px solid var(--vp-c-divider);
+    padding: 0.2rem 0.55rem;
+    border-radius: 99px;
+}
+.vmt-live-demo__title {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--vp-c-text-1);
+    letter-spacing: -0.01em;
+}
+.vmt-live-demo__nav {
+    display: flex;
+    gap: 0.25rem;
+}
+.vmt-icon-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 7px;
+    border: 1px solid var(--vp-c-divider);
+    background: var(--vp-c-bg);
+    color: var(--vp-c-text-2);
+    cursor: pointer;
+    transition: background 0.15s, border-color 0.15s, color 0.15s;
+}
+.vmt-icon-btn:hover {
+    background: var(--vp-c-bg-mute);
+    border-color: var(--vp-c-text-3);
+    color: var(--vp-c-text-1);
+}
+
+/* ── Picker ───────────────────────────────────────────────────────────────── */
+.vmt-live-demo__picker {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    padding: 1rem 1.25rem;
+}
+.vmt-theme-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.3rem 0.75rem;
+    border-radius: 99px;
+    border: 1px solid var(--vp-c-divider);
+    background: var(--vp-c-bg-soft);
+    color: var(--vp-c-text-2);
+    font-size: 0.75rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.15s, border-color 0.15s, color 0.15s, box-shadow 0.15s;
+    font-family: inherit;
+}
+.vmt-theme-btn:hover:not(.is-active) {
+    background: var(--vp-c-bg-mute);
+    border-color: var(--vp-c-text-3);
+    color: var(--vp-c-text-1);
+}
+.vmt-theme-btn.is-active {
+    box-shadow: 0 1px 6px rgba(0,0,0,.18);
+}
+.vmt-theme-btn__check {
+    margin-left: 0.1rem;
+    opacity: 0.8;
+}
+
+/* ── Divider ──────────────────────────────────────────────────────────────── */
+.vmt-live-demo__divider {
+    height: 1px;
+    background: var(--vp-c-divider);
+    margin: 0;
+}
+
+/* ── Swatch grid ──────────────────────────────────────────────────────────── */
+.vmt-live-demo__swatches {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.75rem;
+    padding: 1.25rem;
+}
+@media (min-width: 640px) {
+    .vmt-live-demo__swatches { grid-template-columns: repeat(6, 1fr); }
+}
+.vmt-swatch {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.35rem;
+}
+.vmt-swatch__color {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    border-radius: 10px;
+    border: 1px solid rgba(0,0,0,0.08);
+    box-shadow: inset 0 1px 2px rgba(255,255,255,.25), 0 1px 3px rgba(0,0,0,.12);
+    transition: transform 0.15s, box-shadow 0.15s;
+}
+.vmt-swatch:hover .vmt-swatch__color {
+    transform: translateY(-2px);
+    box-shadow: inset 0 1px 2px rgba(255,255,255,.25), 0 4px 10px rgba(0,0,0,.18);
+}
+.vmt-swatch__token {
+    font-size: 0.6875rem;
+    font-weight: 500;
+    color: var(--vp-c-text-2);
+    font-family: var(--vp-font-family-base);
+}
+.vmt-swatch__hex {
+    font-size: 0.625rem;
+    font-family: var(--vp-font-family-mono);
+    color: var(--vp-c-text-3);
+    letter-spacing: 0.02em;
+}
+</style>
