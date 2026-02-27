@@ -10,6 +10,9 @@ export default defineConfig({
   description: 'Vue 2 & Vue 3 theme switcher – CSS Variables, TailwindCSS, Composable API',
   base: '/vue-multiple-themes/',
 
+  // Disable the built-in dark/light toggle — we use our own NavThemeSwitcher
+  appearance: false,
+
   // ── Sitemap ────────────────────────────────────────────────────────────────
   sitemap: {
     hostname: SITE_URL,
