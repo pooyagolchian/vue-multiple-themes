@@ -1,86 +1,81 @@
 <template>
-    <section class="rounded-2xl p-6 border space-y-6"
-        style="background: var(--vmt-surface); border-color: var(--vmt-border)">
-        <h2 class="text-lg font-bold">UI Components Preview</h2>
+  <div class="space-y-8">
+    <div>
+      <h2 class="text-lg font-semibold text-zinc-100 mb-1">UI Components</h2>
+      <p class="text-xs font-mono" style="color: var(--noir-muted)">shadcn-style, driven by CSS custom properties</p>
+    </div>
 
-        <!-- Buttons -->
-        <div class="space-y-2">
-            <h3 class="text-sm font-semibold" style="color: var(--vmt-text-muted)">Buttons</h3>
-            <div class="flex flex-wrap gap-3">
-                <button class="px-4 py-2 rounded-lg text-sm font-medium transition-all"
-                    style="background: var(--vmt-primary); color: var(--vmt-text-inverse)">Primary</button>
-                <button class="px-4 py-2 rounded-lg text-sm font-medium transition-all border"
-                    style="color: var(--vmt-primary); border-color: var(--vmt-primary); background: transparent">Outlined</button>
-                <button class="px-4 py-2 rounded-lg text-sm font-medium transition-all"
-                    style="background: var(--vmt-secondary); color: var(--vmt-text-inverse)">Secondary</button>
-                <button class="px-4 py-2 rounded-lg text-sm font-medium transition-all"
-                    style="background: var(--vmt-success); color: #fff">Success</button>
-                <button class="px-4 py-2 rounded-lg text-sm font-medium transition-all"
-                    style="background: var(--vmt-error); color: #fff">Error</button>
-            </div>
+    <div class="rounded-md border p-5 space-y-4" style="background: var(--noir-surface); border-color: var(--noir-border)">
+      <p class="text-xs font-mono text-zinc-400">// buttons</p>
+      <div class="flex flex-wrap gap-2">
+        <button class="px-4 py-2 rounded-md text-sm font-medium bg-white text-zinc-950 hover:bg-zinc-200 transition-all active:scale-95">Primary</button>
+        <button class="px-4 py-2 rounded-md text-sm font-medium border text-zinc-100 hover:bg-zinc-800 transition-all"
+          style="border-color: var(--noir-border-strong)">Secondary</button>
+        <button class="px-4 py-2 rounded-md text-sm font-medium text-zinc-400 hover:text-zinc-100 hover:bg-zinc-800 transition-all">Ghost</button>
+        <button class="px-4 py-2 rounded-md text-sm font-medium border text-red-400 hover:bg-red-950 transition-all" style="border-color: #7f1d1d">Destructive</button>
+        <button class="px-4 py-2 rounded-md text-sm font-medium text-zinc-600 cursor-not-allowed opacity-50" disabled>Disabled</button>
+      </div>
+      <div class="flex flex-wrap gap-2 pt-3 border-t" style="border-color: var(--noir-border)">
+        <p class="w-full text-xs font-mono text-zinc-600">// live theme vars</p>
+        <button class="px-4 py-2 rounded-md text-sm font-medium" style="background: var(--vmt-primary); color: var(--vmt-text-inverse)">vmt-primary</button>
+        <button class="px-4 py-2 rounded-md text-sm font-medium" style="background: var(--vmt-secondary); color: var(--vmt-text-inverse)">vmt-secondary</button>
+        <button class="px-4 py-2 rounded-md text-sm font-medium" style="background: var(--vmt-accent); color: var(--vmt-text-inverse)">vmt-accent</button>
+      </div>
+    </div>
+
+    <div class="rounded-md border p-5 space-y-3" style="background: var(--noir-surface); border-color: var(--noir-border)">
+      <p class="text-xs font-mono text-zinc-400">// badges</p>
+      <div class="flex flex-wrap gap-2">
+        <span class="text-xs px-2.5 py-0.5 rounded-full border font-mono text-zinc-300"
+          style="border-color: var(--noir-border-strong); background: var(--noir-surface-raised)">default</span>
+        <span class="text-xs px-2.5 py-0.5 rounded-full bg-white text-zinc-950 font-mono">solid</span>
+        <span class="text-xs px-2.5 py-0.5 rounded-full border font-mono"
+          style="border-color: var(--vmt-primary); color: var(--vmt-primary)">outline</span>
+        <span class="text-xs px-2.5 py-0.5 rounded-full font-mono" style="background: var(--vmt-success); color: #fff">success</span>
+        <span class="text-xs px-2.5 py-0.5 rounded-full font-mono" style="background: var(--vmt-warning); color: #000">warning</span>
+        <span class="text-xs px-2.5 py-0.5 rounded-full font-mono" style="background: var(--vmt-error); color: #fff">error</span>
+      </div>
+    </div>
+
+    <div class="grid sm:grid-cols-2 gap-4">
+      <div class="rounded-md border p-5 space-y-3 hover:border-zinc-600 transition-all"
+        style="background: var(--noir-surface); border-color: var(--noir-border)">
+        <div class="w-9 h-9 rounded-md border grid place-content-center text-base"
+          style="border-color: var(--noir-border-strong)">&#10022;</div>
+        <h4 class="text-sm font-semibold text-zinc-100">Feature Card</h4>
+        <p class="text-xs leading-relaxed" style="color: var(--noir-muted)">
+          Automatically inherits all CSS custom properties from the active theme.
+        </p>
+      </div>
+      <div class="rounded-md border p-5 space-y-3 hover:border-zinc-600 transition-all"
+        style="background: var(--noir-surface); border-color: var(--noir-border)">
+        <div class="flex items-center gap-3">
+          <div class="w-8 h-8 rounded-full bg-zinc-700 grid place-content-center text-xs font-mono text-zinc-300 border"
+            style="border-color: var(--noir-border-strong)">PG</div>
+          <div>
+            <p class="text-sm font-medium text-zinc-100">Pooya Golchian</p>
+            <p class="text-xs font-mono" style="color: var(--noir-muted)">Author</p>
+          </div>
         </div>
+        <p class="text-xs leading-relaxed" style="color: var(--noir-muted)">Adaptive design. Works with Vue 2 and Vue 3.</p>
+      </div>
+    </div>
 
-        <!-- Badges / Chips -->
-        <div class="space-y-2">
-            <h3 class="text-sm font-semibold" style="color: var(--vmt-text-muted)">Badges</h3>
-            <div class="flex flex-wrap gap-2">
-                <span v-for="(token, label) in badges" :key="label" class="px-3 py-1 rounded-full text-xs font-semibold"
-                    :style="{ background: token, color: '#fff' }">{{ label }}</span>
-            </div>
-        </div>
-
-        <!-- Cards -->
-        <div class="grid sm:grid-cols-2 gap-4">
-            <div class="rounded-xl p-4 border"
-                style="background: var(--vmt-surface-elevated); border-color: var(--vmt-border)">
-                <div class="w-10 h-10 rounded-lg mb-3 flex items-center justify-center"
-                    style="background: var(--vmt-primary)">
-                    <span class="text-white text-lg">✦</span>
-                </div>
-                <h4 class="font-semibold text-sm mb-1" style="color: var(--vmt-text)">Feature Card</h4>
-                <p class="text-xs leading-relaxed" style="color: var(--vmt-text-muted)">
-                    This card automatically inherits all CSS custom properties from the active theme.
-                </p>
-            </div>
-
-            <div class="rounded-xl p-4 border"
-                style="background: var(--vmt-surface-elevated); border-color: var(--vmt-border)">
-                <div class="flex items-center gap-3 mb-3">
-                    <div class="w-8 h-8 rounded-full flex items-center justify-center text-white text-xs font-bold"
-                        style="background: var(--vmt-secondary)">PG</div>
-                    <div>
-                        <p class="text-sm font-medium" style="color: var(--vmt-text)">Pooya Golchian</p>
-                        <p class="text-xs" style="color: var(--vmt-text-muted)">Author</p>
-                    </div>
-                </div>
-                <p class="text-xs" style="color: var(--vmt-text-muted)">
-                    Adaptive design with zero manual color overrides.
-                </p>
-            </div>
-        </div>
-
-        <!-- Input -->
-        <div class="space-y-2">
-            <h3 class="text-sm font-semibold" style="color: var(--vmt-text-muted)">Form Inputs</h3>
-            <input type="text" placeholder="Type something..."
-                class="w-full max-w-xs px-3 py-2 rounded-lg border text-sm outline-none transition-all" style="
-          background: var(--vmt-surface-elevated);
-          color: var(--vmt-text);
-          border-color: var(--vmt-border);
-        " />
-        </div>
-    </section>
+    <div class="rounded-md border p-5 space-y-3" style="background: var(--noir-surface); border-color: var(--noir-border)">
+      <p class="text-xs font-mono text-zinc-400">// form inputs</p>
+      <div class="space-y-3 max-w-sm">
+        <input type="text" placeholder="Enter your email..."
+          class="w-full px-3 py-2 rounded-md border text-sm font-mono outline-none transition-all focus:border-zinc-400 placeholder:text-zinc-600"
+          style="background: #09090b; color: var(--noir-text); border-color: var(--noir-border)" />
+        <select class="w-full px-3 py-2 rounded-md border text-sm font-mono outline-none"
+          style="background: #09090b; color: var(--noir-text); border-color: var(--noir-border)">
+          <option>light theme</option><option>dark theme</option><option>midnight</option>
+        </select>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script setup lang="ts">
-// Badge token map
-const badges = {
-    Primary: 'var(--vmt-primary)',
-    Secondary: 'var(--vmt-secondary)',
-    Accent: 'var(--vmt-accent)',
-    Success: 'var(--vmt-success)',
-    Warning: 'var(--vmt-warning)',
-    Error: 'var(--vmt-error)',
-    Info: 'var(--vmt-info)',
-}
+// Pure template demo
 </script>
