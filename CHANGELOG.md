@@ -1,5 +1,15 @@
 # Changelog
 
+## 4.2.0
+
+### Minor Changes
+
+- **Docs redesign**: All demo components (`LiveDemo`, `ColorGrid`, `ThemeDemo`) rebuilt with Lucide Vue Next icons, Space Grotesk + JetBrains Mono fonts, and a modern black-and-white VitePress theme.
+- **Bug fix**: Active theme button no longer stays locked after clicking — root cause was destructuring `current`/`theme` getters from `useTheme()`, which captured a one-time snapshot instead of a tracked reactive dependency. Components now access state via `ts.current` / `ts.theme` on the return object.
+- **Bug fix**: Demo component shells no longer inherit the active theme's colors (e.g. full dark-green page when Forest theme was selected). Shell backgrounds now use `--vp-c-*` VitePress variables, isolating the docs chrome from `--vmt-*` CSS vars.
+- **DX**: Added `dev:all` script to run playground and docs simultaneously in parallel (`pnpm run --parallel --filter=playground --filter=docs dev`).
+- **Docs**: New _Running Locally_ section in Getting Started guide with all `pnpm dev`, `pnpm docs:dev`, `pnpm dev:all`, and `pnpm test` commands.
+
 ## 4.1.0
 
 ### Minor Changes

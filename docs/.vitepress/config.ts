@@ -57,7 +57,7 @@ export default defineConfig({
       { text: 'Guide', link: '/guide/getting-started' },
       { text: 'API', link: '/api/' },
       {
-        text: 'v4.0',
+        text: 'v4.2',
         items: [
           { text: 'Changelog', link: 'https://github.com/pooyagolchian/vue-multiple-themes/blob/main/CHANGELOG.md' },
           { text: 'NPM', link: 'https://npmjs.com/package/vue-multiple-themes' },
