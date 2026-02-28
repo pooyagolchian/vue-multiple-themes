@@ -28,8 +28,7 @@
  * ```
  */
 
-import { isVue2 } from 'vue-demi'
-import type { App } from 'vue-demi'
+import { type App } from 'vue'
 import VueMultipleThemes from './components/VueMultipleThemes.vue'
 import type { ThemeOptions } from './types'
 import { buildCssVars, injectStyles } from './utils/css-injector'
@@ -96,17 +95,11 @@ export const VueMultipleThemesPlugin = {
     applyThemeToDom(initialTheme, null, { strategy, attribute, classPrefix, target })
 
     // ── Register global component ─────────────────────────────────────────
-    if (isVue2) {
-      // Vue 2: app is the Vue constructor
-      ;(app as any).component('VueMultipleThemes', VueMultipleThemes)
-    } else {
-      // Vue 3: app is the application instance
-      ;(app as any).component('VueMultipleThemes', VueMultipleThemes)
-    }
+    app.component('VueMultipleThemes', VueMultipleThemes)
 
-    // ── Provide the options for injection (Vue 3 only) ───────────────────
-    if (!isVue2 && typeof (app as any).provide === 'function') {
-      ;(app as any).provide('vmt:options', options)
+    // ── Provide the options for injection ────────────────────────────────
+    if (typeof app.provide === 'function') {
+      app.provide('vmt:options', options)
     }
   },
 }

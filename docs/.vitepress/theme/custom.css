@@ -44,6 +44,8 @@
   --vp-c-bg:         var(--vmt-background,        #ffffff);
   /* bg-alt drives the sidebar, code blocks, and input backgrounds in VitePress */
   --vp-c-bg-alt:     var(--vmt-surface,           #f4f4f5);
+  /* bg-elv drives floating panels: nav dropdowns, flyout menus, tooltips */
+  --vp-c-bg-elv:     var(--vmt-surface,           #ffffff);
   --vp-c-bg-soft:    var(--vmt-surface,           #f4f4f5);
   --vp-c-bg-mute:    var(--vmt-surface-elevated,  #e4e4e7);
 

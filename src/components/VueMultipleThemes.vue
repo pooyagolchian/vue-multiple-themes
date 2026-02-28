@@ -1,16 +1,13 @@
-<script lang="ts">
+<script setup lang="ts">
 import {
-    type PropType,
     computed,
-	defineComponent,
     onBeforeUnmount,
     onMounted,
-	ref,
+    ref,
     watch,
-} from "vue-demi";
+} from "vue";
 import type {
 	ThemeDefinition,
-	ThemeOptions,
 	ThemeStrategy,
 	ThemeTarget,
 } from "../types";
@@ -32,328 +29,281 @@ import VmtIcon from "./VmtIcon.vue";
 // while other components (e.g. NavThemeSwitcher) are still mounted.
 const _componentCounts = new Map<string, number>()
 
-export default defineComponent({
-	name: "VueMultipleThemes",
+const props = withDefaults(defineProps<{
+    /** All available theme definitions */
+    themes?: ThemeDefinition[];
+    /** Active theme on first render (default: first in `themes`) */
+    defaultTheme?: string;
+    /** How to stamp the theme on the DOM */
+    strategy?: ThemeStrategy;
+    /** Attribute name (default: `data-theme`) */
+    attribute?: string;
+    /** Class prefix (default: `theme-`) */
+    classPrefix?: string;
+    /** DOM element that receives the attribute / class */
+    target?: ThemeTarget;
+    /** CSS variable prefix (default: `--vmt-`) */
+    cssVarPrefix?: string;
+    /** Inject CSS variables automatically */
+    injectCssVars?: boolean;
+    /** Persist theme in storage */
+    storage?: "localStorage" | "sessionStorage" | "none";
+    /** Storage key for persistence */
+    storageKey?: string;
+    /** Respect OS dark/light preference on first load */
+    respectSystemPreference?: boolean;
+    /** Show the built-in toggle button */
+    showToggle?: boolean;
+    /** Show the label next to the icon */
+    showLabel?: boolean;
+    /** Size (px) of the toggle icon */
+    iconSize?: number;
+    /** Extra CSS classes on the root wrapper */
+    extraClass?: string;
+}>(), {
+    themes: () => [
+        {
+            name: "light",
+            label: "Light",
+            icon: "sun",
+            colors: {
+                primary: "#3b82f6",
+                secondary: "#8b5cf6",
+                accent: "#f59e0b",
+                background: "#ffffff",
+                surface: "#f8fafc",
+                surfaceElevated: "#f1f5f9",
+                text: "#111827",
+                textMuted: "#6b7280",
+                textInverse: "#ffffff",
+                border: "#e5e7eb",
+                ring: "#3b82f6",
+                success: "#10b981",
+                warning: "#f59e0b",
+                error: "#ef4444",
+                info: "#3b82f6",
+            },
+        },
+        {
+            name: "dark",
+            label: "Dark",
+            icon: "moon",
+            colors: {
+                primary: "#60a5fa",
+                secondary: "#a78bfa",
+                accent: "#fbbf24",
+                background: "#0f172a",
+                surface: "#1e293b",
+                surfaceElevated: "#334155",
+                text: "#f8fafc",
+                textMuted: "#94a3b8",
+                textInverse: "#0f172a",
+                border: "#334155",
+                ring: "#60a5fa",
+                success: "#34d399",
+                warning: "#fbbf24",
+                error: "#f87171",
+                info: "#60a5fa",
+            },
+        },
+        {
+            name: "sepia",
+            label: "Sepia",
+            icon: "coffee",
+            colors: {
+                primary: "#92400e",
+                secondary: "#78350f",
+                accent: "#d97706",
+                background: "#fdf6e3",
+                surface: "#f5e9c9",
+                surfaceElevated: "#ede0b5",
+                text: "#3c2415",
+                textMuted: "#78583d",
+                textInverse: "#fdf6e3",
+                border: "#d6b896",
+                ring: "#92400e",
+                success: "#166534",
+                warning: "#92400e",
+                error: "#991b1b",
+                info: "#1e40af",
+            },
+        },
+    ],
+    strategy: "attribute",
+    attribute: "data-theme",
+    classPrefix: "theme-",
+    target: "html",
+    cssVarPrefix: "--vmt-",
+    injectCssVars: true,
+    storage: "localStorage",
+    storageKey: "vmt-theme",
+    respectSystemPreference: false,
+    showToggle: true,
+    showLabel: false,
+    iconSize: 20,
+    extraClass: "",
+});
 
-    components: { VmtIcon },
+const emit = defineEmits<{
+    (e: "change", theme: ThemeDefinition): void;
+}>();
 
-	props: {
-		/** All available theme definitions */
-		themes: {
-			type: Array as PropType<ThemeDefinition[]>,
-			default: () => [
-				{
-					name: "light",
-					label: "Light",
-					icon: "sun",
-					colors: {
-						primary: "#3b82f6",
-						secondary: "#8b5cf6",
-						accent: "#f59e0b",
-						background: "#ffffff",
-						surface: "#f8fafc",
-						surfaceElevated: "#f1f5f9",
-						text: "#111827",
-						textMuted: "#6b7280",
-						textInverse: "#ffffff",
-						border: "#e5e7eb",
-						ring: "#3b82f6",
-						success: "#10b981",
-						warning: "#f59e0b",
-						error: "#ef4444",
-						info: "#3b82f6",
-					},
-				},
-				{
-					name: "dark",
-					label: "Dark",
-					icon: "moon",
-					colors: {
-						primary: "#60a5fa",
-						secondary: "#a78bfa",
-						accent: "#fbbf24",
-						background: "#0f172a",
-						surface: "#1e293b",
-						surfaceElevated: "#334155",
-						text: "#f8fafc",
-						textMuted: "#94a3b8",
-						textInverse: "#0f172a",
-						border: "#334155",
-						ring: "#60a5fa",
-						success: "#34d399",
-						warning: "#fbbf24",
-						error: "#f87171",
-						info: "#60a5fa",
-					},
-				},
-				{
-					name: "sepia",
-					label: "Sepia",
-					icon: "coffee",
-					colors: {
-						primary: "#92400e",
-						secondary: "#78350f",
-						accent: "#d97706",
-						background: "#fdf6e3",
-						surface: "#f5e9c9",
-						surfaceElevated: "#ede0b5",
-						text: "#3c2415",
-						textMuted: "#78583d",
-						textInverse: "#fdf6e3",
-						border: "#d6b896",
-						ring: "#92400e",
-						success: "#166534",
-						warning: "#92400e",
-						error: "#991b1b",
-						info: "#1e40af",
-					},
-				},
-			],
-		},
-		/** Active theme on first render (default: first in `themes`) */
-		defaultTheme: {
-			type: String,
-			default: undefined,
-		},
-		/** How to stamp the theme on the DOM */
-		strategy: {
-			type: String as PropType<ThemeStrategy>,
-			default: "attribute",
-		},
-		/** Attribute name (default: `data-theme`) */
-		attribute: {
-			type: String,
-			default: "data-theme",
-		},
-		/** Class prefix (default: `theme-`) */
-		classPrefix: {
-			type: String,
-			default: "theme-",
-		},
-		/** DOM element that receives the attribute / class */
-		target: {
-			type: String as PropType<ThemeTarget>,
-			default: "html",
-		},
-		/** CSS variable prefix (default: `--vmt-`) */
-		cssVarPrefix: {
-			type: String,
-			default: "--vmt-",
-		},
-		/** Inject CSS variables automatically */
-		injectCssVars: {
-			type: Boolean,
-			default: true,
-		},
-		/** Persist theme in storage */
-		storage: {
-			type: String as PropType<"localStorage" | "sessionStorage" | "none">,
-			default: "localStorage",
-		},
-		/** Storage key for persistence */
-		storageKey: {
-			type: String,
-			default: "vmt-theme",
-		},
-		/** Respect OS dark/light preference on first load */
-		respectSystemPreference: {
-			type: Boolean,
-			default: false,
-		},
-		/** Show the built-in toggle button */
-		showToggle: {
-			type: Boolean,
-			default: true,
-		},
-		/** Show the label next to the icon */
-		showLabel: {
-			type: Boolean,
-			default: false,
-		},
-		/** Size (px) of the toggle icon */
-		iconSize: {
-			type: Number,
-			default: 20,
-		},
-		/** Extra CSS classes on the root wrapper */
-		extraClass: {
-			type: String,
-			default: "",
-		},
-	},
+// ── Resolve initial theme ───────────────────────────────────────────
+function getInitial(): string {
+    if (props.storage !== "none") {
+        const stored = readStorage(
+            props.storageKey,
+            props.storage as "localStorage" | "sessionStorage",
+        );
+        if (
+            stored &&
+            props.themes.some((t: ThemeDefinition) => t.name === stored)
+        )
+            return stored;
+    }
 
-	emits: ["change"],
+    if (props.respectSystemPreference) {
+        const pref = getSystemPreference();
+        const match = props.themes.find(
+            (t: ThemeDefinition) => t.name === pref,
+        );
+        if (match) return match.name;
+    }
 
-	setup(props, { emit }) {
-		// ── Resolve initial theme ───────────────────────────────────────────
-		function getInitial(): string {
-			if (props.storage !== "none") {
-				const stored = readStorage(
-					props.storageKey,
-					props.storage as "localStorage" | "sessionStorage",
-				);
-				if (
-					stored &&
-					props.themes.some((t: ThemeDefinition) => t.name === stored)
-				)
-					return stored;
-			}
+    if (
+        props.defaultTheme &&
+        props.themes.some((t: ThemeDefinition) => t.name === props.defaultTheme)
+    ) {
+        return props.defaultTheme;
+    }
 
-			if (props.respectSystemPreference) {
-				const pref = getSystemPreference();
-				const match = props.themes.find(
-					(t: ThemeDefinition) => t.name === pref,
-				);
-				if (match) return match.name;
-			}
+    return props.themes[0]?.name ?? "light";
+}
 
-			if (
-				props.defaultTheme &&
-				props.themes.some((t: ThemeDefinition) => t.name === props.defaultTheme)
-			) {
-				return props.defaultTheme;
-			}
+const currentName = ref<string>(getInitial());
+let previousName: string | null = null;
 
-			return props.themes[0]?.name ?? "light";
-		}
+const currentTheme = computed<ThemeDefinition>(
+    () =>
+        props.themes.find(
+            (t: ThemeDefinition) => t.name === currentName.value,
+        ) ?? props.themes[0],
+);
 
-		const currentName = ref<string>(getInitial());
-		let previousName: string | null = null;
+const isDark = computed<boolean>(() =>
+    currentName.value.toLowerCase().includes("dark"),
+);
 
-		const currentTheme = computed<ThemeDefinition>(
-			() =>
-				props.themes.find(
-					(t: ThemeDefinition) => t.name === currentName.value,
-				) ?? props.themes[0],
-		);
+const currentIconName = computed<string>(
+    () => currentTheme.value.icon ?? "palette",
+);
 
-		const isDark = computed<boolean>(() =>
-			currentName.value.toLowerCase().includes("dark"),
-		);
+// ── Apply to DOM ────────────────────────────────────────────────────
+function applyTheme(name: string) {
+    applyThemeToDom(name, previousName, {
+        strategy: props.strategy,
+        attribute: props.attribute,
+        classPrefix: props.classPrefix,
+        target: props.target,
+    });
+    previousName = name;
 
-        const currentIconName = computed<string>(
-            () => currentTheme.value.icon ?? "palette",
-		);
+    if (props.storage !== "none") {
+        writeStorage(
+            props.storageKey,
+            name,
+            props.storage as "localStorage" | "sessionStorage",
+        );
+    }
 
-		// ── Apply to DOM ────────────────────────────────────────────────────
-		function applyTheme(name: string) {
-			applyThemeToDom(name, previousName, {
-				strategy: props.strategy,
-				attribute: props.attribute,
-				classPrefix: props.classPrefix,
-				target: props.target,
-			});
-			previousName = name;
+    emit("change", currentTheme.value);
+}
 
-			if (props.storage !== "none") {
-				writeStorage(
-					props.storageKey,
-					name,
-					props.storage as "localStorage" | "sessionStorage",
-				);
-			}
+// ── Actions ─────────────────────────────────────────────────────────
+function setTheme(name: string) {
+    if (!props.themes.some((t: ThemeDefinition) => t.name === name)) {
+        console.warn(`[VueMultipleThemes] Unknown theme: "${name}"`);
+        return;
+    }
+    currentName.value = name;
+}
 
-			emit("change", currentTheme.value);
-		}
+function nextTheme() {
+    const idx = props.themes.findIndex(
+        (t: ThemeDefinition) => t.name === currentName.value,
+    );
+    currentName.value = props.themes[(idx + 1) % props.themes.length].name;
+}
 
-		// ── Actions ─────────────────────────────────────────────────────────
-		function setTheme(name: string) {
-			if (!props.themes.some((t: ThemeDefinition) => t.name === name)) {
-				console.warn(`[VueMultipleThemes] Unknown theme: "${name}"`);
-				return;
-			}
-			currentName.value = name;
-		}
+function prevTheme() {
+    const idx = props.themes.findIndex(
+        (t: ThemeDefinition) => t.name === currentName.value,
+    );
+    currentName.value =
+        props.themes[
+            (idx - 1 + props.themes.length) % props.themes.length
+        ].name;
+}
 
-		function nextTheme() {
-			const idx = props.themes.findIndex(
-				(t: ThemeDefinition) => t.name === currentName.value,
-			);
-			currentName.value = props.themes[(idx + 1) % props.themes.length].name;
-		}
+function toggleTheme() {
+    if (props.themes.length < 2) return;
+    if (props.themes.length === 2) {
+        // Classic two-theme toggle
+        const other = props.themes.find(
+            (t: ThemeDefinition) => t.name !== currentName.value,
+        );
+        if (other) currentName.value = other.name;
+    } else {
+        // 3+ themes: cycle to next
+        nextTheme();
+    }
+}
 
-		function prevTheme() {
-			const idx = props.themes.findIndex(
-				(t: ThemeDefinition) => t.name === currentName.value,
-			);
-			currentName.value =
-				props.themes[
-					(idx - 1 + props.themes.length) % props.themes.length
-				].name;
-		}
+// ── Lifecycle ────────────────────────────────────────────────────────
+// Apply immediately in browser context to prevent flash of wrong theme on refresh.
+function ensureStylesAndApply() {
+    if (props.injectCssVars) {
+        const css = buildCssVars(props.themes, {
+            strategy: props.strategy,
+            attribute: props.attribute,
+            classPrefix: props.classPrefix,
+            cssVarPrefix: props.cssVarPrefix,
+            target: props.target,
+        });
+        injectStyles(css);
+    }
+    applyTheme(currentName.value);
+}
 
-		function toggleTheme() {
-			if (props.themes.length < 2) return;
-			if (props.themes.length === 2) {
-				// Classic two-theme toggle
-				const other = props.themes.find(
-					(t: ThemeDefinition) => t.name !== currentName.value,
-				);
-				if (other) currentName.value = other.name;
-			} else {
-				// 3+ themes: cycle to next
-				nextTheme();
-			}
-		}
+let appliedInSetup = false;
+if (typeof document !== "undefined") {
+    ensureStylesAndApply();
+    appliedInSetup = true;
+}
 
-		// ── Lifecycle ────────────────────────────────────────────────────────
-		// Apply immediately in browser context to prevent flash of wrong theme on refresh.
-		function ensureStylesAndApply() {
-			if (props.injectCssVars) {
-				const css = buildCssVars(props.themes, {
-					strategy: props.strategy,
-					attribute: props.attribute,
-					classPrefix: props.classPrefix,
-					cssVarPrefix: props.cssVarPrefix,
-					target: props.target,
-				});
-				injectStyles(css);
-			}
-			applyTheme(currentName.value);
-		}
+onMounted(() => {
+    if (!appliedInSetup) {
+        ensureStylesAndApply();
+    }
+});
 
-		let appliedInSetup = false;
-		if (typeof document !== "undefined") {
-			ensureStylesAndApply();
-			appliedInSetup = true;
-		}
+watch(currentName, (name) => {
+    applyTheme(name);
+});
 
-		onMounted(() => {
-			if (!appliedInSetup) {
-				ensureStylesAndApply();
-			}
-		});
+// ── Ref-counted cleanup ─────────────────────────────────────────────
+// Only remove the shared <style> tag when ALL instances using this
+// storageKey are unmounted. Mirrors the pattern in useTheme.ts.
+const _key = props.storageKey;
+_componentCounts.set(_key, (_componentCounts.get(_key) ?? 0) + 1);
 
-		watch(currentName, (name) => {
-			applyTheme(name);
-		});
-
-		// ── Ref-counted cleanup ─────────────────────────────────────────────
-		// Only remove the shared <style> tag when ALL instances using this
-		// storageKey are unmounted. Mirrors the pattern in useTheme.ts.
-		const _key = props.storageKey;
-		_componentCounts.set(_key, (_componentCounts.get(_key) ?? 0) + 1);
-
-		onBeforeUnmount(() => {
-			const count = (_componentCounts.get(_key) ?? 1) - 1;
-			_componentCounts.set(_key, count);
-			if (count <= 0) {
-				_componentCounts.delete(_key);
-				removeStyles();
-			}
-		});
-
-		return {
-			currentName,
-			currentTheme,
-			isDark,
-            currentIconName,
-			setTheme,
-			nextTheme,
-			prevTheme,
-			toggleTheme,
-		};
-	},
+onBeforeUnmount(() => {
+    const count = (_componentCounts.get(_key) ?? 1) - 1;
+    _componentCounts.set(_key, count);
+    if (count <= 0) {
+        _componentCounts.delete(_key);
+        removeStyles();
+    }
 });
 </script>
 

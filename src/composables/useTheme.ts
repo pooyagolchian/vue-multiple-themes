@@ -1,11 +1,10 @@
 import {
   computed,
-  isVue2,
   onBeforeUnmount,
   onMounted,
   ref,
   watch,
-} from 'vue-demi'
+} from 'vue'
 import type { ThemeDefinition, ThemeOptions, UseThemeReturn } from '../types'
 import { buildCssVars, injectStyles, removeStyles } from '../utils/css-injector'
 import { applyThemeToDom, getSystemPreference, readStorage, writeStorage } from '../utils/dom'
@@ -163,7 +162,7 @@ export function useTheme(options: ThemeOptions): UseThemeReturn {
   let appliedInSetup = false
   if (typeof document !== 'undefined') {
     ensureStyles()
-    applyTheme(currentName.value)
+    if (currentName.value) applyTheme(currentName.value)
     appliedInSetup = true
   }
 
@@ -181,7 +180,7 @@ export function useTheme(options: ThemeOptions): UseThemeReturn {
   // Clean up injected styles only when ALL instances are unmounted
   let instanceCount = (singletons.get(singletonKey) as any)?._count ?? 0
   instanceCount++
-  ;(singletons.get(singletonKey) as any)!._count = instanceCount
+    ; (singletons.get(singletonKey) as any)!._count = instanceCount
 
   onBeforeUnmount(() => {
     const entry = singletons.get(singletonKey) as any
