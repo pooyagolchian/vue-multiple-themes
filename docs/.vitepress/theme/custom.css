@@ -42,6 +42,8 @@
   --vp-c-brand-soft: color-mix(in srgb, var(--vmt-primary, #09090b) 10%, transparent);
 
   --vp-c-bg:         var(--vmt-background,        #ffffff);
+  /* bg-alt drives the sidebar, code blocks, and input backgrounds in VitePress */
+  --vp-c-bg-alt:     var(--vmt-surface,           #f4f4f5);
   --vp-c-bg-soft:    var(--vmt-surface,           #f4f4f5);
   --vp-c-bg-mute:    var(--vmt-surface-elevated,  #e4e4e7);
 
