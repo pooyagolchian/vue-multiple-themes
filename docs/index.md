@@ -4,9 +4,9 @@ layout: home
 hero:
   name: 'vue-multiple-themes'
   text: 'Real Multi-Theme System for Vue'
-  tagline: Vue 2 & 3 · TypeScript · CSS Variables · TailwindCSS · Lucide Icons
+  tagline: Vue 3 Optimized · TypeScript · CSS Variables · TailwindCSS · Lucide Icons
   image:
-    src: /hero.svg
+    src: /banner.png
     alt: vue-multiple-themes
   actions:
     - theme: brand
@@ -27,8 +27,8 @@ features:
     title: Composable API
     details: '`useTheme()` gives you reactive access to the current theme, typed colour tokens, and navigation helpers (next, prev, toggle).'
   - icon: 🦄
-    title: Vue 2 & Vue 3
-    details: Powered by `vue-demi` for seamless support across both major Vue versions with zero API differences.
+    title: Vue 3 Ready
+    details: Optimized for the latest Vue 3 Composition API with full support for `<script setup>` and Vite 6.
   - icon: 📦
     title: Tree-Shakeable
     details: Import only what you need. ESM-first, fully typed, SSR-safe.

@@ -9,14 +9,14 @@
   "module": "./dist/vue-multiple-themes.js",
   "exports": {
     ".": {
+      "types": "./dist/index.d.ts",
       "import": "./dist/vue-multiple-themes.js",
-      "require": "./dist/vue-multiple-themes.cjs",
-      "types": "./dist/index.d.ts"
+      "require": "./dist/vue-multiple-themes.cjs"
     },
     "./tailwind": {
+      "types": "./dist/tailwind-plugin.d.ts",
       "import": "./dist/tailwind-plugin.js",
-      "require": "./dist/tailwind-plugin.cjs",
-      "types": "./dist/tailwind-plugin.d.ts"
+      "require": "./dist/tailwind-plugin.cjs"
     },
     "./styles": "./dist/style.css"
   },
