@@ -1,5 +1,7 @@
 # TailwindCSS Strategy
 
+<img src="/guide-tailwindcss.svg" alt="TailwindCSS Strategy" style="width:100%;border-radius:12px;margin:1.5rem 0 2rem;display:block;" />
+
 ## Overview
 
 When `strategy: 'class'` (or `'both'`) is set, the library adds a class

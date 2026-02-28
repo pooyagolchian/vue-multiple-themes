@@ -1,5 +1,7 @@
 # CSS Variables Strategy
 
+<img src="/guide-css-variables.svg" alt="CSS Variables Strategy" style="width:100%;border-radius:12px;margin:1.5rem 0 2rem;display:block;" />
+
 When you use `strategy: 'attribute'` (or `'both'`), the library:
 
 1. Injects a `<style>` tag into `<head>` with all theme declarations.

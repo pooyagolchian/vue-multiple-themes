@@ -1,5 +1,7 @@
 # Composable – `useTheme()`
 
+<img src="/guide-composable.svg" alt="Composable API" style="width:100%;border-radius:12px;margin:1.5rem 0 2rem;display:block;" />
+
 The `useTheme()` composable is the core of the library.  
 It works in Vue 3 and Vue 2 (with `@vue/composition-api`).
 

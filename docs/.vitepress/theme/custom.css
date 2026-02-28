@@ -9,6 +9,29 @@
   --vp-font-family-mono: 'JetBrains Mono', ui-monospace, 'Cascadia Code', monospace;
 }
 
+/* ── Smooth theme transitions ──────────────────────────────────────────── */
+/* Animate background, text and border colours when the data-theme attr      */
+/* changes on <html>. Keeps motion subtle (200ms) so it feels snappy.        */
+*,
+*::before,
+*::after {
+  transition:
+    background-color 0.2s ease,
+    border-color     0.2s ease,
+    color            0.2s ease,
+    box-shadow       0.2s ease;
+}
+/*
+ * KEY FIX: buttons must never transition background-color — the active-state
+ * colour on theme picker pills is driven by var(--vmt-primary) which updates
+ * instantly when data-theme changes.  Animating it causes the "stuck theme"
+ * visual bug on rapid clicks.  Explicitly name the allowed properties.
+ */
+*:where(input, textarea, select, button, [role='button']) {
+  transition-property: border-color, color, box-shadow, opacity, transform;
+  transition-duration: 0.12s;
+}
+
 /* ── Bridge: VitePress colour vars → active --vmt-* theme tokens ───────── */
 /* When a theme is active (data-theme attr on <html>), --vmt-* vars update   */
 /* and VitePress automatically picks up the new background / text / brand.   */

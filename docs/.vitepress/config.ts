@@ -19,6 +19,11 @@ export default defineConfig({
   },
 
   head: [
+    // ── Anti-FOUC: apply stored theme before first paint ───────────────────
+    // Runs synchronously before any CSS is parsed, preventing the flash of
+    // the default (light) theme when the user has a different theme stored.
+    ['script', {}, `(function(){try{var t=localStorage.getItem('vmt-docs-theme');if(t){var h=document.documentElement,r=[];h.setAttribute('data-theme',t);h.classList.forEach(function(c){if(c.startsWith('theme-'))r.push(c)});r.forEach(function(c){h.classList.remove(c)});h.classList.add('theme-'+t);}}catch(e){}})()`],
+
     // ── Google Fonts: Space Grotesk + JetBrains Mono ───────────────────────
     ['link', { rel: 'preconnect', href: 'https://fonts.googleapis.com' }],
     ['link', { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossorigin: '' }],

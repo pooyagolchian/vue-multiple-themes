@@ -1,5 +1,7 @@
 # Preset Themes
 
+<img src="/guide-presets.svg" alt="Preset Themes" style="width:100%;border-radius:12px;margin:1.5rem 0 2rem;display:block;" />
+
 `vue-multiple-themes` ships with **7 ready-to-use preset themes**:
 
 <ColorGrid />

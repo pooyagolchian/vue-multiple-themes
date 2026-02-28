@@ -1,5 +1,7 @@
 # Getting Started
 
+<img src="/guide-getting-started.svg" alt="Getting Started" style="width:100%;border-radius:12px;margin:1.5rem 0 2rem;display:block;" />
+
 ## Running Locally
 
 Want to explore interactively before installing? Clone the repo and try the live playground or this documentation site from source.
@@ -135,5 +137,3 @@ When `injectCssVars: true` (the default), the library injects CSS custom propert
 ```
 
 See [CSS Variables Strategy](/guide/css-variables) and [TailwindCSS Strategy](/guide/tailwindcss) for in-depth guides.
-
-<LiveDemo />

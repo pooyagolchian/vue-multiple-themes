@@ -1,0 +1,116 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 240" fill="none">
+  <!-- CINEMATIC B&W — "Variable Cascade": cascading horizontal bands of diminishing light, like CSS specificity flowing downward through glass channels. No text. -->
+  <defs>
+    <radialGradient id="cv-bg" cx="50%" cy="30%" r="60%">
+      <stop offset="0%"   stop-color="#1e1e1e"/>
+      <stop offset="100%" stop-color="#030303"/>
+    </radialGradient>
+    <!-- Light source at top center -->
+    <radialGradient id="cv-source" cx="50%" cy="0%" r="55%">
+      <stop offset="0%"   stop-color="#ffffff" stop-opacity="0.30"/>
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
+    </radialGradient>
+    <!-- Individual band gradients — each dimmer than last (cascade) -->
+    <linearGradient id="cv-b1" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0"/>
+      <stop offset="20%" stop-color="#ffffff" stop-opacity="0.65"/>
+      <stop offset="80%" stop-color="#ffffff" stop-opacity="0.55"/>
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="cv-b2" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0"/>
+      <stop offset="20%" stop-color="#ffffff" stop-opacity="0.45"/>
+      <stop offset="80%" stop-color="#ffffff" stop-opacity="0.38"/>
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="cv-b3" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0"/>
+      <stop offset="20%" stop-color="#ffffff" stop-opacity="0.30"/>
+      <stop offset="80%" stop-color="#ffffff" stop-opacity="0.24"/>
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="cv-b4" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0"/>
+      <stop offset="20%" stop-color="#ffffff" stop-opacity="0.18"/>
+      <stop offset="80%" stop-color="#ffffff" stop-opacity="0.14"/>
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="cv-b5" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0"/>
+      <stop offset="20%" stop-color="#ffffff" stop-opacity="0.10"/>
+      <stop offset="80%" stop-color="#ffffff" stop-opacity="0.07"/>
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
+    </linearGradient>
+    <radialGradient id="cv-vignette" cx="50%" cy="50%" r="70%">
+      <stop offset="0%"   stop-color="#000" stop-opacity="0"/>
+      <stop offset="100%" stop-color="#000" stop-opacity="0.68"/>
+    </radialGradient>
+    <filter id="cv-blur"><feGaussianBlur stdDeviation="2"/></filter>
+    <filter id="cv-glow">
+      <feGaussianBlur stdDeviation="5" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="900" height="240" fill="url(#cv-bg)"/>
+
+  <!-- Vertical channel separators — glass divider lines -->
+  <g stroke="#ffffff" stroke-width="0.5" stroke-opacity="0.12">
+    <line x1="180" y1="0" x2="180" y2="240"/>
+    <line x1="360" y1="0" x2="360" y2="240"/>
+    <line x1="540" y1="0" x2="540" y2="240"/>
+    <line x1="720" y1="0" x2="720" y2="240"/>
+  </g>
+
+  <!-- Cascading bands — thinner as they descend, simulating CSS specificity cascade -->
+  <rect x="0" y="12"  width="900" height="22" fill="url(#cv-b1)" rx="1"/>
+  <rect x="0" y="54"  width="900" height="18" fill="url(#cv-b2)" rx="1"/>
+  <rect x="0" y="90"  width="900" height="14" fill="url(#cv-b3)" rx="1"/>
+  <rect x="0" y="122" width="900" height="11" fill="url(#cv-b4)" rx="1"/>
+  <rect x="0" y="151" width="900" height="8"  fill="url(#cv-b5)" rx="1"/>
+  <rect x="0" y="178" width="900" height="5"  fill="url(#cv-b5)" rx="1" opacity="0.5"/>
+  <rect x="0" y="200" width="900" height="3"  fill="url(#cv-b5)" rx="1" opacity="0.3"/>
+
+  <!-- Light source at top -->
+  <rect width="900" height="240" fill="url(#cv-source)"/>
+
+  <!-- Vertical flow indicators — arrows pointing down -->
+  <g stroke="#ffffff" stroke-width="0.6" stroke-opacity="0.25" stroke-dasharray="3 9">
+    <line x1="90"  y1="10" x2="90"  y2="220"/>
+    <line x1="270" y1="10" x2="270" y2="220"/>
+    <line x1="450" y1="10" x2="450" y2="220"/>
+    <line x1="630" y1="10" x2="630" y2="220"/>
+    <line x1="810" y1="10" x2="810" y2="220"/>
+  </g>
+
+  <!-- Arrowheads at bottom of each flow line -->
+  <g stroke="#ffffff" stroke-width="0.8" stroke-opacity="0.30" fill="none">
+    <polyline points="84,212 90,222 96,212"/>
+    <polyline points="264,212 270,222 276,212"/>
+    <polyline points="444,212 450,222 456,212"/>
+    <polyline points="624,212 630,222 636,212"/>
+    <polyline points="804,212 810,222 816,212"/>
+  </g>
+
+  <!-- Glass node dots where bands cross flow lines -->
+  <g fill="#ffffff" filter="url(#cv-glow)">
+    <circle cx="90"  cy="23"  r="2.5" opacity="0.90"/>
+    <circle cx="270" cy="23"  r="2.5" opacity="0.85"/>
+    <circle cx="450" cy="23"  r="2.5" opacity="0.90"/>
+    <circle cx="630" cy="23"  r="2.5" opacity="0.85"/>
+    <circle cx="810" cy="23"  r="2.5" opacity="0.80"/>
+    <circle cx="90"  cy="63"  r="2"   opacity="0.60"/>
+    <circle cx="450" cy="63"  r="2"   opacity="0.62"/>
+    <circle cx="810" cy="63"  r="2"   opacity="0.58"/>
+    <circle cx="90"  cy="97"  r="1.5" opacity="0.40"/>
+    <circle cx="450" cy="97"  r="1.5" opacity="0.42"/>
+  </g>
+
+  <!-- Glass reflection surface — spans across top -->
+  <rect x="0" y="0" width="900" height="40" fill="#ffffff" fill-opacity="0.03" rx="0"/>
+  <line x1="0" y1="34" x2="900" y2="34" stroke="#ffffff" stroke-width="0.5" opacity="0.20"/>
+
+  <!-- Vignette -->
+  <rect width="900" height="240" fill="url(#cv-vignette)"/>
+</svg>

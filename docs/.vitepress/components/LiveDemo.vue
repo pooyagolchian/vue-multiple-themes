@@ -1,6 +1,6 @@
 <template>
     <div class="vmt-live-demo not-prose">
-        <!-- ── Header ─────────────────────────────────────────────────────── -->
+        <!-- ── Header ──────────────────────────────────────────────────── -->
         <div class="vmt-live-demo__header">
             <div class="vmt-live-demo__header-left">
                 <span class="vmt-live-demo__badge">
@@ -22,30 +22,31 @@
             </div>
         </div>
 
-        <!-- ── Theme picker ───────────────────────────────────────────────── -->
+        <!-- ── Theme picker ──────────────────────────────────────────────── -->
+        <!--
+          BUG FIX: active-button colour is driven by the CSS variable
+          `var(--vmt-primary)` via the `.is-active` CSS rule below, NOT via
+          inline :style.  This means the colour updates INSTANTLY when the
+          data-theme attribute changes — no 0.2 s transition stall on rapid
+          clicks — and there is no mismatch between JS state and DOM state.
+        -->
         <div class="vmt-live-demo__picker">
             <button
                 v-for="t in ts.themes"
                 :key="t.name"
                 class="vmt-theme-btn"
-                :class="{ 'is-active': ts.current === t.name }"
-                :style="ts.current === t.name ? {
-                    background: t.colors.primary,
-                    borderColor: t.colors.primary,
-                    color: t.colors.textInverse ?? '#fff',
-                } : {}"
+                :class="{ 'is-active': current === t.name }"
                 @click="ts.setTheme(t.name)"
             >
                 <component :is="iconFor(t)" :size="12" />
                 {{ t.label ?? t.name }}
-                <Check v-if="ts.current === t.name" :size="11" class="vmt-theme-btn__check" />
+                <Check v-if="current === t.name" :size="11" class="vmt-theme-btn__check" />
             </button>
         </div>
 
-        <!-- ── Divider ────────────────────────────────────────────────────── -->
         <div class="vmt-live-demo__divider" />
 
-        <!-- ── Swatch grid ────────────────────────────────────────────────── -->
+        <!-- ── Swatch grid ───────────────────────────────────────────────── -->
         <div class="vmt-live-demo__swatches">
             <div
                 v-for="[token, color] in swatches"
@@ -62,59 +63,41 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from "vue";
-import {
-    Check,
-    ChevronLeft,
-    ChevronRight,
-    Coffee,
-    Moon,
-    Palette,
-    Snowflake,
-    Sun,
-    Sunset,
-    TreePine,
-    Waves,
-} from "lucide-vue-next";
-import type { ThemeDefinition } from "vue-multiple-themes";
-import { PRESET_THEMES, useTheme } from "vue-multiple-themes";
+import { computed } from 'vue'
+import { Check, ChevronLeft, ChevronRight, Palette } from 'lucide-vue-next'
+import { PRESET_THEMES, useTheme } from 'vue-multiple-themes'
+import { DOCS_THEME_OPTIONS, iconFor } from '../composables/themeIcons'
 
 /**
- * Access theme as `ts.current` / `ts.theme` — do NOT destructure these getters
- * or Vue will lose reactivity (one-time snapshot instead of tracked dependency).
+ * Share the global docs-theme singleton (same storageKey as NavThemeSwitcher).
+ * `injectCssVars: false` — the plugin / NavThemeSwitcher already injected the
+ * `<style id="vmt-theme-styles">` tag; LiveDemo only needs the reactive state.
  */
 const ts = useTheme({
     themes: PRESET_THEMES,
-    defaultTheme: "light",
-    storageKey: "vmt-docs-theme",
+    ...DOCS_THEME_OPTIONS,
     injectCssVars: false,
-});
+})
 
-const ICON_MAP: Record<string, unknown> = {
-    sun: Sun,
-    moon: Moon,
-    coffee: Coffee,
-    droplets: Waves,
-    leaf: TreePine,
-    flame: Sunset,
-    snowflake: Snowflake,
-};
-
-function iconFor(t: ThemeDefinition) {
-    return ICON_MAP[t.icon ?? ""] ?? Palette;
-}
+/**
+ * Explicit computed so Vue's dependency-tracker definitely re-renders the
+ * picker when the active theme changes, even on rapid successive clicks.
+ */
+const current = computed(() => ts.current)
 
 const SWATCH_TOKENS = [
-    "primary", "secondary", "accent", "success", "warning", "error",
-] as const;
+    'primary', 'secondary', 'accent', 'success', 'warning', 'error',
+] as const
 
 const swatches = computed(() =>
-    SWATCH_TOKENS.map((k) => [k, ts.theme.colors[k] ?? ""] as const).filter(([, v]) => v),
-);
+    SWATCH_TOKENS
+        .map((k) => [k, ts.theme.colors[k] ?? ''] as const)
+        .filter(([, v]) => v),
+)
 </script>
 
 <style scoped>
-/* ── Shell ────────────────────────────────────────────────────────────────── */
+/* ── Shell ──────────────────────────────────────────────────────────────── */
 .vmt-live-demo {
     margin: 1.75rem 0;
     border: 1px solid var(--vp-c-divider);
@@ -124,7 +107,7 @@ const swatches = computed(() =>
     box-shadow: 0 1px 4px rgba(0,0,0,.04);
 }
 
-/* ── Header ───────────────────────────────────────────────────────────────── */
+/* ── Header ─────────────────────────────────────────────────────────────── */
 .vmt-live-demo__header {
     display: flex;
     align-items: center;
@@ -184,7 +167,7 @@ const swatches = computed(() =>
     color: var(--vp-c-text-1);
 }
 
-/* ── Picker ───────────────────────────────────────────────────────────────── */
+/* ── Picker ─────────────────────────────────────────────────────────────── */
 .vmt-live-demo__picker {
     display: flex;
     flex-wrap: wrap;
@@ -203,15 +186,29 @@ const swatches = computed(() =>
     font-size: 0.75rem;
     font-weight: 500;
     cursor: pointer;
-    transition: background 0.15s, border-color 0.15s, color 0.15s, box-shadow 0.15s;
     font-family: inherit;
+    /*
+     * KEY FIX: exclude background-color from transition on theme buttons.
+     * The background of the active button is driven by var(--vmt-primary)
+     * which updates synchronously with the data-theme attribute change.
+     * Animating it causes a visible lag / stuck state on rapid clicks.
+     */
+    transition: border-color 0.15s, color 0.15s, box-shadow 0.15s;
 }
 .vmt-theme-btn:hover:not(.is-active) {
     background: var(--vp-c-bg-mute);
     border-color: var(--vp-c-text-3);
     color: var(--vp-c-text-1);
 }
+/*
+ * Active state: colour is dictated purely by CSS — the current
+ * --vmt-primary variable value —  so it is always in sync with the real
+ * active theme and can never show a stale / intermediate colour.
+ */
 .vmt-theme-btn.is-active {
+    background: var(--vmt-primary);
+    border-color: var(--vmt-primary);
+    color: var(--vmt-text-inverse, #fff);
     box-shadow: 0 1px 6px rgba(0,0,0,.18);
 }
 .vmt-theme-btn__check {
@@ -219,14 +216,13 @@ const swatches = computed(() =>
     opacity: 0.8;
 }
 
-/* ── Divider ──────────────────────────────────────────────────────────────── */
+/* ── Divider ─────────────────────────────────────────────────────────────── */
 .vmt-live-demo__divider {
     height: 1px;
     background: var(--vp-c-divider);
-    margin: 0;
 }
 
-/* ── Swatch grid ──────────────────────────────────────────────────────────── */
+/* ── Swatch grid ─────────────────────────────────────────────────────────── */
 .vmt-live-demo__swatches {
     display: grid;
     grid-template-columns: repeat(3, 1fr);

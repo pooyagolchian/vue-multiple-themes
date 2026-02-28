@@ -6,7 +6,7 @@
                 :key="t.name"
                 class="vmt-color-card"
             >
-                <!-- Top: color band -->
+                <!-- Color band -->
                 <div class="vmt-color-card__band">
                     <div
                         v-for="[k, v] in bandColors(t)"
@@ -19,7 +19,6 @@
 
                 <!-- Body -->
                 <div class="vmt-color-card__body">
-                    <!-- Icon + name row -->
                     <div class="vmt-color-card__name-row">
                         <span
                             class="vmt-color-card__icon-wrap"
@@ -29,11 +28,7 @@
                         </span>
                         <span class="vmt-color-card__name">{{ t.label ?? t.name }}</span>
                     </div>
-
-                    <!-- Attribute chip -->
                     <code class="vmt-color-card__attr">data-theme="{{ t.name }}"</code>
-
-                    <!-- Mini swatch row -->
                     <div class="vmt-color-card__mini-swatches">
                         <div
                             v-for="[k, v] in miniSwatches(t)"
@@ -50,48 +45,23 @@
 </template>
 
 <script setup lang="ts">
-import {
-    Coffee,
-    Moon,
-    Palette,
-    Snowflake,
-    Sun,
-    Sunset,
-    TreePine,
-    Waves,
-} from "lucide-vue-next";
-import { PRESET_THEMES } from "vue-multiple-themes";
-import type { ThemeDefinition } from "vue-multiple-themes";
+import { PRESET_THEMES } from 'vue-multiple-themes'
+import type { ThemeDefinition } from 'vue-multiple-themes'
+import { iconFor } from '../composables/themeIcons'
 
-const ICON_MAP: Record<string, unknown> = {
-    sun: Sun,
-    moon: Moon,
-    coffee: Coffee,
-    droplets: Waves,
-    leaf: TreePine,
-    flame: Sunset,
-    snowflake: Snowflake,
-};
-
-function iconFor(t: ThemeDefinition) {
-    return ICON_MAP[t.icon ?? ""] ?? Palette;
-}
-
-const BAND_KEYS = ["primary", "secondary", "accent", "background", "surface"] as const;
-const MINI_KEYS = ["primary", "secondary", "accent", "success", "warning", "error"] as const;
+const BAND_KEYS = ['primary', 'secondary', 'accent', 'background', 'surface'] as const
+const MINI_KEYS = ['primary', 'secondary', 'accent', 'success', 'warning', 'error'] as const
 
 function bandColors(t: ThemeDefinition) {
-    return BAND_KEYS.map((k) => [k, t.colors[k]]).filter(([, v]) => v);
+    return BAND_KEYS.map((k) => [k, t.colors[k]]).filter(([, v]) => v)
 }
 function miniSwatches(t: ThemeDefinition) {
-    return MINI_KEYS.map((k) => [k, t.colors[k]]).filter(([, v]) => v);
+    return MINI_KEYS.map((k) => [k, t.colors[k]]).filter(([, v]) => v)
 }
 </script>
 
 <style scoped>
-.vmt-color-grid {
-    margin: 1.75rem 0;
-}
+.vmt-color-grid { margin: 1.75rem 0; }
 .vmt-color-grid__grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -100,7 +70,6 @@ function miniSwatches(t: ThemeDefinition) {
 @media (min-width: 540px) { .vmt-color-grid__grid { grid-template-columns: repeat(3, 1fr); } }
 @media (min-width: 768px) { .vmt-color-grid__grid { grid-template-columns: repeat(4, 1fr); } }
 
-/* ── Card ─────────────────────────────────────────────────────────────────── */
 .vmt-color-card {
     border: 1px solid var(--vp-c-divider);
     border-radius: 12px;
@@ -114,20 +83,10 @@ function miniSwatches(t: ThemeDefinition) {
     border-color: var(--vp-c-text-3);
 }
 
-/* ── Color band ───────────────────────────────────────────────────────────── */
-.vmt-color-card__band {
-    display: flex;
-    height: 44px;
-}
-.vmt-color-card__band-strip {
-    flex: 1;
-    transition: flex 0.2s;
-}
-.vmt-color-card:hover .vmt-color-card__band-strip:first-child {
-    flex: 2;
-}
+.vmt-color-card__band { display: flex; height: 44px; }
+.vmt-color-card__band-strip { flex: 1; transition: flex 0.2s; }
+.vmt-color-card:hover .vmt-color-card__band-strip:first-child { flex: 2; }
 
-/* ── Body ─────────────────────────────────────────────────────────────────── */
 .vmt-color-card__body {
     padding: 0.75rem;
     display: flex;
@@ -135,13 +94,7 @@ function miniSwatches(t: ThemeDefinition) {
     gap: 0.5rem;
     background: var(--vp-c-bg-soft);
 }
-
-/* ── Name row ─────────────────────────────────────────────────────────────── */
-.vmt-color-card__name-row {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-}
+.vmt-color-card__name-row { display: flex; align-items: center; gap: 0.5rem; }
 .vmt-color-card__icon-wrap {
     display: inline-flex;
     align-items: center;
@@ -157,8 +110,6 @@ function miniSwatches(t: ThemeDefinition) {
     color: var(--vp-c-text-1);
     letter-spacing: -0.01em;
 }
-
-/* ── Attribute chip ───────────────────────────────────────────────────────── */
 .vmt-color-card__attr {
     display: block;
     font-size: 0.625rem;
@@ -171,15 +122,9 @@ function miniSwatches(t: ThemeDefinition) {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    max-width: 100%;
     letter-spacing: 0;
 }
-
-/* ── Mini swatches ────────────────────────────────────────────────────────── */
-.vmt-color-card__mini-swatches {
-    display: flex;
-    gap: 0.3rem;
-}
+.vmt-color-card__mini-swatches { display: flex; gap: 0.3rem; }
 .vmt-color-card__mini-dot {
     width: 14px;
     height: 14px;
@@ -189,7 +134,5 @@ function miniSwatches(t: ThemeDefinition) {
     cursor: default;
     transition: transform 0.15s;
 }
-.vmt-color-card__mini-dot:hover {
-    transform: scale(1.3);
-}
+.vmt-color-card__mini-dot:hover { transform: scale(1.3); }
 </style>

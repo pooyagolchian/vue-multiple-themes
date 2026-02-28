@@ -27,6 +27,11 @@ import {
 } from "../utils/dom";
 import VmtIcon from "./VmtIcon.vue";
 
+// ── Ref-counted instance tracking (keyed by storageKey) ────────────────────
+// Prevents a navigating-away component from wiping the shared <style> tag
+// while other components (e.g. NavThemeSwitcher) are still mounted.
+const _componentCounts = new Map<string, number>()
+
 export default defineComponent({
 	name: "VueMultipleThemes",
 
@@ -323,8 +328,19 @@ export default defineComponent({
 			applyTheme(name);
 		});
 
+		// ── Ref-counted cleanup ─────────────────────────────────────────────
+		// Only remove the shared <style> tag when ALL instances using this
+		// storageKey are unmounted. Mirrors the pattern in useTheme.ts.
+		const _key = props.storageKey;
+		_componentCounts.set(_key, (_componentCounts.get(_key) ?? 0) + 1);
+
 		onBeforeUnmount(() => {
-			removeStyles();
+			const count = (_componentCounts.get(_key) ?? 1) - 1;
+			_componentCounts.set(_key, count);
+			if (count <= 0) {
+				_componentCounts.delete(_key);
+				removeStyles();
+			}
 		});
 
 		return {

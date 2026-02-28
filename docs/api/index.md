@@ -1,5 +1,7 @@
 # API Reference
 
+<img src="/api-reference.svg" alt="API Reference" style="width:100%;border-radius:12px;margin:1.5rem 0 2rem;display:block;" />
+
 ## Exports
 
 ```ts
