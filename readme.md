@@ -1,9 +1,12 @@
+<p align="center">
+  <img src="docs/public/banner.png" alt="vue-multiple-themes banner" width="100%" />
+</p>
+
 # vue-multiple-themes
 
-> Dynamic multi-theme support for **Vue 2** and **Vue 3** — CSS custom properties, TailwindCSS, WCAG contrast utilities, and a reactive composable API.
+> Dynamic multi-theme support for **Vue 3** — CSS custom properties, TailwindCSS, WCAG contrast utilities, and a reactive composable API.
 
 [![npm version](https://img.shields.io/npm/v/vue-multiple-themes)](https://www.npmjs.com/package/vue-multiple-themes)
-[![CI](https://github.com/pooyagolchian/vue-multiple-themes/actions/workflows/ci.yml/badge.svg)](https://github.com/pooyagolchian/vue-multiple-themes/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
 ---
@@ -25,12 +28,6 @@ pnpm docs:dev
 # Run playground AND docs simultaneously (two ports in parallel)
 pnpm dev:all
 
-# Run the full unit-test suite
-pnpm test
-
-# Run tests in watch mode
-pnpm test:watch
-
 # Build the library
 pnpm build
 ```
@@ -39,7 +36,7 @@ pnpm build
 
 ## Features
 
-- **Vue 2.7+ and Vue 3** — single package via `vue-demi`
+- **Vue 3 Optimized** — leverage the latest Composition API and `<script setup>`
 - **TypeScript** — full type definitions included
 - **CSS custom properties** — semantic `--vmt-*` variables injected automatically
 - **TailwindCSS plugin** — `bg-vmt-primary`, `text-vmt-foreground`, etc.
@@ -47,7 +44,7 @@ pnpm build
 - **Dynamic theme generation** — create themes from a single brand color
 - **Color utilities** — lighten, darken, mix, contrast ratio, WCAG compliance
 - **`useTheme()` composable** — reactive, SSR-safe, localStorage-persistent
-- **Zero runtime dependencies** (only `vue` peer dep + `vue-demi`)
+- **Zero runtime dependencies** (only `vue` peer dependency)
 
 ---
 

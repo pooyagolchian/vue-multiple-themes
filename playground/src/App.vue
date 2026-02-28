@@ -5,12 +5,9 @@
             class="sticky top-0 z-50 border-b border-noir-800 backdrop-blur-md bg-noir-950/80">
             <div class="max-w-6xl mx-auto px-6 h-14 flex items-center justify-between">
                 <div class="flex items-center gap-3">
-                    <div class="w-7 h-7 rounded-md bg-white flex items-center justify-center">
-                        <span class="text-noir-950 text-xs font-bold">V</span>
-                    </div>
-                    <span class="font-semibold text-sm tracking-tight">vue-multiple-themes</span>
-                    <span
-                        class="badge border border-noir-800 bg-noir-900 text-noir-500">v4.1</span>
+                    <img src="/favicon.png" alt="Logo" class="w-8 h-8 rounded-lg shadow-lg border border-white/10" />
+                    <span class="font-bold text-lg bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-500 tracking-tight">VMT</span>
+                    <span class="badge border border-noir-800 bg-noir-900 text-noir-500 font-mono">v4.3.0</span>
                 </div>
 
                 <!-- Theme dot picker -->

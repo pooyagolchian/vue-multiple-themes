@@ -162,14 +162,16 @@ export function useTheme(options: ThemeOptions): UseThemeReturn {
   let appliedInSetup = false
   if (typeof document !== 'undefined') {
     ensureStyles()
-    if (currentName.value) applyTheme(currentName.value)
+    const initialName = currentName.value
+    if (initialName) applyTheme(initialName)
     appliedInSetup = true
   }
 
   onMounted(() => {
     if (!appliedInSetup) {
       ensureStyles()
-      if (currentName.value) applyTheme(currentName.value)
+      const mountedName = currentName.value
+      if (mountedName) applyTheme(mountedName)
     }
   })
 
