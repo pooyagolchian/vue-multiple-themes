@@ -1,5 +1,12 @@
 # Changelog
 
+## 5.0.2
+
+### Patch Changes 🩹
+
+- **Fix**: Resolved build failure in `VmtIcon.vue` by removing the lingering `vue-demi` reference.
+- **DX**: Refactored `VmtIcon.vue` to `<script setup>` for better type inference and consistency.
+
 ## 5.0.1
 
 ### Patch Changes 🩹

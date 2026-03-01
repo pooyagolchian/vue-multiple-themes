@@ -7,7 +7,7 @@
                 <div class="flex items-center gap-3">
                     <img src="/favicon.png" alt="Logo" class="w-8 h-8 rounded-lg shadow-lg border border-white/10" />
                     <span class="font-bold text-lg bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-500 tracking-tight">VMT</span>
-                    <span class="badge border border-noir-800 bg-noir-900 text-noir-500 font-mono">v5.0.1</span>
+                    <span class="badge border border-noir-800 bg-noir-900 text-noir-500 font-mono">v5.0.2</span>
                 </div>
 
                 <!-- Theme dot picker -->
