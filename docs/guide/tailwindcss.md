@@ -1,6 +1,6 @@
 # TailwindCSS Strategy
 
-<img src="/guide-tailwindcss.svg" alt="TailwindCSS Strategy" style="width:100%;border-radius:12px;margin:1.5rem 0 2rem;display:block;" />
+<img src="/guide-tailwindcss.png" alt="TailwindCSS Strategy" style="width:100%;border-radius:12px;margin:1.5rem 0 2rem;display:block;" />
 
 ## Overview
 
