@@ -28,7 +28,7 @@ features:
     details: '`useTheme()` gives you reactive access to the current theme, typed colour tokens, and navigation helpers (next, prev, toggle).'
   - icon: 🦄
     title: Vue 3 Ready
-    details: Optimized for the latest Vue 3 Composition API with full support for `<script setup>` and Vite 6.
+    details: Optimized for the latest Vue 3 Composition API with full support for &lt;script setup&gt; and Vite 6.
   - icon: 📦
     title: Tree-Shakeable
     details: Import only what you need. ESM-first, fully typed, SSR-safe.
