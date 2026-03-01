@@ -1,6 +1,6 @@
 {
   "name": "vue-multiple-themes",
-  "version": "5.0.0",
+  "version": "5.0.1",
   "description": "Vue 3 multiple theme switcher with CSS variables, TailwindCSS, composable API and Lucide icons",
   "author": "Pooya Golchian <pooya.golchian@gmail.com>",
   "license": "MIT",

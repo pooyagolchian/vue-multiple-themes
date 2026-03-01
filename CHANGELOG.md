@@ -1,5 +1,12 @@
 # Changelog
 
+## 5.0.1
+
+### Patch Changes 🩹
+
+- **Post-Release Cleanup**: Removed remaining `vue-demi` and Vue 2 peer dependencies to strictly follow the Vue 3 modernization goal.
+- **Documentation**: Synchronized code examples in README with the v5 API and updated project descriptions.
+
 ## 5.0.0
 
 ### Breaking Changes 💥
