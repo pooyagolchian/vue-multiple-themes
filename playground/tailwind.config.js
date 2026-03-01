@@ -1,7 +1,9 @@
 /** @type {import('tailwindcss').Config} */
+import { createVmtPlugin } from 'vue-multiple-themes/tailwind'
+import { PRESET_THEMES } from 'vue-multiple-themes'
+
 export default {
   content: ['./index.html', './src/**/*.{vue,ts,tsx}'],
-  darkMode: ['class', '.theme-dark'],
   theme: {
     extend: {
       fontFamily: {
@@ -22,26 +24,8 @@ export default {
           900: '#18181b',
           950: '#09090b',
         },
-        vmt: {
-          primary:    'var(--vmt-primary)',
-          secondary:  'var(--vmt-secondary)',
-          accent:     'var(--vmt-accent)',
-          bg:         'var(--vmt-background)',
-          surface:    'var(--vmt-surface)',
-          elevated:   'var(--vmt-surface-elevated)',
-          text:       'var(--vmt-text)',
-          muted:      'var(--vmt-text-muted)',
-          inverse:    'var(--vmt-text-inverse)',
-          border:     'var(--vmt-border)',
-          ring:       'var(--vmt-ring)',
-          success:    'var(--vmt-success)',
-          warning:    'var(--vmt-warning)',
-          error:      'var(--vmt-error)',
-          info:       'var(--vmt-info)',
-        },
-      },
-      backgroundColor: {
-        vmt: 'var(--vmt-background)',
+        // vmt.* colors are now auto-registered by createVmtPlugin()
+        // with full opacity modifier support: bg-vmt-primary/50
       },
       borderRadius: {
         lg: '0.5rem',
@@ -50,5 +34,11 @@ export default {
       },
     },
   },
-  plugins: [],
+  plugins: [
+    createVmtPlugin({
+      themes: PRESET_THEMES,
+      strategy: 'both',
+      darkThemes: ['dark'],
+    }),
+  ],
 }

@@ -3,8 +3,12 @@
  * Mapping of semantic color tokens to CSS values.
  * Values can be hex, hsl, rgb, or channel-only (for Tailwind RGB opacity support).
  *
+ * All formats are automatically normalized to RGB channels internally,
+ * so you can freely mix hex, rgb(), hsl(), or pre-normalized channel values.
+ *
  * @example { primary: '#3b82f6', background: '#ffffff', text: '#111827' }
  * @example { primary: '59 130 246' }   // Tailwind RGB-channel format
+ * @example { primary: 'hsl(220, 90%, 56%)' }
  */
 export interface ThemeColors {
   primary?: string
@@ -110,18 +114,47 @@ export interface ThemeOptions {
   respectSystemPreference?: boolean
   /** Called after every theme change */
   onChange?: (theme: ThemeDefinition) => void
+  /**
+   * Called when the theme changes, with both old and new theme names.
+   * Useful for analytics, transitions, or side effects.
+   */
+  onThemeChange?: (newTheme: string, oldTheme: string) => void
 }
 
 // ─── Composable return type ───────────────────────────────────────────────────
+/**
+ * Return type of `useTheme()`.
+ *
+ * Reactive properties (`current`, `theme`, `isDark`, `resolvedColors`) are
+ * auto-unwrapped inside `reactive()`, so they can be used directly in templates
+ * without `.value`:
+ *
+ * ```vue
+ * <template>{{ ts.current }}</template>
+ * <script setup>
+ * const ts = useTheme({ ... })
+ * // To watch, use a getter:
+ * watch(() => ts.current, (name) => console.log(name))
+ * </script>
+ * ```
+ */
 export interface UseThemeReturn {
-  /** Currently active theme name (reactive) */
-  current: string
-  /** Full definition of the active theme (reactive) */
-  theme: ThemeDefinition
-  /** `true` when the active theme name contains `'dark'` */
-  isDark: boolean
+  /** Currently active theme name (reactive, auto-updates) */
+  readonly current: string
+  /** Full definition of the active theme (reactive, auto-updates) */
+  readonly theme: ThemeDefinition
+  /**
+   * `true` when the active theme has a dark background (luminance-based detection).
+   * Falls back to name-based check if no background color is defined.
+   */
+  readonly isDark: boolean
   /** All available themes */
-  themes: ThemeDefinition[]
+  readonly themes: ThemeDefinition[]
+  /**
+   * Active theme's colors as parsed `{ r, g, b }` objects.
+   * Useful for canvas, chart libraries, or any API that needs raw RGB values.
+   */
+  readonly resolvedColors: Record<string, { r: number; g: number; b: number }>
   /** Activate a theme by name */
   setTheme: (name: string) => void
   /** Advance to the next theme in the list */
@@ -152,8 +185,10 @@ export interface TailwindPluginOptions {
    */
   strategy?: 'attribute' | 'class' | 'both'
   /**
-   * When true (default), the plugin also registers semantic Tailwind utilities:
-   * `bg-vmt-background`, `text-vmt-primary`, `border-vmt-border`, etc.
+   * Theme names that should be considered "dark" for Tailwind's `dark:` modifier.
+   * The first entry is used as the primary dark mode selector.
+   *
+   * @example darkThemes: ['dark', 'midnight']
    */
-  generateUtils?: boolean
+  darkThemes?: string[]
 }

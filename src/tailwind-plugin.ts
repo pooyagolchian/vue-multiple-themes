@@ -3,21 +3,20 @@
  *
  * Generates:
  * 1. CSS custom-property declarations under `[data-theme="..."]` and / or
- *    `.theme-...` selectors.
- * 2. (optional) Semantic utility classes:
- *    `bg-vmt-background`, `text-vmt-primary`, `border-vmt-border`, etc.
- *    using `rgb(var(--vmt-<token>) / <alpha>)` format for full opacity support.
+ *    `.theme-...` selectors — values in RGB channel format for opacity support.
+ * 2. Colors registered via `theme.extend.colors` so ALL Tailwind utilities work
+ *    automatically with opacity modifiers: `bg-vmt-primary/50`, `text-vmt-accent/75`,
+ *    gradient stops `from-vmt-primary`, `ring-vmt-ring/25`, etc.
  *
  * @example tailwind.config.js / ts:
  * ```ts
- * import { vmtTailwindPlugin } from 'vue-multiple-themes/tailwind'
+ * import { createVmtPlugin } from 'vue-multiple-themes/tailwind'
  * export default {
  *   plugins: [
- *     vmtTailwindPlugin({
+ *     createVmtPlugin({
  *       themes: myThemes,
- *       cssVarPrefix: '--vmt-',
  *       strategy: 'both',
- *       generateUtils: true,
+ *       darkThemes: ['dark', 'midnight'],
  *     }),
  *   ],
  * }
@@ -25,19 +24,28 @@
  */
 
 import type { TailwindPluginOptions, ThemeDefinition } from './types'
+import { normalizeToRgbChannels } from './utils/color'
 
-type PluginFn = (helpers: {
+type PluginApi = {
   addBase: (styles: Record<string, unknown>) => void
   addUtilities: (utilities: Record<string, unknown>) => void
-  addComponents: (components: Record<string, unknown>) => void
+  matchUtilities: (
+    utilities: Record<string, (value: string) => Record<string, string>>,
+    options: { values: Record<string, string>; type?: string[] },
+  ) => void
+  theme: (path: string) => unknown
   e: (className: string) => string
-}) => void
+  config: (path: string, defaultValue?: unknown) => unknown
+}
+
+type PluginFn = (api: PluginApi) => void
 
 /** camelCase → kebab-case */
 function toKebab(str: string): string {
   return str.replace(/([A-Z])/g, (_, c: string) => `-${c.toLowerCase()}`)
 }
 
+/** Build CSS custom-property declarations for a single theme. */
 function buildCssVarRecord(
   theme: ThemeDefinition,
   prefix: string,
@@ -45,12 +53,18 @@ function buildCssVarRecord(
   const record: Record<string, string> = {}
   for (const [key, value] of Object.entries(theme.colors)) {
     if (value !== undefined) {
-      record[`${prefix}${toKebab(key)}`] = value
+      const kebab = toKebab(key)
+      const channels = normalizeToRgbChannels(value)
+      // Channels for Tailwind opacity modifier: --vmt-primary: 59 130 246
+      record[`${prefix}${kebab}`] = channels
+      // Full rgb() for direct CSS use: --vmt-primary-color: rgb(59 130 246)
+      record[`${prefix}${kebab}-color`] = `rgb(${channels})`
     }
   }
   return record
 }
 
+/** Resolve CSS selectors for a theme. */
 function resolveSelectors(
   themeName: string,
   strategy: TailwindPluginOptions['strategy'],
@@ -69,96 +83,156 @@ function resolveSelectors(
     selectors.push(`.theme-${themeName}`)
   }
 
-  // Remove duplicates
   return [...new Set(selectors)]
 }
 
 /**
- * Build the Tailwind plugin function.
- * Compatible with both `plugin()` factory and the older function-export form.
+ * Collect all unique color token keys from all themes.
  */
-export function vmtTailwindPlugin(opts: TailwindPluginOptions): PluginFn {
+function collectColorKeys(themes: ThemeDefinition[]): Set<string> {
+  const keys = new Set<string>()
+  for (const theme of themes) {
+    for (const key of Object.keys(theme.colors)) {
+      keys.add(key)
+    }
+  }
+  return keys
+}
+
+/**
+ * Generate a safelist array for Tailwind JIT mode.
+ * Use this when dynamically composing theme-colored class names.
+ *
+ * @example
+ * ```ts
+ * import { vmtSafelist } from 'vue-multiple-themes/tailwind'
+ * export default {
+ *   safelist: vmtSafelist(myThemes),
+ * }
+ * ```
+ */
+export function vmtSafelist(
+  themes: ThemeDefinition[],
+  options: { prefix?: string } = {},
+): Array<{ pattern: RegExp; variants?: string[] }> {
+  const { prefix = 'vmt' } = options
+  const keys = collectColorKeys(themes)
+  const kebabKeys = Array.from(keys).map(toKebab)
+  const keyPattern = kebabKeys.join('|')
+  return [
+    {
+      pattern: new RegExp(`^(bg|text|border|ring|fill|stroke|outline|shadow|accent|caret|divide|placeholder|from|via|to)-${prefix}-(${keyPattern})(\\/\\d+)?$`),
+      variants: ['hover', 'focus', 'active', 'disabled', 'dark', 'group-hover', 'focus-visible', 'focus-within'],
+    },
+  ]
+}
+
+/**
+ * Build the Tailwind plugin function.
+ *
+ * Uses `theme.extend.colors` to register colors with the
+ * `rgb(var(--vmt-<token>) / <alpha-value>)` pattern, which enables
+ * full opacity modifier support: `bg-vmt-primary/50`, `text-vmt-accent/75`, etc.
+ */
+export function vmtTailwindPlugin(opts: TailwindPluginOptions): {
+  handler: PluginFn
+  config: Record<string, unknown>
+} {
   const {
     themes,
     cssVarPrefix = '--vmt-',
     strategy = 'both',
-    generateUtils = true,
+    darkThemes = [],
   } = opts
 
-  return ({ addBase, addUtilities }) => {
-    // ─── 1. CSS variable declarations ──────────────────────────────────────
-    const baseStyles: Record<string, Record<string, string>> = {}
+  const allKeys = collectColorKeys(themes)
 
-    for (let i = 0; i < themes.length; i++) {
-      const theme = themes[i]
-      const selectors = resolveSelectors(theme.name, strategy, i === 0)
-      const vars = buildCssVarRecord(theme, cssVarPrefix)
+  // Build the colors config for theme.extend.colors
+  const vmtColors: Record<string, string | ((params: { opacityValue?: string }) => string)> = {}
+  for (const key of allKeys) {
+    const kebab = toKebab(key)
+    vmtColors[kebab] = `rgb(var(${cssVarPrefix}${kebab}) / <alpha-value>)`
+  }
 
-      for (const selector of selectors) {
-        if (baseStyles[selector]) {
-          Object.assign(baseStyles[selector], vars)
-        } else {
-          baseStyles[selector] = { ...vars }
+  // Determine dark mode selector from darkThemes
+  const darkModeConfig: Record<string, unknown> = {}
+  if (darkThemes.length > 0) {
+    // Use the first dark theme for the dark: modifier
+    const darkSelector = strategy === 'class' || strategy === 'both'
+      ? `.theme-${darkThemes[0]}`
+      : `[data-theme="${darkThemes[0]}"]`
+    darkModeConfig.darkMode = ['selector', darkSelector]
+  }
+
+  return {
+    handler: ({ addBase }) => {
+      // ─── 1. CSS variable declarations under theme selectors ───────────
+      const baseStyles: Record<string, Record<string, string>> = {}
+
+      for (let i = 0; i < themes.length; i++) {
+        const theme = themes[i]
+        const selectors = resolveSelectors(theme.name, strategy, i === 0)
+        const vars = buildCssVarRecord(theme, cssVarPrefix)
+
+        for (const selector of selectors) {
+          if (baseStyles[selector]) {
+            Object.assign(baseStyles[selector], vars)
+          } else {
+            baseStyles[selector] = { ...vars }
+          }
         }
       }
-    }
 
-    // Add icon-color convenience var
-    baseStyles[':root'] = {
-      ...baseStyles[':root'],
-      [`${cssVarPrefix}icon-color`]: `var(${cssVarPrefix}text, currentColor)`,
-    }
-
-    addBase(baseStyles as Parameters<typeof addBase>[0])
-
-    // ─── 2. Semantic utilities ────────────────────────────────────────────
-    if (!generateUtils) return
-
-    // Collect all unique color keys across all themes
-    const allKeys = new Set<string>()
-    for (const theme of themes) {
-      for (const key of Object.keys(theme.colors)) {
-        allKeys.add(key)
+      // Icon-color convenience variable
+      baseStyles[':root'] = {
+        ...baseStyles[':root'],
+        [`${cssVarPrefix}icon-color`]: `var(${cssVarPrefix}text-color, currentColor)`,
       }
-    }
 
-    const utilities: Record<string, Record<string, string>> = {}
+      // ─── 2. Theme transition helper class ─────────────────────────────
+      baseStyles['.vmt-transitioning'] = {
+        'transition-property': 'color, background-color, border-color, text-decoration-color, fill, stroke',
+        'transition-timing-function': 'cubic-bezier(0.4, 0, 0.2, 1)',
+        'transition-duration': '200ms',
+      } as unknown as Record<string, string>
 
-    for (const key of allKeys) {
-      const cssVar = `var(${cssVarPrefix}${toKebab(key)})`
+      baseStyles['.vmt-transitioning *'] = {
+        'transition-property': 'color, background-color, border-color, text-decoration-color, fill, stroke',
+        'transition-timing-function': 'cubic-bezier(0.4, 0, 0.2, 1)',
+        'transition-duration': '200ms',
+      } as unknown as Record<string, string>
 
-      // Background color
-      utilities[`.bg-vmt-${toKebab(key)}`] = { backgroundColor: cssVar }
-      // Text color
-      utilities[`.text-vmt-${toKebab(key)}`] = { color: cssVar }
-      // Border color
-      utilities[`.border-vmt-${toKebab(key)}`] = { borderColor: cssVar }
-      // Ring color
-      utilities[`.ring-vmt-${toKebab(key)}`] = {
-        '--tw-ring-color': cssVar,
-      }
-      // Fill (for SVG)
-      utilities[`.fill-vmt-${toKebab(key)}`] = { fill: cssVar }
-      // Stroke (for SVG)
-      utilities[`.stroke-vmt-${toKebab(key)}`] = { stroke: cssVar }
-    }
+      addBase(baseStyles as Parameters<typeof addBase>[0])
+    },
 
-    addUtilities(utilities as Parameters<typeof addUtilities>[0])
+    config: {
+      theme: {
+        extend: {
+          colors: {
+            vmt: vmtColors,
+          },
+        },
+      },
+      ...darkModeConfig,
+    },
   }
 }
 
 /**
  * Convenience wrapper that returns a Tailwind plugin object
  * compatible with the `plugins: []` array in tailwind.config.ts.
+ *
+ * Returns a `{ handler, config }` shape that Tailwind v3.3+ accepts
+ * directly in the `plugins` array.
+ *
+ * @example
+ * ```ts
+ * import { createVmtPlugin } from 'vue-multiple-themes/tailwind'
+ * export default {
+ *   plugins: [createVmtPlugin({ themes: myThemes })],
+ * }
+ * ```
  */
 export function createVmtPlugin(opts: TailwindPluginOptions) {
-  // Support both `require('tailwindcss/plugin')` and flat export
-  try {
-    // eslint-disable-next-line @typescript-eslint/no-var-requires
-    const plugin = require('tailwindcss/plugin') as (fn: PluginFn) => unknown
-    return plugin(vmtTailwindPlugin(opts))
-  } catch {
-    // In environments without tailwindcss installed, return raw fn
-    return vmtTailwindPlugin(opts)
-  }
+  return vmtTailwindPlugin(opts)
 }

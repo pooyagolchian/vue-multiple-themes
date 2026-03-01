@@ -19,11 +19,11 @@
         <p class="label-mono mb-3">Live theme vars</p>
         <div class="flex flex-wrap gap-2.5">
           <button class="btn rounded-md text-sm font-medium active:scale-[0.97]"
-            style="background: var(--vmt-primary); color: var(--vmt-text-inverse)">vmt-primary</button>
+            style="background: var(--vmt-primary-color); color: var(--vmt-text-inverse-color)">vmt-primary</button>
           <button class="btn rounded-md text-sm font-medium active:scale-[0.97]"
-            style="background: var(--vmt-secondary); color: var(--vmt-text-inverse)">vmt-secondary</button>
+            style="background: var(--vmt-secondary-color); color: var(--vmt-text-inverse-color)">vmt-secondary</button>
           <button class="btn rounded-md text-sm font-medium active:scale-[0.97]"
-            style="background: var(--vmt-accent); color: var(--vmt-text-inverse)">vmt-accent</button>
+            style="background: var(--vmt-accent-color); color: var(--vmt-text-inverse-color)">vmt-accent</button>
         </div>
       </div>
     </div>
@@ -34,10 +34,10 @@
       <div class="flex flex-wrap gap-2.5">
         <span class="badge border border-noir-800 bg-noir-900 text-noir-400">default</span>
         <span class="badge bg-white text-noir-950">solid</span>
-        <span class="badge border text-vmt-primary" style="border-color: var(--vmt-primary)">outline</span>
-        <span class="badge text-white" style="background: var(--vmt-success)">success</span>
-        <span class="badge text-noir-950" style="background: var(--vmt-warning)">warning</span>
-        <span class="badge text-white" style="background: var(--vmt-error)">error</span>
+        <span class="badge border text-vmt-primary" style="border-color: var(--vmt-primary-color)">outline</span>
+        <span class="badge text-white" style="background: var(--vmt-success-color)">success</span>
+        <span class="badge text-noir-950" style="background: var(--vmt-warning-color)">warning</span>
+        <span class="badge text-white" style="background: var(--vmt-error-color)">error</span>
       </div>
     </div>
 

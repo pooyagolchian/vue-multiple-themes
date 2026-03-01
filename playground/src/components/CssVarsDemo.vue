@@ -13,14 +13,19 @@
         </button>
       </div>
       <pre class="code-block-body"><code>.my-card {
-  background: var(--vmt-surface);
-  color: var(--vmt-text);
-  border: 1px solid var(--vmt-border);
+  background: var(--vmt-surface-color);
+  color: var(--vmt-text-color);
+  border: 1px solid var(--vmt-border-color);
 }
 
 .cta-button {
-  background: var(--vmt-primary);
-  color: var(--vmt-text-inverse);
+  background: var(--vmt-primary-color);
+  color: var(--vmt-text-inverse-color);
+}
+
+/* Or use RGB channels for opacity: */
+.overlay {
+  background: rgb(var(--vmt-primary) / 0.5);
 }</code></pre>
     </div>
 
@@ -28,7 +33,7 @@
       <div v-for="(varName, label) in cssVarMap" :key="label"
         class="flex items-center gap-3 rounded-md border border-noir-800 bg-noir-950 px-3.5 py-3 text-xs hover:border-noir-600 transition-colors">
         <span class="w-4 h-4 rounded-sm flex-shrink-0 border border-noir-700"
-          :style="{ background: 'var(' + varName + ')' }" />
+          :style="{ background: 'var(' + varName + '-color)' }" />
         <code class="text-noir-400 truncate font-mono text-xs">{{ varName }}</code>
       </div>
     </div>
@@ -49,14 +54,19 @@ const cssCopied = ref(false)
 async function copyCss() {
   try {
     await navigator.clipboard.writeText(`.my-card {
-  background: var(--vmt-surface);
-  color: var(--vmt-text);
-  border: 1px solid var(--vmt-border);
+  background: var(--vmt-surface-color);
+  color: var(--vmt-text-color);
+  border: 1px solid var(--vmt-border-color);
 }
 
 .cta-button {
-  background: var(--vmt-primary);
-  color: var(--vmt-text-inverse);
+  background: var(--vmt-primary-color);
+  color: var(--vmt-text-inverse-color);
+}
+
+/* Or use RGB channels for opacity: */
+.overlay {
+  background: rgb(var(--vmt-primary) / 0.5);
 }`)
     cssCopied.value = true
     setTimeout(() => { cssCopied.value = false }, 1500)

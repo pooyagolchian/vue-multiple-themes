@@ -119,9 +119,9 @@ const strokeWidth = ref(2)
 const selectedIcon = ref('palette')
 
 const themeColors = [
-  { label: 'primary', var: 'var(--vmt-primary)' },
-  { label: 'text', var: 'var(--vmt-text)' },
-  { label: 'accent', var: 'var(--vmt-accent)' },
+  { label: 'primary', var: 'var(--vmt-primary-color)' },
+  { label: 'text', var: 'var(--vmt-text-color)' },
+  { label: 'accent', var: 'var(--vmt-accent-color)' },
 ]
 
 function selectIcon(name: string) {

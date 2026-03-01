@@ -1,4 +1,5 @@
 import type { ThemeDefinition, ThemeOptions } from '../types'
+import { normalizeToRgbChannels } from './color'
 
 const STYLE_ID = 'vmt-theme-styles'
 
@@ -6,7 +7,7 @@ const STYLE_ID = 'vmt-theme-styles'
  * Convert camelCase token names to kebab-case CSS variable segments.
  * e.g. "primaryDark" → "primary-dark"
  */
-function toKebab(str: string): string {
+export function toKebab(str: string): string {
   return str.replace(/([A-Z])/g, (_, c: string) => `-${c.toLowerCase()}`)
 }
 
@@ -58,7 +59,16 @@ export function buildCssVars(
     const selector = buildSelector(theme.name, i === 0)
     const vars = Object.entries(theme.colors)
       .filter(([, v]) => v !== undefined)
-      .map(([k, v]) => `  ${cssVarPrefix}${toKebab(k)}: ${v};`)
+      .map(([k, v]) => {
+        const kebab = toKebab(k)
+        const channels = normalizeToRgbChannels(v!)
+        const lines: string[] = []
+        // RGB channels for Tailwind opacity modifier support: bg-vmt-primary/50
+        lines.push(`  ${cssVarPrefix}${kebab}: ${channels};`)
+        // Full rgb() color for direct CSS use: color: var(--vmt-primary-color)
+        lines.push(`  ${cssVarPrefix}${kebab}-color: rgb(${channels});`)
+        return lines.join('\n')
+      })
       .join('\n')
     blocks.push(`${selector} {\n${vars}\n}`)
   }

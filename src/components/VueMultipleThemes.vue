@@ -22,6 +22,7 @@ import {
 	readStorage,
     writeStorage,
 } from "../utils/dom";
+import { normalizeToRgbChannels } from "../utils/color";
 import VmtIcon from "./VmtIcon.vue";
 
 // ── Ref-counted instance tracking (keyed by storageKey) ────────────────────
@@ -190,9 +191,23 @@ const currentTheme = computed<ThemeDefinition>(
         ) ?? props.themes[0],
 );
 
-const isDark = computed<boolean>(() =>
-    currentName.value.toLowerCase().includes("dark"),
-);
+const isDark = computed<boolean>(() => {
+    const bg = currentTheme.value.colors.background;
+    if (bg) {
+        try {
+            const channels = normalizeToRgbChannels(bg);
+            const parts = channels.split(' ').map(Number);
+            if (parts.length === 3 && parts.every((n) => !Number.isNaN(n))) {
+                const [r, g, b] = parts.map((v) => {
+                    const c = v / 255;
+                    return c <= 0.03928 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4;
+                });
+                return 0.2126 * r + 0.7152 * g + 0.0722 * b < 0.5;
+            }
+        } catch { /* fall through */ }
+    }
+    return currentName.value.toLowerCase().includes("dark");
+});
 
 const currentIconName = computed<string>(
     () => currentTheme.value.icon ?? "palette",
@@ -349,26 +364,26 @@ onBeforeUnmount(() => {
     padding: 0.4rem 0.6rem;
     border-radius: 0.5rem;
     border: 1px solid var(--vmt-border, #e5e7eb);
-    background: var(--vmt-surface, transparent);
-    color: var(--vmt-foreground, inherit);
+    background: var(--vmt-surface-color, transparent);
+    color: var(--vmt-text-color, inherit);
     cursor: pointer;
     transition: background 0.2s, border-color 0.2s;
     outline: none;
 }
 
 .vmt-toggle:hover {
-    background: var(--vmt-surface-elevated, rgba(0, 0, 0, 0.05));
+    background: var(--vmt-surface-elevated-color, rgba(0, 0, 0, 0.05));
 }
 
 .vmt-toggle:focus-visible {
-    outline: 2px solid var(--vmt-ring, #4f46e5);
+    outline: 2px solid var(--vmt-ring-color, #4f46e5);
     outline-offset: 2px;
 }
 
 .vmt-icon {
     display: inline-flex;
     align-items: center;
-    color: var(--vmt-icon-color, var(--vmt-foreground, currentColor));
+    color: var(--vmt-icon-color, var(--vmt-text-color, currentColor));
     flex-shrink: 0;
 }
 
@@ -376,6 +391,6 @@ onBeforeUnmount(() => {
     font-size: 0.875rem;
     font-weight: 500;
     white-space: nowrap;
-    color: var(--vmt-foreground, inherit);
+    color: var(--vmt-text-color, inherit);
 }
 </style>

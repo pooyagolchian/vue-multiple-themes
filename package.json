@@ -1,7 +1,7 @@
 {
   "name": "vue-multiple-themes",
-  "version": "5.0.2",
-  "description": "Vue 3 multiple theme switcher with CSS variables, TailwindCSS, composable API and Lucide icons",
+  "version": "6.0.0",
+  "description": "Vue 3 multiple theme switcher with CSS variables, TailwindCSS opacity modifier support, composable API and Lucide icons",
   "author": "Pooya Golchian <pooya.golchian@gmail.com>",
   "license": "MIT",
   "type": "module",
@@ -17,6 +17,11 @@
       "types": "./dist/tailwind-plugin.d.ts",
       "import": "./dist/tailwind-plugin.js",
       "require": "./dist/tailwind-plugin.cjs"
+    },
+    "./tailwind-v4": {
+      "types": "./dist/tailwind-v4-plugin.d.ts",
+      "import": "./dist/tailwind-v4-plugin.js",
+      "require": "./dist/tailwind-v4-plugin.cjs"
     },
     "./styles": "./dist/style.css"
   },

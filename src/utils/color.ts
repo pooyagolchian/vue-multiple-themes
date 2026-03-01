@@ -253,3 +253,83 @@ export function triadic(hex: string): [string, string, string] {
 export function analogous(hex: string, angle = 30): [string, string, string] {
 	return [hex, rotateHue(hex, angle), rotateHue(hex, -angle)];
 }
+
+// ─── Named CSS colors (subset) ───────────────────────────────────────────────
+
+const NAMED_COLORS: Record<string, string> = {
+	black: '#000000', white: '#ffffff', red: '#ff0000', green: '#008000',
+	blue: '#0000ff', yellow: '#ffff00', cyan: '#00ffff', magenta: '#ff00ff',
+	orange: '#ffa500', purple: '#800080', pink: '#ffc0cb', gray: '#808080',
+	grey: '#808080', silver: '#c0c0c0', maroon: '#800000', olive: '#808000',
+	lime: '#00ff00', aqua: '#00ffff', teal: '#008080', navy: '#000080',
+	fuchsia: '#ff00ff', transparent: '#00000000',
+}
+
+// ─── Normalize any CSS color to space-separated RGB channels ──────────────────
+
+/**
+ * Normalize any CSS color value to space-separated RGB channels: `"R G B"`.
+ *
+ * This is the format required by Tailwind CSS for opacity modifier support,
+ * e.g. `bg-primary/50` → `rgb(var(--vmt-primary) / 0.5)`.
+ *
+ * Accepts:
+ *   - Hex:           `'#3b82f6'`, `'#fff'`, `'#3b82f680'`
+ *   - RGB/RGBA:      `'rgb(59, 130, 246)'`, `'rgba(59, 130, 246, 0.5)'`
+ *   - HSL/HSLA:      `'hsl(220, 90%, 56%)'`, `'hsla(220, 90%, 56%, 0.5)'`
+ *   - Channel-only:  `'59 130 246'` (returned as-is)
+ *   - Named:         `'red'`, `'white'`, etc. (common subset)
+ *
+ * @example
+ * normalizeToRgbChannels('#3b82f6')        // '59 130 246'
+ * normalizeToRgbChannels('rgb(59,130,246)') // '59 130 246'
+ * normalizeToRgbChannels('hsl(220,90%,56%)') // '59 130 246'
+ * normalizeToRgbChannels('59 130 246')      // '59 130 246'
+ */
+export function normalizeToRgbChannels(color: string): string {
+	const c = color.trim()
+
+	// Already in channel format: "R G B"
+	if (/^\d{1,3}\s+\d{1,3}\s+\d{1,3}$/.test(c)) {
+		return c
+	}
+
+	// Hex
+	if (c.startsWith('#')) {
+		const [r, g, b] = hexToRgb(c)
+		return `${r} ${g} ${b}`
+	}
+
+	// rgb() / rgba()
+	const rgbMatch = c.match(/rgba?\(\s*(\d+)\s*[,\s]\s*(\d+)\s*[,\s]\s*(\d+)/)
+	if (rgbMatch) {
+		return `${rgbMatch[1]} ${rgbMatch[2]} ${rgbMatch[3]}`
+	}
+
+	// hsl() / hsla()
+	const hslMatch = c.match(/hsla?\(\s*(\d+)\s*[,\s]\s*(\d+)%?\s*[,\s]\s*(\d+)%?/)
+	if (hslMatch) {
+		const [r, g, b] = hslToRgb(
+			Number.parseInt(hslMatch[1]),
+			Number.parseInt(hslMatch[2]),
+			Number.parseInt(hslMatch[3]),
+		)
+		return `${r} ${g} ${b}`
+	}
+
+	// Named color
+	const named = NAMED_COLORS[c.toLowerCase()]
+	if (named) {
+		const [r, g, b] = hexToRgb(named)
+		return `${r} ${g} ${b}`
+	}
+
+	// Fallback: try to parse as hex without #
+	if (/^[0-9a-fA-F]{3,8}$/.test(c)) {
+		const [r, g, b] = hexToRgb(`#${c}`)
+		return `${r} ${g} ${b}`
+	}
+
+	// Last resort: return original value (CSS will use it as-is)
+	return c
+}

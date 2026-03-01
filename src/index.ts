@@ -1,20 +1,23 @@
 /**
  * vue-multiple-themes – public API
  *
- * Vue 2 & Vue 3 compatible theme switcher with:
+ * Vue 3 theme switcher with full Tailwind CSS opacity modifier support:
  *  - CSS custom properties strategy (`data-theme` attribute)
  *  - TailwindCSS strategy (`theme-<name>` class)
  *  - Both simultaneously
  *  - Full TypeScript support
- *  - `useTheme()` composable (Composition API)
+ *  - `useTheme()` composable with reactive ComputedRef returns
  *  - `VueMultipleThemesPlugin` (Options API / global install)
- *  - Tailwind CSS plugin (`vue-multiple-themes/tailwind`)
+ *  - Tailwind CSS v3 plugin (`vue-multiple-themes/tailwind`)
+ *  - Tailwind CSS v4 plugin (`vue-multiple-themes/tailwind-v4`)
  *  - Built-in Lucide icons with `currentColor` SVG rendering
+ *  - RGB channel CSS vars for `bg-vmt-primary/50` opacity modifiers
  */
 
-// ─── Core component ───────────────────────────────────────────────────────────
+// ─── Core components ──────────────────────────────────────────────────────────
 export { default as VueMultipleThemes } from './components/VueMultipleThemes.vue'
 export { default as VmtIcon } from './components/VmtIcon.vue'
+export { default as VmtThemePicker } from './components/VmtThemePicker.vue'
 
 // ─── Plugin ───────────────────────────────────────────────────────────────────
 export { VueMultipleThemesPlugin } from './plugin'
@@ -39,7 +42,7 @@ export { LUCIDE_ICONS, getIcon, iconToSvg } from './icons'
 export type { LucideIconData } from './icons'
 
 // ─── Utility re-exports (tree-shakeable) ─────────────────────────────────────
-export { buildCssVars, injectStyles, removeStyles } from './utils/css-injector'
+export { buildCssVars, injectStyles, removeStyles, toKebab } from './utils/css-injector'
 
 // ─── Color utilities ─────────────────────────────────────────────────────────
 export {
@@ -65,6 +68,7 @@ export {
   splitComplementary,
   triadic,
   analogous,
+  normalizeToRgbChannels,
 } from './utils/color'
 export type { RGB, RGBA, HSL } from './utils/color'
 

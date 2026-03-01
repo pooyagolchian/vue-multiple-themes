@@ -27,6 +27,7 @@ export default defineConfig({
       entry: {
         'vue-multiple-themes': resolve(__dirname, 'src/index.ts'),
         'tailwind-plugin': resolve(__dirname, 'src/tailwind-plugin.ts'),
+        'tailwind-v4-plugin': resolve(__dirname, 'src/tailwind-v4-plugin.ts'),
       },
       formats: ['es', 'cjs'],
       fileName: (format, entryName) =>
