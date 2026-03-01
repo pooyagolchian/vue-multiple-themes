@@ -13,7 +13,7 @@
                 <!-- Theme dot picker -->
                 <VueMultipleThemes :themes="themes" strategy="both" storage-key="pg-theme" :show-toggle="false"
                     @change="handleThemeChange">
-                    <template #default="{ theme, themes: allThemes, setTheme }">
+                    <template #default="{ current: theme, themes: allThemes, setTheme }">
                         <div class="flex items-center gap-1.5">
                             <button v-for="t in allThemes" :key="t.name" :title="t.label ?? t.name"
                                 class="w-6 h-6 rounded-full border-2 transition-all duration-200 hover:scale-110 focus-ring"
