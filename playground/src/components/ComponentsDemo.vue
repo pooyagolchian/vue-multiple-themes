@@ -148,13 +148,13 @@
             class="flex items-center justify-between gap-3 cursor-pointer group">
             <span class="text-sm text-noir-400 group-hover:text-noir-200 transition-colors select-none">{{ tog.label }}</span>
             <button type="button" role="switch" :aria-checked="tog.value"
-              class="relative inline-flex h-5 w-9 shrink-0 rounded-full border transition-colors duration-200 focus-ring"
+              class="relative inline-flex items-center h-5 w-9 shrink-0 rounded-full border transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-noir-950 outline-none"
               :class="tog.value
                 ? 'border-transparent'
                 : 'border-noir-700 bg-noir-900'"
-              :style="tog.value ? 'background: var(--vmt-primary-color)' : ''"
+              :style="tog.value ? `background: var(--vmt-primary-color); --tw-ring-color: var(--vmt-primary-color)` : ''"
               @click="tog.value = !tog.value">
-              <span class="pointer-events-none inline-block h-4 w-4 rounded-full bg-white shadow-sm ring-0 transition-transform duration-200 mt-0.5"
+              <span class="pointer-events-none inline-block h-4 w-4 rounded-full bg-white shadow-sm ring-0 transition-transform duration-200"
                 :class="tog.value ? 'translate-x-4' : 'translate-x-0.5'" />
             </button>
           </label>
