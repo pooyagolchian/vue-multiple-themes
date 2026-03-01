@@ -4,7 +4,7 @@
 
 # vue-multiple-themes
 
-> Dynamic multi-theme support for **Vue 3** — CSS custom properties, TailwindCSS (with full opacity modifier support), WCAG contrast utilities, and a reactive composable API.
+> Dynamic multi-theme support for **Vue 3** — CSS custom properties, TailwindCSS (with full opacity modifier support), WCAG contrast utilities, white-label brand contexts, and a reactive composable API.
 
 [![npm version](https://img.shields.io/npm/v/vue-multiple-themes)](https://www.npmjs.com/package/vue-multiple-themes)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
@@ -43,6 +43,8 @@ pnpm build:playground
 - **Color utilities** — lighten, darken, mix, contrast ratio, WCAG compliance
 - **`useTheme()` composable** — reactive, SSR-safe, localStorage-persistent, luminance-based `isDark`
 - **System preference detection** — auto-select light/dark based on OS setting
+- **Bring-your-own icons** — `VmtIcon :as="SunIcon"` forwards to any Vue icon component (`lucide-vue-next`, `@heroicons/vue`, …); no icon data shipped in the bundle
+- **White-label / multi-tenant ready** — `createBrandContext()` creates fully isolated namespaced theme engines
 - **Headless components** — `VmtThemePicker` with keyboard nav & ARIA, `VmtIcon`
 - **Zero runtime dependencies** (only `vue` peer dependency)
 
@@ -97,6 +99,59 @@ const ts = useTheme({ themes: PRESET_THEMES });
   </button>
   <p>Dark mode: {{ ts.isDark }}</p>
 </template>
+```
+
+---
+
+## Icons
+
+`VmtIcon` is a thin forwarder — it accepts **any** Vue icon component via the `as` prop and
+forwards `size`, `color`, and `strokeWidth`. No SVG data lives in the library.
+
+```bash
+# Install any Vue icon library — e.g.
+pnpm add lucide-vue-next
+```
+
+```ts
+import { Sun, Moon, Palette } from 'lucide-vue-next'
+import { VmtIcon } from 'vue-multiple-themes'
+```
+
+```vue
+<!-- Render any icon through VmtIcon -->
+<VmtIcon :as="Sun"  :size="24" color="currentColor" />
+<VmtIcon :as="Moon" :size="20" :stroke-width="1.5" />
+
+<!-- Or use the component directly — same props accepted -->
+<Sun :size="24" color="currentColor" />
+```
+
+Assign icons to theme definitions:
+
+```ts
+import { Sun, Moon } from 'lucide-vue-next'
+
+const themes = [
+  { name: 'light', label: 'Light', icon: Sun,  colors: { ... } },
+  { name: 'dark',  label: 'Dark',  icon: Moon, colors: { ... } },
+]
+```
+
+Attach icons to the ready-made `PRESET_THEMES`:
+
+```ts
+import { Sun, Moon, Monitor, Coffee, Leaf, Droplets, Flame, Snowflake } from 'lucide-vue-next'
+import { PRESET_THEMES } from 'vue-multiple-themes'
+import type { Component } from 'vue'
+
+const presetIcons: Record<string, Component> = {
+  light: Sun, dark: Moon, system: Monitor,
+  cafe: Coffee, nature: Leaf, ocean: Droplets,
+  flame: Flame, nord: Snowflake,
+}
+
+const themes = PRESET_THEMES.map(t => ({ ...t, icon: presetIcons[t.name] }))
 ```
 
 ---
@@ -256,6 +311,7 @@ normalizeToRgbChannels('#6366f1'); // '99 102 241'
 | `target`                 | `string`                           | `'html'`       | Target element selector            |
 | `storage`                | `'localStorage' \| 'sessionStorage' \| 'none'` | `'localStorage'` | Where to persist the active theme |
 | `storageKey`             | `string`                           | `'vmt-theme'`  | Storage key for persistence        |
+| `namespace`              | `string`                           | —              | Isolate state for white-label / multi-tenant setups |
 | `respectSystemPreference`| `boolean`                          | `false`        | Auto-select theme matching OS mode |
 | `onThemeChange`          | `(newTheme, oldTheme) => void`     | —              | Callback on every theme change     |
 
@@ -274,6 +330,69 @@ normalizeToRgbChannels('#6366f1'); // '99 102 241'
 | `toggleTheme()`  | `() => void`                          | Toggle between first two themes                  |
 
 > **Note:** `current`, `theme`, `isDark`, and `resolvedColors` are reactive properties wrapped in `reactive()`. Use them directly in templates: `{{ ts.current }}`. To `watch()` them, use a getter: `watch(() => ts.current, ...)`.
+
+### `createBrandContext(options)`
+
+| Option        | Type                | Description                                                            |
+| ------------- | ------------------- | ---------------------------------------------------------------------- |
+| `namespace`   | `string` (required) | Unique brand identifier — scopes style tag, singleton, and provide key |
+| + all `useTheme` options | | All `ThemeOptions` fields accepted as context defaults        |
+
+**Returns:** `{ namespace, useTheme(overrides?), BrandPlugin }`
+
+---
+
+## White-label & Multi-tenant
+
+Use `createBrandContext()` when you need multiple independent theme engines in the same
+Vue app — e.g. white-label products, micro-frontends, or embeddable widgets.
+
+Each context isolates:
+- Its injected `<style>` tag (`id="vmt-theme-styles-<namespace>"`)
+- Its singleton reactive state (keyed by `<namespace>:<storageKey>`)
+- Its Vue `provide` key (`"vmt:options:<namespace>"`)
+- Its Tailwind color namespace (`bg-acme-primary` vs `bg-beta-primary`)
+
+```ts
+import { createBrandContext } from 'vue-multiple-themes'
+
+export const acme = createBrandContext({
+  namespace:    'acme',
+  storageKey:   'acme-theme',
+  cssVarPrefix: '--acme-',
+  themes:       acmeThemes,
+  defaultTheme: 'acme-light',
+  strategy:     'attribute',
+})
+
+export const beta = createBrandContext({
+  namespace:    'beta',
+  storageKey:   'beta-theme',
+  cssVarPrefix: '--beta-',
+  themes:       betaThemes,
+  defaultTheme: 'beta-light',
+  strategy:     'attribute',
+})
+
+// main.ts — install both plugins
+app.use(acme.BrandPlugin)
+app.use(beta.BrandPlugin)
+```
+
+```vue
+<!-- Component.vue -->
+<script setup lang="ts">
+import { acme, beta } from './brands'
+
+const acmeState = acme.useTheme()
+const betaState = beta.useTheme()
+</script>
+
+<template>
+  <button @click="acmeState.toggleTheme()">Acme: {{ acmeState.current }}</button>
+  <button @click="betaState.toggleTheme()">Beta: {{ betaState.current }}</button>
+</template>
+```
 
 ---
 
@@ -296,6 +415,18 @@ normalizeToRgbChannels('#6366f1'); // '99 102 241'
 4. **`useTheme()` return type changed** — Returns a `reactive()` object. Properties are accessed directly (no `.value` needed). `currentTheme`/`currentName` renamed to `theme`/`current`.
 
 5. **`isDark` uses luminance** — Now calculated from background color luminance instead of name matching.
+
+6. **Icon API changed** — `ThemeDefinition.icon` is now `Component` (not `string`). `VmtIcon` uses `:as` instead of `:name`. No icon data is bundled — bring your own library:
+   ```ts
+   // Before (v5 — string name, non-functional)
+   { name: 'light', icon: 'sun', colors: { ... } }
+   // <VmtIcon name="sun" :size="24" />
+
+   // After (v6 — real Vue component)
+   import { Sun } from 'lucide-vue-next'
+   { name: 'light', icon: Sun, colors: { ... } }
+   // <VmtIcon :as="Sun" :size="24" />
+   ```
 
 ---
 

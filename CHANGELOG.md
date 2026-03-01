@@ -1,5 +1,31 @@
 # Changelog
 
+## 6.0.0
+
+### Breaking Changes 💥
+
+- **Icon API** — `ThemeDefinition.icon` is now `Component` (Vue component reference) instead of `string`. `VmtIcon` now uses `:as="ComponentRef"` prop instead of `:name="string"`. No icon bundles are included — bring your own library (e.g. `lucide-vue-next`, `@heroicons/vue`).
+- **No Lucide dependency** — the library ships zero icon data. Assign icon components directly to theme definitions.
+
+### New Features 🚀
+
+- **`createBrandContext()`** — factory for isolated, namespaced theme engines. Each context gets its own `<style>` tag, reactive singleton, provide key, and Tailwind color namespace. Ideal for white-label apps, micro-frontends, and embeddable widgets.
+- **`namespace` option in `ThemeOptions`** — pass `namespace` to `useTheme()` or `VueMultipleThemesPlugin` to isolate singleton state and style injection.
+- **Tailwind plugin namespace** — `createVmtPlugin({ namespace: 'acme' })` generates `bg-acme-primary`, `text-acme-foreground`, etc., instead of the default `vmt-` prefix.
+- **`BrandContextDemo.vue`** — playground demo showcasing side-by-side isolated brand contexts.
+- **SVG assets** — `playground/public/favicon.svg`, `docs/public/logo.svg`, `docs/public/og-image.svg` added.
+
+### Refactors 🔧
+
+- `VmtIcon.vue` rewritten as a pure forwarder component (`as: Component`).
+- `src/icons/index.ts` now exports only deprecated stub types; all Lucide imports removed.
+- `src/utils/css-injector.ts` namespaced: `injectStyles(css, ns)`, `removeStyles(ns)`, `getStyleId(ns)`.
+- `src/composables/useTheme.ts` singleton key namespaced: `vmt:singleton:<ns>:<storageKey>`.
+- `src/plugin.ts` provide key namespaced: `vmt:options:<ns>`.
+- `src/utils/generate-theme.ts` — `icon` field type changed from `string` to `Component`.
+
+---
+
 ## 5.0.2
 
 ### Patch Changes 🩹

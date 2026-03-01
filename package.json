@@ -1,7 +1,7 @@
 {
   "name": "vue-multiple-themes",
   "version": "6.0.0",
-  "description": "Vue 3 multiple theme switcher with CSS variables, TailwindCSS opacity modifier support, composable API and Lucide icons",
+  "description": "Vue 3 multi-theme engine: CSS custom properties, TailwindCSS opacity modifiers, white-label brand contexts, composable API",
   "author": "Pooya Golchian <pooya.golchian@gmail.com>",
   "license": "MIT",
   "type": "module",
@@ -40,7 +40,8 @@
     "changeset": "changeset",
     "version-packages": "changeset version",
     "release": "pnpm build && changeset publish",
-    "prepublishOnly": "pnpm build"
+    "prepublishOnly": "pnpm build",
+    "test": "pnpm build:check"
   },
   "keywords": [
     "vue",
@@ -61,7 +62,10 @@
     "wcag",
     "contrast",
     "ssr",
-    "nuxt"
+    "nuxt",
+    "white-label",
+    "brand-context",
+    "namespace"
   ],
   "homepage": "https://pooyagolchian.github.io/vue-multiple-themes",
   "repository": {
