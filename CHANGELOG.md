@@ -1,5 +1,25 @@
 # Changelog
 
+## 5.0.0
+
+### Breaking Changes 💥
+
+- **Vue 3 Only**: Dropped support for Vue 2 and removed `vue-demi`. The library is now strictly optimized for Vue 3 environments.
+- **Dependencies**: Upgraded to **Vite 6** and **Vue 3.5**.
+- **TypeScript**: Minimum TypeScript version bumped to 5.x.
+
+### Refactor & UX 🛠️
+
+- **Modern Syntax**: Refactored all components and composables to use `<script setup>` and modern Vue 3 APIs (`defineProps`, `defineEmits`, `ref`, `computed`).
+- **Visual Refresh**: Complete brand refresh with a cinematic black-and-white aesthetic across the entire documentation and playground.
+- **Improved Types**: Enhanced TypeScript definitions for better developer experience and strictly typed theme configurations.
+- **Assets**: Replaced all legacy SVG icons/banners with refined high-end monochrome PNG assets (favicon, logo, social banner).
+
+### Docs 📄
+
+- **Rewrite**: Major documentation overhaul to reflect the Vue 3 focus and new visual identity.
+- **Guides**: Added cinematic monochrome illustrations to all documentation guides.
+
 ## 4.3.0
 
 ### Patch / Docs Changes
