@@ -1,7 +1,7 @@
 {
   "name": "vue-multiple-themes",
   "version": "5.0.0",
-  "description": "Vue 2 & Vue 3 multiple theme switcher with CSS variables, TailwindCSS, composable API and Lucide icons",
+  "description": "Vue 3 multiple theme switcher with CSS variables, TailwindCSS, composable API and Lucide icons",
   "author": "Pooya Golchian <pooya.golchian@gmail.com>",
   "license": "MIT",
   "type": "module",
@@ -42,8 +42,6 @@
   "keywords": [
     "vue",
     "vue3",
-    "vue2",
-    "vue-demi",
     "themes",
     "dark-mode",
     "dark-theme",
@@ -71,21 +69,18 @@
     "url": "https://github.com/pooyagolchian/vue-multiple-themes/issues"
   },
   "peerDependencies": {
-    "vue": "^2.7.0 || ^3.0.0"
+    "vue": "^3.5.0"
   },
   "peerDependenciesMeta": {
     "vue": {
       "optional": false
     }
   },
-  "dependencies": {
-    "vue-demi": "^0.14.10"
-  },
+  "dependencies": {},
   "devDependencies": {
     "@changesets/cli": "^2.29.8",
     "@types/node": "^20.14.0",
     "@vitejs/plugin-vue": "^6.0.0",
-    "@vue/composition-api": "^1.7.2",
     "autoprefixer": "^10.4.19",
     "postcss": "^8.4.38",
     "sharp": "^0.34.5",

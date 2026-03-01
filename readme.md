@@ -87,23 +87,14 @@ app.mount('#app');
 <script setup lang="ts">
 import { useTheme, PRESET_THEMES } from 'vue-multiple-themes';
 
-const { currentTheme, setTheme, themes } = useTheme({ themes: PRESET_THEMES });
+const { current, setTheme, themes } = useTheme({ themes: PRESET_THEMES });
 </script>
 
 <template>
   <button v-for="t in themes" :key="t.name" @click="setTheme(t.name)">
-    {{ t.label }}
+    {{ t.label }} (Active: {{ current === t.name }})
   </button>
 </template>
-```
-
-### Vue 2 — Plugin
-
-```js
-import Vue from 'vue';
-import { VueMultipleThemesPlugin } from 'vue-multiple-themes';
-
-Vue.use(VueMultipleThemesPlugin, { defaultTheme: 'light' });
 ```
 
 ---
@@ -232,7 +223,6 @@ Full documentation and live demos:
 ```bash
 pnpm install          # install all workspace packages
 pnpm build            # build the library
-pnpm test             # run 218+ unit tests
 pnpm dev              # playground dev server
 pnpm docs:dev         # docs dev server
 pnpm docs:build       # build docs for production
