@@ -4,7 +4,6 @@ import type { ThemeDefinition } from '../types'
 export const lightTheme: ThemeDefinition = {
   name: 'light',
   label: 'Light',
-  icon: 'sun',
   colors: {
     primary: '#3b82f6',
     primaryLight: '#93c5fd',
@@ -30,7 +29,6 @@ export const lightTheme: ThemeDefinition = {
 export const darkTheme: ThemeDefinition = {
   name: 'dark',
   label: 'Dark',
-  icon: 'moon',
   colors: {
     primary: '#60a5fa',
     primaryLight: '#bfdbfe',
@@ -56,7 +54,6 @@ export const darkTheme: ThemeDefinition = {
 export const sepiaTheme: ThemeDefinition = {
   name: 'sepia',
   label: 'Sepia',
-  icon: 'coffee',
   colors: {
     primary: '#92400e',
     primaryLight: '#d97706',
@@ -82,7 +79,6 @@ export const sepiaTheme: ThemeDefinition = {
 export const oceanTheme: ThemeDefinition = {
   name: 'ocean',
   label: 'Ocean',
-  icon: 'droplets',
   colors: {
     primary: '#0ea5e9',
     primaryLight: '#7dd3fc',
@@ -108,7 +104,6 @@ export const oceanTheme: ThemeDefinition = {
 export const forestTheme: ThemeDefinition = {
   name: 'forest',
   label: 'Forest',
-  icon: 'leaf',
   colors: {
     primary: '#16a34a',
     primaryLight: '#86efac',
@@ -134,7 +129,6 @@ export const forestTheme: ThemeDefinition = {
 export const sunsetTheme: ThemeDefinition = {
   name: 'sunset',
   label: 'Sunset',
-  icon: 'flame',
   colors: {
     primary: '#f97316',
     primaryLight: '#fdba74',
@@ -160,7 +154,6 @@ export const sunsetTheme: ThemeDefinition = {
 export const winterTheme: ThemeDefinition = {
   name: 'winter',
   label: 'Winter',
-  icon: 'snowflake',
   colors: {
     primary: '#818cf8',
     primaryLight: '#c7d2fe',

@@ -39,3 +39,6 @@ pnpm-debug.log*
 # Test coverage
 coverage/
 .nyc_output/
+
+.github/prompts/
+.github/prompts/*

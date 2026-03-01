@@ -1,3 +1,5 @@
+import type { Component } from 'vue'
+
 // ─── Color Tokens ────────────────────────────────────────────────────────────
 /**
  * Mapping of semantic color tokens to CSS values.
@@ -42,14 +44,14 @@ export interface ThemeDefinition {
   /** Human-readable display name */
   label?: string
   /**
-   * Name of the Lucide icon to show in the toggle button while this theme is
-   * active. Uses `currentColor` so it inherits `--vmt-icon-color`.
+   * Optional icon for this theme — pass any Vue icon component
+   * (e.g. from `lucide-vue-next`).
    *
-   * Supported names: 'sun' | 'moon' | 'sunset' | 'sunrise' | 'monitor' |
-   *   'laptop' | 'coffee' | 'leaf' | 'droplets' | 'flame' | 'snowflake' |
-   *   'palette' | 'eye' | 'star' | 'zap'
+   * @example
+   * import { Sun } from 'lucide-vue-next'
+   * { icon: Sun, ... }
    */
-  icon?: string
+  icon?: Component
   /** Color tokens for this theme */
   colors: ThemeColors
   /** Extra CSS classes added to the target element alongside the theme class */
@@ -107,6 +109,22 @@ export interface ThemeOptions {
   storage?: 'localStorage' | 'sessionStorage' | 'none'
   /** Storage key for persistence. Default: `'vmt-theme'` */
   storageKey?: string
+  /**
+   * Logical namespace / brand identifier.
+   *
+   * Use this when mounting multiple independent theme contexts in the same app
+   * (e.g. white-label, micro-frontends, widget embedding).
+   *
+   * Namespacing isolates:
+   * - The injected `<style>` tag (`id="vmt-styles-<namespace>"`)
+   * - The singleton reactive state (keyed by `<namespace>:<storageKey>`)
+   * - The Vue `provide` key (`vmt:options:<namespace>`)
+   *
+   * @example
+   * createBrandContext({ namespace: 'acme', themes: acmeThemes })
+   * createBrandContext({ namespace: 'beta', themes: betaThemes })
+   */
+  namespace?: string
   /**
    * When true, auto-select a theme matching the OS dark/light preference
    * on first load (before any stored value). Default: `false`
@@ -178,6 +196,11 @@ export interface TailwindPluginOptions {
   themes: ThemeDefinition[]
   /** CSS variable prefix – default: `'--vmt-'` */
   cssVarPrefix?: string
+  /**
+   * Logical namespace / brand identifier — scopes CSS variable injection.
+   * Mirrors `ThemeOptions.namespace`.
+   */
+  namespace?: string
   /**
    * `'attribute'` → `[data-theme="name"]` selectors
    * `'class'`     → `.theme-name` selectors

@@ -8,9 +8,10 @@
  *  - Full TypeScript support
  *  - `useTheme()` composable with reactive ComputedRef returns
  *  - `VueMultipleThemesPlugin` (Options API / global install)
+ *  - `createBrandContext()` for white-label / multi-tenant setups
  *  - Tailwind CSS v3 plugin (`vue-multiple-themes/tailwind`)
  *  - Tailwind CSS v4 plugin (`vue-multiple-themes/tailwind-v4`)
- *  - Built-in Lucide icons with `currentColor` SVG rendering
+ *  - Bring-your-own icon library via `VmtIcon :as="SomeComponent"`
  *  - RGB channel CSS vars for `bg-vmt-primary/50` opacity modifiers
  */
 
@@ -24,6 +25,10 @@ export { VueMultipleThemesPlugin } from './plugin'
 
 // ─── Composable ──────────────────────────────────────────────────────────────
 export { useTheme } from './composables/useTheme'
+
+// ─── Brand context (white-label / multi-tenant) ───────────────────────────────
+export { createBrandContext } from './composables/createBrandContext'
+export type { BrandContext } from './composables/createBrandContext'
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 export type {
@@ -42,7 +47,7 @@ export { LUCIDE_ICONS, getIcon, iconToSvg } from './icons'
 export type { LucideIconData } from './icons'
 
 // ─── Utility re-exports (tree-shakeable) ─────────────────────────────────────
-export { buildCssVars, injectStyles, removeStyles, toKebab } from './utils/css-injector'
+export { buildCssVars, injectStyles, removeStyles, toKebab, getStyleId } from './utils/css-injector'
 
 // ─── Color utilities ─────────────────────────────────────────────────────────
 export {

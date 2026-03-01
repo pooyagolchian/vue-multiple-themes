@@ -25,7 +25,8 @@ const singletons = new Map<
 >()
 
 function getSingletonKey(options: ThemeOptions): string {
-  return options.storageKey ?? 'vmt-theme'
+  const base = options.storageKey ?? 'vmt-theme'
+  return options.namespace ? `${options.namespace}:${base}` : base
 }
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
@@ -111,6 +112,7 @@ export function useTheme(options: ThemeOptions): UseThemeReturn {
     injectCssVars = true,
     cssVarPrefix = '--vmt-',
     respectSystemPreference = false,
+    namespace,
     onChange,
     onThemeChange,
   } = options
@@ -213,8 +215,8 @@ export function useTheme(options: ThemeOptions): UseThemeReturn {
   // ─── Inject CSS vars (once) ─────────────────────────────────────────────
   function ensureStyles() {
     if (!injectCssVars) return
-    const css = buildCssVars(themes, { strategy, attribute, classPrefix, cssVarPrefix, target })
-    injectStyles(css)
+    const css = buildCssVars(themes, { strategy, attribute, classPrefix, cssVarPrefix, target, namespace })
+    injectStyles(css, namespace)
   }
 
   // ─── Actions ────────────────────────────────────────────────────────────
@@ -298,7 +300,7 @@ export function useTheme(options: ThemeOptions): UseThemeReturn {
         // Clean up system preference watcher
         entry._mediaCleanup?.()
         singletons.delete(singletonKey)
-        removeStyles()
+        removeStyles(namespace)
       }
     }
   })

@@ -6,6 +6,7 @@ import {
     ref,
     watch,
 } from "vue";
+import type { Component } from "vue";
 import type {
 	ThemeDefinition,
 	ThemeStrategy,
@@ -24,6 +25,7 @@ import {
 } from "../utils/dom";
 import { normalizeToRgbChannels } from "../utils/color";
 import VmtIcon from "./VmtIcon.vue";
+// VmtIcon is used in the #icon slot default when the theme has a Component icon
 
 // ── Ref-counted instance tracking (keyed by storageKey) ────────────────────
 // Prevents a navigating-away component from wiping the shared <style> tag
@@ -66,7 +68,6 @@ const props = withDefaults(defineProps<{
         {
             name: "light",
             label: "Light",
-            icon: "sun",
             colors: {
                 primary: "#3b82f6",
                 secondary: "#8b5cf6",
@@ -88,7 +89,6 @@ const props = withDefaults(defineProps<{
         {
             name: "dark",
             label: "Dark",
-            icon: "moon",
             colors: {
                 primary: "#60a5fa",
                 secondary: "#a78bfa",
@@ -110,7 +110,6 @@ const props = withDefaults(defineProps<{
         {
             name: "sepia",
             label: "Sepia",
-            icon: "coffee",
             colors: {
                 primary: "#92400e",
                 secondary: "#78350f",
@@ -209,8 +208,9 @@ const isDark = computed<boolean>(() => {
     return currentName.value.toLowerCase().includes("dark");
 });
 
-const currentIconName = computed<string>(
-    () => currentTheme.value.icon ?? "palette",
+/** Returns the icon Component from the current theme, or null. */
+const currentIconComponent = computed<Component | null>(
+    () => (currentTheme.value.icon ?? null) as Component | null,
 );
 
 // ── Apply to DOM ────────────────────────────────────────────────────
@@ -331,10 +331,10 @@ onBeforeUnmount(() => {
             <button v-if="showToggle" class="vmt-toggle"
                 :aria-label="'Current theme: ' + currentTheme.label + '. Click to switch theme.'"
                 :title="currentTheme.label" @click="nextTheme">
-                <!-- icon (use #icon slot for custom icons, or built-in VmtIcon) -->
-                <span class="vmt-icon">
-                    <slot name="icon" :icon="currentIconName" :size="iconSize" :theme="currentTheme">
-                        <VmtIcon :name="currentIconName" :size="iconSize" />
+                <!-- icon: pass a Component as theme.icon, or use the #icon slot -->
+                <span v-if="currentIconComponent || $slots.icon" class="vmt-icon">
+                    <slot name="icon" :icon="currentIconComponent" :size="iconSize" :theme="currentTheme">
+                        <VmtIcon v-if="currentIconComponent" :as="currentIconComponent" :size="iconSize" />
                     </slot>
                 </span>
                 <!-- label -->

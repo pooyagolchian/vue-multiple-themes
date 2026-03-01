@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#6366f1"/>
+      <stop offset="100%" stop-color="#a855f7"/>
+    </linearGradient>
+    <linearGradient id="icon" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="100%" stop-color="#e0d9ff"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Background tile -->
+  <rect width="512" height="512" rx="112" ry="112" fill="url(#bg)"/>
+
+  <!-- Inner shadow ring -->
+  <rect width="512" height="512" rx="112" ry="112" fill="none" stroke="rgba(255,255,255,0.12)" stroke-width="3"/>
+
+  <!-- Lucide Palette icon: 24×24 viewBox scaled to 320×320, centered at 256,256 -->
+  <!-- offset = (512 - 320) / 2 = 96 -->
+  <g transform="translate(96, 96) scale(13.333)" fill="none" stroke="url(#icon)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z"/>
+    <circle cx="13.5" cy="6.5"  r="0.5" fill="url(#icon)" stroke="none"/>
+    <circle cx="17.5" cy="10.5" r="0.5" fill="url(#icon)" stroke="none"/>
+    <circle cx="8.5"  cy="7.5"  r="0.5" fill="url(#icon)" stroke="none"/>
+    <circle cx="6.5"  cy="12.5" r="0.5" fill="url(#icon)" stroke="none"/>
+  </g>
+</svg>

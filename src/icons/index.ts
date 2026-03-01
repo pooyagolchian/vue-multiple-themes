@@ -1,16 +1,33 @@
 /**
- * Hand-picked Lucide icon SVG path data.
- * All paths use `currentColor` so they inherit --vmt-icon-color.
- * viewBox is always "0 0 24 24".
+ * @deprecated The built-in icon registry has been removed in v6.
+ *
+ * Use any Vue icon component library directly instead:
+ * - `lucide-vue-next`  (recommended)
+ * - `@heroicons/vue`
+ * - `@phosphor-icons/vue`
+ *
+ * Pass the component to `VmtIcon` via its `as` prop, or assign it directly
+ * as `ThemeDefinition.icon`:
+ *
+ * ```ts
+ * import { Sun, Moon } from 'lucide-vue-next'
+ *
+ * const themes = [
+ *   { name: 'light', label: 'Light', icon: Sun, colors: { ... } },
+ *   { name: 'dark',  label: 'Dark',  icon: Moon, colors: { ... } },
+ * ]
+ * ```
+ *
+ * @module
  */
 
+/** @deprecated */
 export interface LucideIconData {
-  /** SVG <path> `d` attribute */
   path: string
-  /** Additional SVG attributes (optional, e.g. circles) */
   extra?: string
 }
 
+/** @deprecated Use `lucide-vue-next` or another icon library directly. */
 export const LUCIDE_ICONS: Record<string, LucideIconData> = {
   sun: {
     path: 'M12 3V4M12 20V21M4 12H3M6.31 6.31L5.5 5.5M17.69 6.31L18.5 5.5M6.31 17.69L5.5 18.5M17.69 17.69L18.5 18.5M21 12H20M16 12C16 14.21 14.21 16 12 16C9.79 16 8 14.21 8 12C8 9.79 9.79 8 12 8C14.21 8 16 9.79 16 12Z',
@@ -57,39 +74,28 @@ export const LUCIDE_ICONS: Record<string, LucideIconData> = {
   zap: {
     path: 'M13 2L3 14H12L11 22L21 10H12L13 2Z',
   },
-  // Fallback generic circle icon
-  circle: {
-    path: 'M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z',
-  },
 }
 
-/** Return the icon data for a given Lucide icon name (falls back to 'circle'). */
-export function getIcon(name: string): LucideIconData {
-  return LUCIDE_ICONS[name] ?? LUCIDE_ICONS.circle
+/** @deprecated Use `lucide-vue-next` or another icon library directly. */
+export function getIcon(_name: string): LucideIconData {
+  return { path: '' }
 }
 
 /**
- * Generate an SVG string for a Lucide icon.
- * Uses `currentColor` for stroke so it inherits CSS `color` / `--vmt-icon-color`.
+ * @deprecated The built-in SVG path registry has been removed.
+ * Returns a placeholder circle SVG. Replace with your icon library.
  */
 export function iconToSvg(
-  name: string,
+  _name: string,
   size = 20,
   color = 'currentColor',
   strokeWidth = 2,
 ): string {
-  const icon = getIcon(name)
-  const attrs = [
-    `xmlns="http://www.w3.org/2000/svg"`,
-    `width="${size}"`,
-    `height="${size}"`,
-    `viewBox="0 0 24 24"`,
-    `fill="none"`,
-    `stroke="${color}"`,
-    `stroke-width="${strokeWidth}"`,
-    `stroke-linecap="round"`,
-    `stroke-linejoin="round"`,
-  ].join(' ')
-
-  return `<svg ${attrs}><path d="${icon.path}" /></svg>`
+  return (
+    `<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}" ` +
+    `viewBox="0 0 24 24" fill="none" stroke="${color}" stroke-width="${strokeWidth}" ` +
+    `stroke-linecap="round" stroke-linejoin="round">` +
+    `<circle cx="12" cy="12" r="10"/>` +
+    `</svg>`
+  )
 }

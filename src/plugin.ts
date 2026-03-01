@@ -48,6 +48,7 @@ export const VueMultipleThemesPlugin = {
       injectCssVars = true,
       cssVarPrefix = '--vmt-',
       respectSystemPreference = false,
+      namespace,
     } = options
 
     if (themes.length === 0) {
@@ -82,8 +83,8 @@ export const VueMultipleThemesPlugin = {
 
     // Inject CSS vars into <head> immediately
     if (injectCssVars) {
-      const css = buildCssVars(themes, { strategy, attribute, classPrefix, cssVarPrefix, target })
-      injectStyles(css)
+      const css = buildCssVars(themes, { strategy, attribute, classPrefix, cssVarPrefix, target, namespace })
+      injectStyles(css, namespace)
     }
 
     // Persist the resolved theme so the composable picks up the same value
@@ -99,7 +100,8 @@ export const VueMultipleThemesPlugin = {
 
     // ── Provide the options for injection ────────────────────────────────
     if (typeof app.provide === 'function') {
-      app.provide('vmt:options', options)
+      const provideKey = namespace ? `vmt:options:${namespace}` : 'vmt:options'
+      app.provide(provideKey, options)
     }
   },
 }

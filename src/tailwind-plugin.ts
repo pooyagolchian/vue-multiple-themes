@@ -143,7 +143,15 @@ export function vmtTailwindPlugin(opts: TailwindPluginOptions): {
     cssVarPrefix = '--vmt-',
     strategy = 'both',
     darkThemes = [],
+    namespace,
   } = opts
+
+  // Derive Tailwind color key: namespace → 'acme', else strip '--' and trailing '-' from cssVarPrefix
+  // '--acme-' → 'acme' | '--vmt-' → 'vmt' | namespace 'my-brand' → 'my-brand'
+  const tailwindColorKey: string =
+    namespace ??
+    cssVarPrefix.replace(/^--/, '').replace(/-$/, '') ??
+    'vmt'
 
   const allKeys = collectColorKeys(themes)
 
@@ -209,7 +217,7 @@ export function vmtTailwindPlugin(opts: TailwindPluginOptions): {
       theme: {
         extend: {
           colors: {
-            vmt: vmtColors,
+            [tailwindColorKey]: vmtColors,
           },
         },
       },

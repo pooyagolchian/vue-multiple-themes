@@ -12,6 +12,7 @@
  *   generateFromCssVar(varName, options)    → CSS string (runtime, browser-only)
  */
 
+import type { Component } from 'vue'
 import type { ThemeColors, ThemeDefinition } from '../types'
 import {
   autoContrast,
@@ -30,8 +31,8 @@ export interface GenerateThemeOptions {
   name?: string
   /** Human-readable label */
   label?: string
-  /** Icon name from the built-in icon set */
-  icon?: string
+  /** Optional icon component (e.g. from `lucide-vue-next`) */
+  icon?: Component
   /**
    * Saturation boost/reduction for background tones.
    * Positive = more colorful surfaces, negative = more neutral.
@@ -68,7 +69,7 @@ export function generateLightTheme(
   const {
     name = 'generated-light',
     label = 'Light',
-    icon = 'sun',
+    icon,
     saturationBias = 0,
     tintedSurfaces = true,
     accentColor,
@@ -130,7 +131,7 @@ export function generateDarkTheme(
   const {
     name = 'generated-dark',
     label = 'Dark',
-    icon = 'moon',
+    icon,
     saturationBias = 0,
     tintedSurfaces = true,
     accentColor,
@@ -208,14 +209,12 @@ export function generateThemePair(
     generateLightTheme(primaryHex, {
       name: lightName,
       label: lightLabel,
-      icon: 'sun',
       saturationBias,
       tintedSurfaces,
     }),
     generateDarkTheme(primaryHex, {
       name: darkName,
       label: darkLabel,
-      icon: 'moon',
       saturationBias,
       tintedSurfaces,
     }),

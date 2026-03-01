@@ -5,9 +5,9 @@
             class="sticky top-0 z-50 border-b border-noir-800 backdrop-blur-md bg-noir-950/80">
             <div class="max-w-6xl mx-auto px-6 h-14 flex items-center justify-between">
                 <div class="flex items-center gap-3">
-                    <img src="/favicon.png" alt="Logo" class="w-8 h-8 rounded-lg shadow-lg border border-white/10" />
+                    <img src="/favicon.svg" alt="Logo" class="w-8 h-8 rounded-lg shadow-lg border border-white/10" />
                     <span class="font-bold text-lg bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-500 tracking-tight">VMT</span>
-                    <span class="badge border border-noir-800 bg-noir-900 text-noir-500 font-mono">v5.0.2</span>
+                    <span class="badge border border-noir-800 bg-noir-900 text-noir-500 font-mono">v6.0.0</span>
                 </div>
 
                 <!-- Theme dot picker -->
@@ -75,6 +75,7 @@
             <GeneratorDemo />
             <ColorUtilsDemo />
             <IconsDemo />
+            <BrandContextDemo />
 
             <!-- Footer -->
             <footer class="border-t border-noir-800/50 pt-8 pb-12">
@@ -99,6 +100,7 @@ import CssVarsDemo from './components/CssVarsDemo.vue'
 import GeneratorDemo from './components/GeneratorDemo.vue'
 import IconsDemo from './components/IconsDemo.vue'
 import TailwindDemo from './components/TailwindDemo.vue'
+import BrandContextDemo from './components/BrandContextDemo.vue'
 
 const themes = PRESET_THEMES
 const currentThemeName = ref<string>('light')
