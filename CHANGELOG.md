@@ -1,5 +1,13 @@
 # Changelog
 
+## 6.0.1
+
+### Patch Changes 🩹
+
+- Fix: npm publish — bump patch version to resolve E403 conflict with previously published 6.0.0 artefact.
+
+---
+
 ## 6.0.0
 
 ### Breaking Changes 💥
