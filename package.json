@@ -1,6 +1,6 @@
 {
   "name": "vue-multiple-themes",
-  "version": "6.0.1",
+  "version": "6.0.2",
   "description": "Vue 3 multi-theme engine: CSS custom properties, TailwindCSS opacity modifiers, white-label brand contexts, composable API",
   "author": "Pooya Golchian <pooya.golchian@gmail.com>",
   "license": "MIT",

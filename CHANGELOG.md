@@ -1,5 +1,15 @@
 # Changelog
 
+## 6.0.2
+
+### Patch Changes 🩹
+
+- **Icons:** Strip remaining SVG path data from `src/icons/index.ts` — `LUCIDE_ICONS`, `getIcon`, and `iconToSvg` are now no-op deprecated stubs. Bundle reduced by ~2.7 kB.
+- **Playground:** Rebuilt with updated icon demo (`IconsDemo.vue`) using real `lucide-vue-next` components.
+- **GitHub Pages:** Force-redeploy to pick up all v6 playground changes.
+
+---
+
 ## 6.0.1
 
 ### Patch Changes 🩹
