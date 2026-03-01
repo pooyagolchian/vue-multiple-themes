@@ -33,6 +33,7 @@ jobs:
                   cache: pnpm
 
             - name: Setup Pages
+              id: pages
               uses: actions/configure-pages@v4
 
             - name: Install dependencies
@@ -40,6 +41,8 @@ jobs:
 
             - name: Build playground
               run: pnpm build:playground
+              env:
+                VITE_BASE: ${{ steps.pages.outputs.base_path }}
 
             - name: Upload Pages artifact
               uses: actions/upload-pages-artifact@v3
