@@ -1,4 +1,0 @@
-User-agent: *
-Allow: /
-
-Sitemap: https://pooyagolchian.github.io/vue-multiple-themes/sitemap.xml

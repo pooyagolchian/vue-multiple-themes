@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="docs/public/banner.png" alt="vue-multiple-themes banner" width="100%" />
+  <strong>vue-multiple-themes</strong>
 </p>
 
 # vue-multiple-themes
@@ -22,14 +22,11 @@ pnpm install
 # Run the interactive playground (Vite dev server → http://localhost:5173)
 pnpm dev
 
-# Run the documentation site (VitePress → http://localhost:5173)
-pnpm docs:dev
-
-# Run playground AND docs simultaneously (two ports in parallel)
-pnpm dev:all
-
 # Build the library
 pnpm build
+
+# Build the playground for production (deployed to GitHub Pages)
+pnpm build:playground
 ```
 
 ---
@@ -224,8 +221,7 @@ Full documentation and live demos:
 pnpm install          # install all workspace packages
 pnpm build            # build the library
 pnpm dev              # playground dev server
-pnpm docs:dev         # docs dev server
-pnpm docs:build       # build docs for production
+pnpm build:playground # build playground for production
 ```
 
 ---

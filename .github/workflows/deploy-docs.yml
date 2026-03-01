@@ -1,4 +1,4 @@
-name: Deploy Docs to GitHub Pages
+name: Deploy Demo to GitHub Pages
 
 on:
     push:
@@ -19,13 +19,11 @@ concurrency:
 
 jobs:
     build:
-        name: Build VitePress Docs
+        name: Build Playground
         runs-on: ubuntu-latest
 
         steps:
             - uses: actions/checkout@v4
-              with:
-                  fetch-depth: 0 # needed for git-based lastUpdated
 
             - uses: pnpm/action-setup@v4
 
@@ -40,16 +38,13 @@ jobs:
             - name: Install dependencies
               run: pnpm install --frozen-lockfile
 
-            - name: Build library (docs imports from src)
-              run: pnpm build
-
-            - name: Build docs
-              run: pnpm docs:build
+            - name: Build playground
+              run: pnpm build:playground
 
             - name: Upload Pages artifact
               uses: actions/upload-pages-artifact@v3
               with:
-                  path: docs/.vitepress/dist
+                  path: playground/dist
 
     deploy:
         name: Deploy to GitHub Pages
