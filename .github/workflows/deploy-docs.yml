@@ -30,6 +30,9 @@ jobs:
             - name: Install dependencies
               run: pnpm install --frozen-lockfile
 
+            - name: Build library
+              run: pnpm build
+
             - name: Build playground
               run: pnpm build:playground
 
