@@ -1,6 +1,6 @@
 /** @type {import('tailwindcss').Config} */
-import { createVmtPlugin } from 'vue-multiple-themes/tailwind'
-import { PRESET_THEMES } from 'vue-multiple-themes'
+import { createVmtPlugin } from '../src/tailwind-plugin'
+import { PRESET_THEMES } from '../src/themes/presets'
 
 export default {
   content: ['./index.html', './src/**/*.{vue,ts,tsx}'],
