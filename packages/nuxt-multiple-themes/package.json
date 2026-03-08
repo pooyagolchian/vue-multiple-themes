@@ -1,0 +1,60 @@
+{
+  "name": "nuxt-multiple-themes",
+  "version": "1.0.0",
+  "description": "Nuxt 3 module for vue-multiple-themes — multi-theme engine with CSS custom properties, TailwindCSS, WCAG contrast, and white-label brand contexts",
+  "author": "Pooya Golchian <pooya.golchian@gmail.com>",
+  "license": "MIT",
+  "type": "module",
+  "main": "./dist/module.mjs",
+  "types": "./dist/types.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/types.d.ts",
+      "import": "./dist/module.mjs",
+      "require": "./dist/module.cjs"
+    }
+  },
+  "files": [
+    "dist",
+    "src"
+  ],
+  "scripts": {
+    "build": "nuxt-module-build build",
+    "prepack": "pnpm build"
+  },
+  "keywords": [
+    "nuxt",
+    "nuxt-module",
+    "nuxt3",
+    "vue",
+    "vue3",
+    "themes",
+    "dark-mode",
+    "multi-theme",
+    "css-variables",
+    "tailwindcss",
+    "white-label",
+    "wcag",
+    "accessibility",
+    "theme-switcher"
+  ],
+  "homepage": "https://pooyagolchian.github.io/vue-multiple-themes/guide/nuxt-ssr",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pooyagolchian/vue-multiple-themes.git",
+    "directory": "packages/nuxt-multiple-themes"
+  },
+  "bugs": {
+    "url": "https://github.com/pooyagolchian/vue-multiple-themes/issues"
+  },
+  "peerDependencies": {
+    "vue-multiple-themes": "^6.0.0"
+  },
+  "dependencies": {
+    "@nuxt/kit": "^3.15.0"
+  },
+  "devDependencies": {
+    "@nuxt/module-builder": "^0.8.0",
+    "nuxt": "^3.15.0"
+  }
+}

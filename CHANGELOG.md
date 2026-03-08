@@ -1,5 +1,24 @@
 # Changelog
 
+## 7.0.0
+
+### New Features 🚀
+
+- **Full test suite** — 116 tests across 5 test files covering color utilities, CSS injection, DOM strategies, theme generation, and brand context (Vitest + happy-dom).
+- **VitePress documentation site** — complete docs with Getting Started, API Reference, TailwindCSS Integration, White-Label Guide, Theme Generation, Color Utilities, Nuxt/SSR, Migration Guide, and Comparison pages.
+- **`llms.txt`** — structured API documentation following the [llmstxt.org](https://llmstxt.org) specification for AI/LLM discoverability.
+- **`nuxt-multiple-themes` module** — Nuxt 3 module with auto-imports (`useTheme`, `createBrandContext`, `PRESET_THEMES`, generators), FOUC prevention, and runtime config integration.
+- **Comparison table** — feature matrix comparing vue-multiple-themes vs @vueuse/core vs nuxt-color-mode in README and docs.
+- **Enhanced npm metadata** — 11 new keywords (accessibility, a11y, vite, multi-tenant, etc.), GitHub Sponsors funding field, npm download badge.
+
+### Improvements ✨
+
+- **README** — added download/TypeScript/Vue/Tailwind/zero-deps/tests badges, comparison table, docs links, llms.txt mention.
+- **package.json** — new scripts: `test`, `test:watch`, `test:coverage`, `typecheck`, `docs:dev`, `docs:build`, `docs:preview`.
+- **Workspace** — added `packages/*` to pnpm-workspace.yaml for the Nuxt module.
+
+---
+
 ## 6.0.2
 
 ### Patch Changes 🩹

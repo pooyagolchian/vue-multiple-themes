@@ -1,0 +1,123 @@
+# vue-multiple-themes
+
+> Vue 3 multi-theme engine with CSS custom properties, TailwindCSS opacity modifiers, WCAG contrast tools, and white-label brand contexts.
+
+## Overview
+
+vue-multiple-themes is a zero-dependency Vue 3 package that provides:
+- Multiple theme support (7 presets + unlimited custom themes)
+- TailwindCSS v3 & v4 plugins with full opacity modifier support (bg-vmt-primary/50)
+- WCAG 2.1 contrast and accessibility utilities
+- White-label / multi-tenant theme isolation via createBrandContext()
+- Dynamic theme generation from a single brand color
+- 20+ tree-shakeable color utility functions
+- localStorage/sessionStorage persistence with OS preference detection
+- SSR-safe design (all DOM access guarded)
+
+## Installation
+
+```
+pnpm add vue-multiple-themes
+npm install vue-multiple-themes
+yarn add vue-multiple-themes
+```
+
+## Quick Start
+
+```ts
+import { createApp } from 'vue'
+import { VueMultipleThemesPlugin, PRESET_THEMES } from 'vue-multiple-themes'
+
+const app = createApp(App)
+app.use(VueMultipleThemesPlugin, {
+  themes: PRESET_THEMES,
+  defaultTheme: 'light',
+  strategy: 'both',
+})
+app.mount('#app')
+```
+
+```vue
+<script setup>
+import { useTheme, PRESET_THEMES } from 'vue-multiple-themes'
+const { current, isDark, setTheme, toggleTheme } = useTheme({ themes: PRESET_THEMES })
+</script>
+```
+
+## Core API
+
+### useTheme(options): UseThemeReturn
+
+Reactive composable. Returns: current (theme name), isDark (boolean), theme (definition), resolvedColors (RGB objects), setTheme(name), nextTheme(), prevTheme(), toggleTheme().
+
+Options: themes (required), defaultTheme, strategy ('attribute'|'class'|'both'), storage ('localStorage'|'sessionStorage'|'none'), storageKey, cssVarPrefix, respectSystemPreference, namespace, onChange, onThemeChange.
+
+### createBrandContext(options): BrandContext
+
+Factory for isolated namespaced theme engines. Each context gets its own CSS variables, storage, and reactive state. Requires namespace option.
+
+Returns: namespace (string), useTheme(overrides?), BrandPlugin (Vue plugin).
+
+### VueMultipleThemesPlugin
+
+Vue 3 plugin. Registers <VueMultipleThemes> globally, injects CSS vars, applies initial theme.
+
+## Color Utilities
+
+All functions accept hex strings and are SSR-safe:
+
+- hexToRgb(hex) → [r, g, b]
+- rgbToHex(r, g, b) → hex
+- hexToHsl(hex) → [h, s, l]
+- hslToHex(h, s, l) → hex
+- parseColor(cssColor) → [h, s, l]
+- lighten(hex, amount) → hex
+- darken(hex, amount) → hex
+- saturate(hex, amount) → hex
+- rotateHue(hex, degrees) → hex
+- mix(hexA, hexB, weight) → hex
+- withAlpha(hex, alpha) → rgba string
+- luminance(hex) → number (WCAG 2.1)
+- contrastRatio(hexA, hexB) → number (≥4.5=AA, ≥7=AAA)
+- autoContrast(bg) → white or black hex
+- ensureContrast(text, bg, minRatio) → adjusted hex
+- generateColorScale(hex) → { 50..950 }
+- complementary(hex) → hex
+- triadic(hex) → [hex, hex, hex]
+- analogous(hex, angle) → [hex, hex, hex]
+- normalizeToRgbChannels(color) → "R G B"
+
+## Theme Generators
+
+- generateLightTheme(hex, options?) → ThemeDefinition (WCAG AA compliant)
+- generateDarkTheme(hex, options?) → ThemeDefinition
+- generateThemePair(hex, options?) → [light, dark]
+- generateThemeFromPalette(palette, variant, options?) → ThemeDefinition
+- generateSeasonalThemes(season) → [light, dark] (spring|summer|autumn|winter|midnight|neon|pastel)
+- checkContrast(fg, bg) → { ratio, aa, aaLarge, aaa, aaaLarge }
+
+## TailwindCSS
+
+```js
+// tailwind.config.js (v3)
+const vmtPlugin = require('vue-multiple-themes/tailwind')
+module.exports = { plugins: [vmtPlugin({ themes, cssVarPrefix: '--vmt-' })] }
+
+// v4
+import vmtPlugin from 'vue-multiple-themes/tailwind-v4'
+```
+
+Classes: bg-vmt-primary, text-vmt-text, border-vmt-border, with opacity: bg-vmt-primary/50
+
+## Components
+
+- <VueMultipleThemes> — wrapper with slot props
+- <VmtThemePicker> — headless picker with keyboard nav & ARIA
+- <VmtIcon :as="Component"> — icon forwarder (bring your own library)
+
+## Links
+
+- Documentation: https://pooyagolchian.github.io/vue-multiple-themes/
+- GitHub: https://github.com/pooyagolchian/vue-multiple-themes
+- npm: https://www.npmjs.com/package/vue-multiple-themes
+- Changelog: https://github.com/pooyagolchian/vue-multiple-themes/blob/main/CHANGELOG.md

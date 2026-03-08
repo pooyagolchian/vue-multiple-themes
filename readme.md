@@ -7,7 +7,37 @@
 > Dynamic multi-theme support for **Vue 3** — CSS custom properties, TailwindCSS (with full opacity modifier support), WCAG contrast utilities, white-label brand contexts, and a reactive composable API.
 
 [![npm version](https://img.shields.io/npm/v/vue-multiple-themes)](https://www.npmjs.com/package/vue-multiple-themes)
+[![npm downloads](https://img.shields.io/npm/dm/vue-multiple-themes)](https://www.npmjs.com/package/vue-multiple-themes)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.7-blue?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![Vue 3](https://img.shields.io/badge/Vue-3.5+-4FC08D?logo=vuedotjs&logoColor=white)](https://vuejs.org/)
+[![TailwindCSS](https://img.shields.io/badge/Tailwind_CSS-v3_%26_v4-38B2AC?logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
+[![Zero Dependencies](https://img.shields.io/badge/dependencies-0-brightgreen)](https://www.npmjs.com/package/vue-multiple-themes)
+[![Tests](https://img.shields.io/badge/tests-116_passing-brightgreen)](https://github.com/pooyagolchian/vue-multiple-themes)
+
+---
+
+## Why vue-multiple-themes?
+
+Most Vue theming solutions only handle light/dark toggling. **vue-multiple-themes** is a complete multi-theme engine for production applications.
+
+### Comparison with Alternatives
+
+| Feature | vue-multiple-themes | @vueuse useColorMode | nuxt-color-mode |
+|---|:---:|:---:|:---:|
+| **Multiple themes (3+)** | ✅ Unlimited | ⚠️ Manual | ⚠️ Light/Dark only |
+| **TailwindCSS v3 & v4 plugin** | ✅ Built-in | ❌ | ❌ |
+| **Opacity modifiers** (`bg-primary/50`) | ✅ | ❌ | ❌ |
+| **WCAG contrast utilities** | ✅ 5+ functions | ❌ | ❌ |
+| **Theme generation from 1 color** | ✅ | ❌ | ❌ |
+| **White-label / namespace** | ✅ `createBrandContext()` | ❌ | ❌ |
+| **Color utility library** | ✅ 20+ functions | ❌ | ❌ |
+| **Preset themes** | ✅ 7 included | ❌ | ❌ |
+| **System preference** | ✅ | ✅ | ✅ |
+| **TypeScript** | ✅ Full | ✅ | ✅ |
+| **Zero dependencies** | ✅ | ❌ | ❌ |
+
+> 📖 **[Full documentation →](https://pooyagolchian.github.io/vue-multiple-themes/)**
 
 ---
 
@@ -435,6 +465,19 @@ const betaState = beta.useTheme()
 Full documentation and live demos:
 
 **<https://pooyagolchian.github.io/vue-multiple-themes/>**
+
+- [Getting Started](https://pooyagolchian.github.io/vue-multiple-themes/guide/getting-started)
+- [API Reference](https://pooyagolchian.github.io/vue-multiple-themes/api/)
+- [TailwindCSS Integration](https://pooyagolchian.github.io/vue-multiple-themes/guide/tailwind)
+- [White-Label / Multi-Tenant](https://pooyagolchian.github.io/vue-multiple-themes/guide/brand-context)
+- [Theme Generation](https://pooyagolchian.github.io/vue-multiple-themes/guide/generation)
+- [Color Utilities](https://pooyagolchian.github.io/vue-multiple-themes/guide/color-utils)
+- [Nuxt / SSR](https://pooyagolchian.github.io/vue-multiple-themes/guide/nuxt-ssr)
+- [Comparison with Alternatives](https://pooyagolchian.github.io/vue-multiple-themes/guide/comparison)
+
+### For AI / LLMs
+
+This project includes an [`llms.txt`](llms.txt) file following the [llmstxt.org](https://llmstxt.org) specification, providing structured API documentation for AI assistants.
 
 ---
 
