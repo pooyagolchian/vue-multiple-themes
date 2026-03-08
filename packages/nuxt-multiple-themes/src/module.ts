@@ -1,4 +1,5 @@
 import { defineNuxtModule, addPlugin, addImports, createResolver } from '@nuxt/kit'
+import type { NuxtModule } from '@nuxt/schema'
 import type { ThemeOptions } from 'vue-multiple-themes'
 
 export interface ModuleOptions extends Partial<ThemeOptions> {
@@ -11,7 +12,7 @@ export interface ModuleOptions extends Partial<ThemeOptions> {
   preventFouc?: boolean
 }
 
-export default defineNuxtModule<ModuleOptions>({
+const module: NuxtModule<ModuleOptions> = defineNuxtModule<ModuleOptions>({
   meta: {
     name: 'nuxt-multiple-themes',
     configKey: 'multipleThemes',
@@ -92,3 +93,5 @@ export default defineNuxtModule<ModuleOptions>({
     nuxt.options.runtimeConfig.public.multipleThemes = options
   },
 })
+
+export default module
