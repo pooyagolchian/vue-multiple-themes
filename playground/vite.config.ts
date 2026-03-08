@@ -3,8 +3,8 @@ import vue from '@vitejs/plugin-vue'
 import { defineConfig } from 'vite'
 
 export default defineConfig({
-  // Base path for GitHub Pages deployment
-  base: process.env.NODE_ENV === 'production' ? '/vue-multiple-themes/' : '/',
+  // Base path for GitHub Pages deployment (nested under docs site)
+  base: process.env.NODE_ENV === 'production' ? '/vue-multiple-themes/playground/' : '/',
   plugins: [vue()],
   resolve: {
     alias: {

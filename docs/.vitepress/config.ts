@@ -19,7 +19,7 @@ export default defineConfig({
     nav: [
       { text: 'Guide', link: '/guide/getting-started' },
       { text: 'API', link: '/api/' },
-      { text: 'Playground', link: 'https://pooyagolchian.github.io/vue-multiple-themes/' },
+      { text: 'Playground', link: '/vue-multiple-themes/playground/' },
       { text: 'Changelog', link: 'https://github.com/pooyagolchian/vue-multiple-themes/blob/main/CHANGELOG.md' },
     ],
 

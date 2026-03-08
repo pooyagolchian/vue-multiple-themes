@@ -32,8 +32,17 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
+      - name: Build library
+        run: pnpm build
+
       - name: Build VitePress docs
         run: pnpm docs:build
+
+      - name: Build playground
+        run: pnpm build:playground
+
+      - name: Copy playground into docs dist
+        run: cp -r playground/dist docs/.vitepress/dist/playground
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
